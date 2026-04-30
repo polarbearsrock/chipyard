@@ -24,7 +24,8 @@
 	url = https://github.com/ucb-bar/FFTGenerator.git
 [submodule "generators/gemmini"]
 	path = generators/gemmini
-	url = https://github.com/ucb-bar/gemmini.git
+	url = https://github.com/polarbearsrock/gemmini.git
+	branch = modular
 [submodule "generators/hardfloat"]
 	path = generators/hardfloat
 	url = https://github.com/ucb-bar/berkeley-hardfloat.git

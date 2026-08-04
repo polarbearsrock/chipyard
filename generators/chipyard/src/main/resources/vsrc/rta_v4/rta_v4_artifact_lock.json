@@ -1,0 +1,413 @@
+{
+  "artifacts": {
+    "LICENSE.basejump_stl": {
+      "bytes": 738,
+      "sha256": "6f567a2dc4eefcd73ff79192251849114a0df8be335110634ed6033d7456aed8"
+    },
+    "LICENSE.dora": {
+      "bytes": 1517,
+      "sha256": "ad2f8da3c8808d4acabb62f683e6de2f6a2efd8fe56b99dfd5404ef64d01fc68"
+    },
+    "RtaV4Bundle.sv": {
+      "bytes": 298469,
+      "sha256": "99627c15f44c5e7051f536f789bf278e86c163bbe68d64f9e88b01d0ace9e3ab"
+    },
+    "add_chain_compute.bin": {
+      "bytes": 393,
+      "enabled_cycle_latency": 13,
+      "expected_behavior": "west lane 0 data0 -> east lane 0 data0; y = x + 10",
+      "kernel": "cgra_add_chain",
+      "sha256": "567763f047f3b75e5190dc2baf09fdec1fae0dd91df55a67fca3dbeb2937ceab"
+    },
+    "add_chain_compute.fasm": {
+      "bytes": 4326,
+      "kernel": "cgra_add_chain",
+      "layout_hash": "36c02b053e3686484ccd7b8433bd5facfc295734667b01ac7a4ba9268a0b9e7a",
+      "sha256": "d0355eb0d564f3a266ed262b873f4ba5a1762b4cb8d932d29bcd309557d0b1d0"
+    },
+    "compiler_arch.json": {
+      "bundled": false,
+      "bytes": 2805559,
+      "sha256": "b324d16f32987cee5bf25995059391147e823bcb9800d78dbf0679dab8d4b1ae"
+    },
+    "rta_v4_chipyard_adapter.sv.source": {
+      "bytes": 4132,
+      "role": "auditable source copy; embedded in RtaV4Bundle.sv",
+      "sha256": "c803be0d4cdd432a893c71cc3c24a7999b69db9df7c56c463c7e25ad93550869"
+    },
+    "rta_v4_rmu_sources.f": {
+      "bundled": false,
+      "bytes": 142,
+      "entries": [
+        "common/rta_v4_pkg.sv",
+        "rmu/rta_v4_rmu_mul_array.sv",
+        "rmu/rta_v4_rmu_cgra_mul_backend.sv",
+        "rmu/rta_v4_rmu_systolic_dot4_backend.sv",
+        "rmu/rta_v4_rmu.sv"
+      ],
+      "role": "five-file RMU subset; not the complete RTL closure",
+      "sha256": "c25d5484268a5a8b16ee8f8ab01379c065e0237709ac81e958a94638e4f12f26"
+    },
+    "workspace.pkl": {
+      "bundled": false,
+      "bytes": 1207100,
+      "sha256": "fa507fdefde2650049df61bbcbd3e51f4188373498b2c848a8f6baff05719a4a",
+      "trust": "trusted DORA compiler input; never load in Chipyard"
+    }
+  },
+  "configuration": {
+    "bit_order_within_byte": "least_significant_bit_first",
+    "bitstream_bits": 3140,
+    "bitstream_bytes": 393,
+    "byte_order": "ascending",
+    "protocol": "serial_scan",
+    "scan_tail_completion": "deassert prog_we_i, then wait for prog_we_o == 0",
+    "scan_tail_cycles": 65,
+    "scan_write_enable_first_high_bit": 66,
+    "valid_bits_in_last_byte": 4
+  },
+  "design": {
+    "adapter_top_module": "rta_v4_chipyard_adapter",
+    "compiler_arch_schema_version": 6,
+    "fabric_contexts": 1,
+    "generated_top_module": "rta_v4_array",
+    "layout_hash": "36c02b053e3686484ccd7b8433bd5facfc295734667b01ac7a4ba9268a0b9e7a"
+  },
+  "execution": {
+    "clock_enable": "en_i",
+    "manual_step": "pulse en_i for one compute clock",
+    "runtime_ready_valid": false
+  },
+  "interface": {
+    "activity_masks_are_runtime_valid": false,
+    "columns": 4,
+    "data_planes": 2,
+    "data_width": 8,
+    "east_output": "lane r -> opin_x(r+1)y5_*",
+    "north_input": "lane c -> ipin_x0y(c+1)_*",
+    "packed_lane_slice": "data[8*lane +: 8]",
+    "predicate_width": 1,
+    "rows": 4,
+    "south_output": "lane c -> opin_x5y(c+1)_*",
+    "west_input": "lane r -> ipin_x(r+1)y0_*"
+  },
+  "provenance": {
+    "basejump_revision": "b8142d3c3b0c673a1d92041b24fba5fdef4c393a",
+    "dora_revision": "f57db1855de46f68b976db12fa9400a59d54d55a",
+    "revision_semantics": "Git revisions identify the source baselines; the explicit bundled source hashes are authoritative if a worktree differs.",
+    "source_closure_note": "The explicit ordered paths and per-file hashes below are authoritative; rta_v4_rmu_sources.f is only the RMU subset.",
+    "source_count": 51,
+    "source_hash_semantics": "SHA-256 over bundled LF-normalized text with per-line trailing whitespace removed after include resolution; volatile DORA Generated-on and Author headers are canonicalized.",
+    "sources": [
+      {
+        "bundle_order": 0,
+        "bytes": 8604,
+        "path": "basejump_stl/bsg_misc/bsg_defines.sv",
+        "sha256": "ceb6dfd40bcd8b0297ac3b1a17bcf724f34fb95cab3e92e23afe4147b692576d"
+      },
+      {
+        "bundle_order": 1,
+        "bytes": 412,
+        "path": "basejump_stl/bsg_misc/bsg_dff.sv",
+        "sha256": "2101c79a5e0a9fd70fe794c4756703c44c01c9a77fa0790dd5e1be426f3dbda9"
+      },
+      {
+        "bundle_order": 2,
+        "bytes": 594,
+        "path": "basejump_stl/bsg_misc/bsg_dff_async_reset.sv",
+        "sha256": "d6a48038fa5dcc59111340bc272bd870502f5401bee33c16b44156c889e76b48"
+      },
+      {
+        "bundle_order": 3,
+        "bytes": 502,
+        "path": "basejump_stl/bsg_misc/bsg_dff_reset.sv",
+        "sha256": "432530233aeff24284940f6304a17ac8ce8561f43b467e5b969a40970bcffebc"
+      },
+      {
+        "bundle_order": 4,
+        "bytes": 652,
+        "path": "basejump_stl/bsg_misc/bsg_dff_reset_en.sv",
+        "sha256": "06b462e3d2a77c1b0ff06ea927f14cbd3358f80ed8c55729692a5e73d4e736a6"
+      },
+      {
+        "bundle_order": 5,
+        "bytes": 431,
+        "path": "basejump_stl/bsg_misc/bsg_adder_cin.sv",
+        "sha256": "690dcf7b20d031950868a59662fdd2fc9bcea6609c2849364f38b440e61f8a67"
+      },
+      {
+        "bundle_order": 6,
+        "bytes": 345,
+        "path": "basejump_stl/bsg_misc/bsg_mul_synth.sv",
+        "sha256": "9c17d469ab8ff54a74539d205446550308d3ad107e11c04cadc322688238025b"
+      },
+      {
+        "bundle_order": 7,
+        "bytes": 783,
+        "path": "rta_v4/rtl/common/rta_v4_pkg.sv",
+        "sha256": "660788376f2e952e5422da1cf9892cb0c3eaab0375b94ae0cfe207840ec1e930"
+      },
+      {
+        "bundle_order": 8,
+        "bytes": 395,
+        "path": "rta_v4/rtl/stdlib/simple_buf.sv",
+        "sha256": "50f6099f009d0489675dbed9b03a5304abdc7076245521a08b389cc3b74b5933"
+      },
+      {
+        "bundle_order": 9,
+        "bytes": 499,
+        "path": "rta_v4/rtl/stdlib/simple_bufr.sv",
+        "sha256": "af7b1f7c250f86f9d785ab45507a04b7b0d656d0ab525a9955f9fe356a4a294a"
+      },
+      {
+        "bundle_order": 10,
+        "bytes": 1197,
+        "path": "rta_v4/rtl/scanchain_delim.sv",
+        "sha256": "65e1b334c8afa2c5dd1a9de1cde4989866939edc0fe283cab7f7614afca547f6"
+      },
+      {
+        "bundle_order": 11,
+        "bytes": 1402,
+        "path": "rta_v4/rtl/scanchain_data_d1_contexts_1.sv",
+        "sha256": "32c11b8ff73b39c59ad9656522425b0143fd5f568f7a57b87889641eb01b0c2d"
+      },
+      {
+        "bundle_order": 12,
+        "bytes": 1402,
+        "path": "rta_v4/rtl/scanchain_data_d2_contexts_1.sv",
+        "sha256": "4318558ab05281056f419364c5e6e9adb656bf5dd6394fe16812fafc7896a892"
+      },
+      {
+        "bundle_order": 13,
+        "bytes": 1402,
+        "path": "rta_v4/rtl/scanchain_data_d4_contexts_1.sv",
+        "sha256": "b61d09e9f1aa1b4e3176e670991008c19e012858f953ca7fd12b032a6c157434"
+      },
+      {
+        "bundle_order": 14,
+        "bytes": 1402,
+        "path": "rta_v4/rtl/scanchain_data_d5_contexts_1.sv",
+        "sha256": "212391543dfdb668cc12a09497c6718abbd93f44cbb4182a1af6881a1511b71c"
+      },
+      {
+        "bundle_order": 15,
+        "bytes": 1402,
+        "path": "rta_v4/rtl/scanchain_data_d8_contexts_1.sv",
+        "sha256": "4cf0a8c1167d557be28faa3d14e508bff1065838ca1b856ae2b2eeb191a52abb"
+      },
+      {
+        "bundle_order": 16,
+        "bytes": 1398,
+        "path": "rta_v4/rtl/sw_11_8b.sv",
+        "sha256": "9a14e2de141313ac00737b7af5a4b489ca05e08cf3d054f9bc66aa26d946fe5b"
+      },
+      {
+        "bundle_order": 17,
+        "bytes": 709,
+        "path": "rta_v4/rtl/sw_2_1b.sv",
+        "sha256": "14df16d9e5eb72a059d216103c3d6d26bed3fe6680280bd29aa1164b0c651961"
+      },
+      {
+        "bundle_order": 18,
+        "bytes": 709,
+        "path": "rta_v4/rtl/sw_2_8b.sv",
+        "sha256": "a1cf92f048699f09c38c769e1f674584d17c31577facd694898f597101efee97"
+      },
+      {
+        "bundle_order": 19,
+        "bytes": 785,
+        "path": "rta_v4/rtl/sw_3_8b.sv",
+        "sha256": "fea066af0269ae5f5745b199edca5fc9398e4170e3bd4e3b13d88949d3257892"
+      },
+      {
+        "bundle_order": 20,
+        "bytes": 1241,
+        "path": "rta_v4/rtl/sw_9_1b.sv",
+        "sha256": "0b643cdee35741d27fde994e8933aac7aa4134fb29987141ead28bfa6f8fbfaf"
+      },
+      {
+        "bundle_order": 21,
+        "bytes": 661,
+        "path": "rta_v4/rtl/reg_1b.sv",
+        "sha256": "fce829ec8243dedec39af60c158b21eded6d1f051117eaf1600dbbd0a48d8e95"
+      },
+      {
+        "bundle_order": 22,
+        "bytes": 661,
+        "path": "rta_v4/rtl/reg_8b.sv",
+        "sha256": "c5c539ffe7a6627456975e557ca71f49d334196c309f06919e64b426d8aa1f81"
+      },
+      {
+        "bundle_order": 23,
+        "bytes": 3627,
+        "path": "rta_v4/rtl/rta_alu.sv",
+        "sha256": "c8c312eff12c702126218c41823e25e7d1f6321ee7704f4448bcbbb42ba81b0d"
+      },
+      {
+        "bundle_order": 24,
+        "bytes": 545,
+        "path": "rta_v4/rtl/rta_const_unit_8b.sv",
+        "sha256": "e648ac98a2ea903f4dfc360811c8050bff1b96f7410133e3e25e3231bf1916d3"
+      },
+      {
+        "bundle_order": 25,
+        "bytes": 770,
+        "path": "rta_v4/rtl/rmu/rta_v4_rmu_mul_array.sv",
+        "sha256": "1d24c11a2c23266d4c48e561e53ac2e032df714e47f5612b072d0889e9d96288"
+      },
+      {
+        "bundle_order": 26,
+        "bytes": 2357,
+        "path": "rta_v4/rtl/rmu/rta_v4_rmu_cgra_mul_backend.sv",
+        "sha256": "82974e54a7a64715d44561a29d8a04d934a75c8a21ed69075a36f53328d1d7bb"
+      },
+      {
+        "bundle_order": 27,
+        "bytes": 4369,
+        "path": "rta_v4/rtl/rmu/rta_v4_rmu_systolic_dot4_backend.sv",
+        "sha256": "4c8f5a49420805caa820d45266ee390cf9713261c40c1dee9c4519c8e3fcf590"
+      },
+      {
+        "bundle_order": 28,
+        "bytes": 5844,
+        "path": "rta_v4/rtl/rmu/rta_v4_rmu.sv",
+        "sha256": "081adec4cb6ca55593464db9381f400c3702d0d06ec61f45a79fff718ca34bf3"
+      },
+      {
+        "bundle_order": 29,
+        "bytes": 15017,
+        "path": "rta_v4/rtl/rta_v4_data0_crossbar_8b.sv",
+        "sha256": "99161a8a5f1ad300cda20fe265e9e6c91016e834a10426980ff2a0070538fd2c"
+      },
+      {
+        "bundle_order": 30,
+        "bytes": 15017,
+        "path": "rta_v4/rtl/rta_v4_data1_crossbar_8b.sv",
+        "sha256": "475c6e0b235f49451f898f57735bd4e93414918d4cc6a817b0cf93ec5d021c33"
+      },
+      {
+        "bundle_order": 31,
+        "bytes": 10296,
+        "path": "rta_v4/rtl/rta_v4_pred_crossbar.sv",
+        "sha256": "7e8812ebf7454878e4622d551d0a4c3e7a730b446eac9eb46f3c823890ec4871"
+      },
+      {
+        "bundle_order": 32,
+        "bytes": 3131,
+        "path": "rta_v4/rtl/rta_v4_skew_bypass_2x8b_pred.sv",
+        "sha256": "3ce895afaa8dcae8f6059198f76aa44feaef12af0baf3701661c3b88d3868019"
+      },
+      {
+        "bundle_order": 33,
+        "bytes": 654,
+        "path": "rta_v4/rtl/rta_v4_input_pad_8b_s0.sv",
+        "sha256": "2cbec1b30459d7b05d2e43b408d182000aa043563177f8fc88ea2b5a2b3b6e34"
+      },
+      {
+        "bundle_order": 34,
+        "bytes": 654,
+        "path": "rta_v4/rtl/rta_v4_input_pad_8b_s1.sv",
+        "sha256": "8559a4c814876b832a34bb0bbfffa373d0e83fd74d71e0d58a91b7cc27dbab16"
+      },
+      {
+        "bundle_order": 35,
+        "bytes": 654,
+        "path": "rta_v4/rtl/rta_v4_input_pad_1b_s2.sv",
+        "sha256": "dbe189718d7510dec0115c159a904f153486b3bb8e53175ac2d7ca6d5607f018"
+      },
+      {
+        "bundle_order": 36,
+        "bytes": 655,
+        "path": "rta_v4/rtl/rta_v4_output_pad_8b_s0.sv",
+        "sha256": "fc5c3e541887909500376112d2c1b1abd9c10b692c9fd6b71cedebaf895632c8"
+      },
+      {
+        "bundle_order": 37,
+        "bytes": 655,
+        "path": "rta_v4/rtl/rta_v4_output_pad_8b_s1.sv",
+        "sha256": "1926818d8727f6a91ab465fb83181e48e40e1aaf34e37d9f1c530d0324da2dc6"
+      },
+      {
+        "bundle_order": 38,
+        "bytes": 655,
+        "path": "rta_v4/rtl/rta_v4_output_pad_1b_s2.sv",
+        "sha256": "b3ebd898e91ab538ff80be1a855d97199053e187ac2282b45a9e3e412b6f05d8"
+      },
+      {
+        "bundle_order": 39,
+        "bytes": 4464,
+        "path": "rta_v4/rtl/rta_v4_input_io_tile_2x8b_pred.sv",
+        "sha256": "f180f9ffcacdf34337dcff5ef2d1789b923b491500119afc54fab6d7d8011e76"
+      },
+      {
+        "bundle_order": 40,
+        "bytes": 4504,
+        "path": "rta_v4/rtl/rta_v4_output_io_tile_2x8b_pred.sv",
+        "sha256": "e5eed5d6b7e5d58194b6ca0e430c058fd5e82357198c4f74e6ebc8ce39749c62"
+      },
+      {
+        "bundle_order": 41,
+        "bytes": 3855,
+        "path": "rta_v4/rtl/rta_v4_input_boundary_cell_2x8b_pred.sv",
+        "sha256": "c9ff72482e6e4d4e312edc6df1c8fe4af4e8860f43543808fdbd5b2aea91d56b"
+      },
+      {
+        "bundle_order": 42,
+        "bytes": 5439,
+        "path": "rta_v4/rtl/rta_v4_input_boundary_cell_2x8b_pred_skew1.sv",
+        "sha256": "55f16137deea4df6be70e6cfd74917ee463b437200127779959b550678897a2a"
+      },
+      {
+        "bundle_order": 43,
+        "bytes": 6987,
+        "path": "rta_v4/rtl/rta_v4_input_boundary_cell_2x8b_pred_skew2.sv",
+        "sha256": "516d23d0d906d243fe64029f53c25e169bc2c5cd8fb6555104bc123c7bf45a25"
+      },
+      {
+        "bundle_order": 44,
+        "bytes": 8535,
+        "path": "rta_v4/rtl/rta_v4_input_boundary_cell_2x8b_pred_skew3.sv",
+        "sha256": "62472fae65940a1a1791a20416d3b08ac4a08f233c0e4696d425e1d07f1b5171"
+      },
+      {
+        "bundle_order": 45,
+        "bytes": 3864,
+        "path": "rta_v4/rtl/rta_v4_output_boundary_cell_2x8b_pred.sv",
+        "sha256": "dad84580dbfd0f29905b9082de5526f141b6eb27a979aad991448b21a9dbaa5f"
+      },
+      {
+        "bundle_order": 46,
+        "bytes": 573,
+        "path": "rta_v4/rtl/rta_v4_active_or3.sv",
+        "sha256": "28866f10ddfed8919d9888826831c1953f9d8a006de4920d20126daa8f0843a3"
+      },
+      {
+        "bundle_order": 47,
+        "bytes": 668,
+        "path": "rta_v4/rtl/rta_v4_active_pack4.sv",
+        "sha256": "b3ccb544b3d706a9480448ca3c26e41d022376a6c05ef0764f60ec852bcc0ea3"
+      },
+      {
+        "bundle_order": 48,
+        "bytes": 58825,
+        "path": "rta_v4/rtl/rta_v4_pe.sv",
+        "sha256": "3a444d5d43d7c6732cfd74c17da78caee117e50eb721f343a22cde6359202ebb"
+      },
+      {
+        "bundle_order": 49,
+        "bytes": 82129,
+        "path": "rta_v4/rtl/rta_v4_array.sv",
+        "sha256": "b7ba795523f7291ea43779b2ee121e9503d082a3ad2700f45eae499178acdf21"
+      },
+      {
+        "bundle_order": 50,
+        "bytes": 4132,
+        "path": "chipyard/rta_v4_chipyard_adapter.sv",
+        "sha256": "c803be0d4cdd432a893c71cc3c24a7999b69db9df7c56c463c7e25ad93550869"
+      }
+    ]
+  },
+  "schema": "chipyard.rta_v4.reference_artifact_lock",
+  "schema_version": 1,
+  "stability": "experimental_reference_snapshot"
+}

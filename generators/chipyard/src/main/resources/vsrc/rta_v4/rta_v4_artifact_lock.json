@@ -17,6 +17,7 @@
       "enabled_cycle_latency": 13,
       "expected_behavior": "west lane 0 data0 -> east lane 0 data0; y = x + 10",
       "kernel": "cgra_add_chain",
+      "manual_steps_from_reset": 14,
       "sha256": "567763f047f3b75e5190dc2baf09fdec1fae0dd91df55a67fca3dbeb2937ceab"
     },
     "add_chain_compute.fasm": {

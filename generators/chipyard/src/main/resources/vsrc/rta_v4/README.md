@@ -64,3 +64,8 @@ checks, compiles only the self-contained bundle and testbench, checks every
 packed adapter connection against a synthetic raw top, programs all 3,140
 bits, checks the exact scan write-enable/tail timing, and exercises the
 add-chain under continuous and stalled enabled-clock execution.
+
+The add-chain's enabled-cycle latency is 13 when expressed as the difference
+between launch and observation cycle indices. Manual bring-up from reset must
+issue 14 enabled edges because the launch edge itself is included and the
+east output pad is registered.

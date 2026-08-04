@@ -355,6 +355,10 @@ def main() -> int:
         bitstream_record.get("enabled_cycle_latency") == 13,
         "golden latency mismatch",
     )
+    require(
+        bitstream_record.get("manual_steps_from_reset") == 14,
+        "golden manual-step count mismatch",
+    )
 
     for name, (expected_size, expected_digest) in EXPECTED_UNBUNDLED_INPUTS.items():
         record = require_record(artifacts, name)

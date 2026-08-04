@@ -632,6 +632,7 @@ def main(argv: Iterable[str] = sys.argv[1:]) -> int:
                 "kernel": "cgra_add_chain",
                 "expected_behavior": "west lane 0 data0 -> east lane 0 data0; y = x + 10",
                 "enabled_cycle_latency": 13,
+                "manual_steps_from_reset": 14,
             },
             FASM_FILENAME: {
                 "bytes": len(fasm),

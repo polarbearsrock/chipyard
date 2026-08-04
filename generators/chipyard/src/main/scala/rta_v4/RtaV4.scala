@@ -63,7 +63,7 @@ object RtaV4Registers {
   val Activity       = 0x180
 
   val IdValue: BigInt = 0x52544134L // ASCII "RTA4"
-  val AbiVersionValue: BigInt = 0x00010000L
+  val AbiVersionValue: BigInt = 0x00010001L
   val CapabilitiesValue: BigInt =
     (RtaV4Artifact.Rows) |
     (RtaV4Artifact.Columns << 8) |
@@ -249,7 +249,8 @@ class RtaV4TL(params: RtaV4Params, beatBytes: Int)(implicit p: Parameters)
 
     val configMap = Seq(
       ConfigCommand -> Seq(RegField.w(32, configCommand,
-        desc("config_command", "Write-one pulse: bit 0 START, bit 1 ABORT"))),
+        desc("config_command",
+          "Write-one pulse: bit 0 START, bit 1 ABORT; bit 2 makes START preserve compute state"))),
       ConfigStatus -> Seq(RegField.r(32, configStatus,
         desc("config_status", "Configuration state and raw scan status", volatile = true))),
       ConfigData -> Seq(RegField.w(32, configData,

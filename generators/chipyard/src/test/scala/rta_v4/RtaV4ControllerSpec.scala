@@ -219,6 +219,98 @@ class RtaV4ControllerSpec extends AnyFlatSpec
       writeComputeCommand(0)
       dut.io.runEnable.expect(false.B)
       dut.io.computeEnable.expect(false.B)
+
+      // RELOAD reprograms the scan chain with compute quiesced while keeping
+      // the independent compute reset deasserted. Stateful RMU accumulators
+      // therefore survive phase changes in a systolic workload.
+      serialized.clear()
+      writeConfigCommand(5)
+      dut.io.configState.expect(RtaV4Controller.StateReset.U)
+      dut.io.softwareComputeReset.expect(false.B)
+      dut.io.computeReset.expect(false.B)
+      dut.io.computeEnable.expect(false.B)
+
+      for (_ <- 0 until testParams.programResetCycles) {
+        dut.io.progReset.expect(true.B)
+        dut.io.computeReset.expect(false.B)
+        dut.io.computeEnable.expect(false.B)
+        tick()
+      }
+      for (_ <- 0 until testParams.programResetReleaseCycles) {
+        dut.io.progReset.expect(false.B)
+        dut.io.computeReset.expect(false.B)
+        dut.io.computeEnable.expect(false.B)
+        tick()
+      }
+
+      writeConfigData(BigInt("76543210", 16))
+      while (!dut.io.configDataReady.peekBoolean()) {
+        dut.io.computeReset.expect(false.B)
+        dut.io.computeEnable.expect(false.B)
+        tick()
+      }
+      writeConfigData(BigInt(10))
+
+      completionCycles = 0
+      while (!dut.io.configured.peekBoolean() && completionCycles < 160) {
+        dut.io.computeReset.expect(false.B)
+        dut.io.computeEnable.expect(false.B)
+        tick()
+        completionCycles += 1
+      }
+      dut.io.configured.expect(true.B)
+      dut.io.computeReset.expect(false.B)
+      dut.io.computeEnable.expect(false.B)
+      dut.io.configErrors.expect(0.U)
+      dut.io.scanBitsShifted.expect(36.U)
+      dut.io.scanBitsAtTail.expect(36.U)
+
+      val reloadExpected =
+        (0 until 32).map(index => ((BigInt("76543210", 16) >> index) & 1).toInt) ++
+        (0 until 4).map(index => ((BigInt(10) >> index) & 1).toInt)
+      serialized.toSeq shouldBe reloadExpected
+
+      // Preservation is never permitted while the datapath is running. A
+      // violation fails closed and immediately restores compute reset.
+      writeComputeCommand(2)
+      dut.io.runEnable.expect(true.B)
+      writeConfigCommand(5)
+      dut.io.configState.expect(RtaV4Controller.StateError.U)
+      dut.io.computeReset.expect(true.B)
+      dut.io.runEnable.expect(false.B)
+      (dut.io.configErrors.peek().litValue &
+        RtaV4Controller.ConfigErrorInvalidCommand) should not be 0
+    }
+  }
+
+  it should "reject the preserve modifier without a legal START context" in {
+    test(new RtaV4Controller(testParams)) { dut =>
+      initialize(dut)
+
+      def writeConfigCommand(value: BigInt): Unit = {
+        dut.io.configCommand.bits.poke(value.U)
+        dut.io.configCommand.valid.poke(true.B)
+        dut.clock.step()
+        dut.io.configCommand.valid.poke(false.B)
+      }
+
+      // Bit 2 is a modifier, not a standalone command.
+      writeConfigCommand(4)
+      dut.io.configState.expect(RtaV4Controller.StateError.U)
+      dut.io.computeReset.expect(true.B)
+      (dut.io.configErrors.peek().litValue &
+        RtaV4Controller.ConfigErrorInvalidCommand) should not be 0
+
+      writeConfigCommand(2)
+      dut.io.configState.expect(RtaV4Controller.StateIdle.U)
+
+      // START|PRESERVE is also illegal before a cold image has reached READY
+      // and software has released compute reset.
+      writeConfigCommand(5)
+      dut.io.configState.expect(RtaV4Controller.StateError.U)
+      dut.io.computeReset.expect(true.B)
+      (dut.io.configErrors.peek().litValue &
+        RtaV4Controller.ConfigErrorInvalidCommand) should not be 0
     }
   }
 

@@ -3,8 +3,9 @@
 
 This script intentionally consumes generated DORA collateral without importing
 DORA Python modules or unpickling ``workspace.pkl``.  It produces one ordered,
-self-contained SystemVerilog compilation unit, copies a known-good bitstream
-and its FASM, and records enough provenance to audit or reproduce the snapshot.
+self-contained SystemVerilog compilation unit, copies known-good add-chain and
+systolic bitstreams with their FASMs, and records enough provenance to audit or
+reproduce the snapshot.
 """
 
 from __future__ import annotations
@@ -48,6 +49,14 @@ BUNDLE_FILENAME = "RtaV4Bundle.sv"
 LOCK_FILENAME = "rta_v4_artifact_lock.json"
 BITSTREAM_FILENAME = "add_chain_compute.bin"
 FASM_FILENAME = "add_chain_compute.fasm"
+SYSTOLIC_PHASES = (
+    "clear",
+    "compute",
+    "drain_col0",
+    "drain_col1",
+    "drain_col2",
+    "drain_col3",
+)
 DORA_LICENSE_FILENAME = "LICENSE.dora"
 BASEJUMP_LICENSE_FILENAME = "LICENSE.basejump_stl"
 ALLOWED_OUTPUT_FILENAMES = frozenset(
@@ -60,6 +69,11 @@ ALLOWED_OUTPUT_FILENAMES = frozenset(
         FASM_FILENAME,
         LOCK_FILENAME,
         "README.md",
+    }
+    | {
+        f"systolic_{phase}{suffix}"
+        for phase in SYSTOLIC_PHASES
+        for suffix in (".bin", ".fasm")
     }
 )
 HDL_SUFFIXES = frozenset({".sv", ".svh", ".v", ".vh"})
@@ -79,6 +93,122 @@ EXPECTED_ADD_CHAIN_SHA256 = (
 EXPECTED_ADD_CHAIN_FASM_SHA256 = (
     "d0355eb0d564f3a266ed262b873f4ba5a1762b4cb8d932d29bcd309557d0b1d0"
 )
+EXPECTED_SYSTOLIC_SHA256 = {
+    "clear": {
+        "bin": "b1bf5027957a95a3cf225ccb3214fbe2acc45dbb7d074d454f735f871ba81084",
+        "fasm": "df671716683aeaab6a3078c4d8d9666a9802813767be9d719ff25fae01918a09",
+    },
+    "compute": {
+        "bin": "58e2d7f526a6a6c67185880a220c539726f14d80e5d79c3eb8721ad894af571d",
+        "fasm": "a292b81673e9bb31fbff446f33f64af1d15afc9296d2c424767f792d6ad5d84a",
+    },
+    "drain_col0": {
+        "bin": "d2cb47bb1670fed8253a70dda94ac99c778f7a3e0c760980ae59eaaa285c5e05",
+        "fasm": "c838ad21bb274f0fb589e8f0593bf43e2fc28d17fdcb6485a9c88b94a130df39",
+    },
+    "drain_col1": {
+        "bin": "fe341d9cfd5c99fd026b1b98ca3a8fe69d107f2c4c25d18024446b069e07578e",
+        "fasm": "f0fdf21209b9b30bd5024a6d52e3b970deaa39d7d30a48913acb256a672a8e2a",
+    },
+    "drain_col2": {
+        "bin": "1362fb728db0330a423b0dbd6db7c1930fc1778098afc7918e710d82e63ce26a",
+        "fasm": "98b1252f4395794920f76e9f491e52b8d992ff1950c4f5fe6727b9f7a885b4c1",
+    },
+    "drain_col3": {
+        "bin": "cf2cb5a1b74648122b648a30fea1eaac18a026cf716248fb2e34c395a1c75d3a",
+        "fasm": "23107c21a5b6790b4ee399f5cc658906dbb6f2ddee4fe352aea41371e13f1105",
+    },
+}
+SYSTOLIC_WORKLOAD_PROTOCOL = {
+    "oracle": "tests/array_systolic",
+    "rows": 4,
+    "columns": 4,
+    "lanes_per_packet": 4,
+    "operand_format": "signed_int4",
+    "accumulator_bits": 16,
+    "accumulator_signed": True,
+    "k_min": 1,
+    "k_max": 8,
+    "configuration_modes": {
+        "cold": {
+            "reset_compute_state": True,
+            "compute_enabled_during_scan": False,
+        },
+        "preserve_compute_state": {
+            "reset_compute_state": False,
+            "compute_enabled_during_scan": False,
+        },
+    },
+    "phase_order": [
+        "clear",
+        "compute",
+        "drain_col3",
+        "drain_col2",
+        "drain_col1",
+        "drain_col0",
+    ],
+    "phases": [
+        {
+            "phase": "clear",
+            "bitstream": "systolic_clear.bin",
+            "fasm": "systolic_clear.fasm",
+            "configuration": "cold",
+            "release_compute_reset": True,
+            "input": "zero",
+            "enabled_cycles": 3,
+        },
+        {
+            "phase": "compute",
+            "bitstream": "systolic_compute.bin",
+            "fasm": "systolic_compute.fasm",
+            "configuration": "preserve_compute_state",
+            "input": "west_A_rows_north_B_columns",
+            "input_cycles": "K",
+            "flush_input": "zero",
+            "flush_cycles": 16,
+        },
+        {
+            "phase": "drain_col3",
+            "bitstream": "systolic_drain_col3.bin",
+            "fasm": "systolic_drain_col3.fasm",
+            "configuration": "preserve_compute_state",
+            "input": "zero",
+            "enabled_cycles": 2,
+            "output_column": 3,
+            "output": "east_data1:east_data0_per_row",
+        },
+        {
+            "phase": "drain_col2",
+            "bitstream": "systolic_drain_col2.bin",
+            "fasm": "systolic_drain_col2.fasm",
+            "configuration": "preserve_compute_state",
+            "input": "zero",
+            "enabled_cycles": 3,
+            "output_column": 2,
+            "output": "east_data1:east_data0_per_row",
+        },
+        {
+            "phase": "drain_col1",
+            "bitstream": "systolic_drain_col1.bin",
+            "fasm": "systolic_drain_col1.fasm",
+            "configuration": "preserve_compute_state",
+            "input": "zero",
+            "enabled_cycles": 4,
+            "output_column": 1,
+            "output": "east_data1:east_data0_per_row",
+        },
+        {
+            "phase": "drain_col0",
+            "bitstream": "systolic_drain_col0.bin",
+            "fasm": "systolic_drain_col0.fasm",
+            "configuration": "preserve_compute_state",
+            "input": "zero",
+            "enabled_cycles": 5,
+            "output_column": 0,
+            "output": "east_data1:east_data0_per_row",
+        },
+    ],
+}
 EXPECTED_DORA_REVISION = "f57db1855de46f68b976db12fa9400a59d54d55a"
 EXPECTED_BASEJUMP_REVISION = "b8142d3c3b0c673a1d92041b24fba5fdef4c393a"
 EXPECTED_COMPILER_ARCH_SHA256 = (
@@ -312,6 +442,15 @@ def parse_args(argv: Iterable[str]) -> argparse.Namespace:
         help="known-good compute.fasm used to generate the add-chain bitstream",
     )
     parser.add_argument(
+        "--systolic-dir",
+        type=Path,
+        required=True,
+        help=(
+            "directory generated by array_systolic/gen_systolic_bitstreams.py; "
+            "must contain clear, compute, and drain_col0..3 .bin/.fasm pairs"
+        ),
+    )
+    parser.add_argument(
         "--adapter",
         type=Path,
         default=DEFAULT_ADAPTER_PATH,
@@ -388,6 +527,7 @@ def main(argv: Iterable[str] = sys.argv[1:]) -> int:
     adapter_path = args.adapter.resolve()
     bitstream_path = args.add_chain_bitstream.resolve()
     fasm_path = args.add_chain_fasm.resolve()
+    systolic_dir = args.systolic_dir.resolve()
     dora_license_path = dora_root / "LICENSE"
     basejump_license_path = basejump_checkout / "LICENSE"
 
@@ -397,6 +537,11 @@ def main(argv: Iterable[str] = sys.argv[1:]) -> int:
     require_regular_file(adapter_path, "packed SystemVerilog adapter")
     require_regular_file(bitstream_path, "add-chain bitstream")
     require_regular_file(fasm_path, "add-chain FASM")
+    if not systolic_dir.is_dir():
+        raise ValueError(
+            f"systolic artifact directory is missing or not a directory: "
+            f"{systolic_dir}"
+        )
     require_regular_file(dora_license_path, "DORA license")
     require_regular_file(basejump_license_path, "BaseJump license")
     validate_source_closure(rtl_dir)
@@ -498,6 +643,61 @@ def main(argv: Iterable[str] = sys.argv[1:]) -> int:
             "add-chain FASM digest does not match the known-good reference: "
             f"{fasm_sha256}"
         )
+
+    systolic_artifacts: dict[str, tuple[bytes, bytes]] = {}
+    for phase in SYSTOLIC_PHASES:
+        phase_bitstream_path = systolic_dir / f"{phase}.bin"
+        phase_fasm_path = systolic_dir / f"{phase}.fasm"
+        require_regular_file(
+            phase_bitstream_path, f"systolic {phase} bitstream"
+        )
+        require_regular_file(phase_fasm_path, f"systolic {phase} FASM")
+
+        phase_bitstream = phase_bitstream_path.read_bytes()
+        if len(phase_bitstream) != expected_bitstream_bytes:
+            raise ValueError(
+                f"expected {expected_bitstream_bytes} bytes in systolic "
+                f"{phase} bitstream, got {len(phase_bitstream)}"
+            )
+        if phase_bitstream[-1] & unused_mask:
+            raise ValueError(
+                f"unused high bits of systolic {phase} bitstream must be zero: "
+                f"0x{phase_bitstream[-1]:02x}"
+            )
+        phase_bitstream_sha256 = sha256_bytes(phase_bitstream)
+        if phase_bitstream_sha256 != EXPECTED_SYSTOLIC_SHA256[phase]["bin"]:
+            raise ValueError(
+                f"systolic {phase} bitstream digest does not match the "
+                f"known-good DORA oracle: {phase_bitstream_sha256}"
+            )
+
+        phase_fasm = phase_fasm_path.read_bytes()
+        try:
+            phase_fasm_text = phase_fasm.decode("utf-8")
+        except UnicodeDecodeError as error:
+            raise ValueError(
+                f"systolic {phase} FASM is not UTF-8: {phase_fasm_path}"
+            ) from error
+        phase_layout_match = re.search(
+            r"^# dora_layout_hash: ([0-9a-f]{64})$",
+            phase_fasm_text,
+            re.MULTILINE,
+        )
+        if (
+            phase_layout_match is None
+            or phase_layout_match.group(1) != EXPECTED_LAYOUT_HASH
+        ):
+            raise ValueError(
+                f"systolic {phase} FASM layout hash does not match compiler "
+                "metadata"
+            )
+        phase_fasm_sha256 = sha256_bytes(phase_fasm)
+        if phase_fasm_sha256 != EXPECTED_SYSTOLIC_SHA256[phase]["fasm"]:
+            raise ValueError(
+                f"systolic {phase} FASM digest does not match the known-good "
+                f"DORA oracle: {phase_fasm_sha256}"
+            )
+        systolic_artifacts[phase] = (phase_bitstream, phase_fasm)
 
     if len(RTA_SOURCES) != EXPECTED_RTA_SOURCE_COUNT:
         raise AssertionError("internal RTA source-count invariant failed")
@@ -616,6 +816,9 @@ def main(argv: Iterable[str] = sys.argv[1:]) -> int:
             "scan_write_enable_first_high_bit": 66,
             "scan_tail_cycles": 65,
         },
+        "workloads": {
+            "systolic_dot4_gemm": SYSTOLIC_WORKLOAD_PROTOCOL,
+        },
         "artifacts": {
             BUNDLE_FILENAME: {
                 "bytes": len(bundle),
@@ -639,6 +842,27 @@ def main(argv: Iterable[str] = sys.argv[1:]) -> int:
                 "sha256": fasm_sha256,
                 "layout_hash": EXPECTED_LAYOUT_HASH,
                 "kernel": "cgra_add_chain",
+            },
+            **{
+                f"systolic_{phase}.bin": {
+                    "bytes": len(phase_bitstream),
+                    "sha256": sha256_bytes(phase_bitstream),
+                    "kernel": "systolic_dot4_gemm",
+                    "phase": phase,
+                    "oracle": "tests/array_systolic",
+                }
+                for phase, (phase_bitstream, _) in systolic_artifacts.items()
+            },
+            **{
+                f"systolic_{phase}.fasm": {
+                    "bytes": len(phase_fasm),
+                    "sha256": sha256_bytes(phase_fasm),
+                    "layout_hash": EXPECTED_LAYOUT_HASH,
+                    "kernel": "systolic_dot4_gemm",
+                    "phase": phase,
+                    "oracle": "tests/array_systolic",
+                }
+                for phase, (_, phase_fasm) in systolic_artifacts.items()
             },
             "compiler_arch.json": {
                 "bytes": compiler_arch_path.stat().st_size,
@@ -695,6 +919,17 @@ def main(argv: Iterable[str] = sys.argv[1:]) -> int:
     check_or_write(output_adapter_path, adapter, check=args.check)
     check_or_write(output_bitstream_path, bitstream, check=args.check)
     check_or_write(output_fasm_path, fasm, check=args.check)
+    for phase, (phase_bitstream, phase_fasm) in systolic_artifacts.items():
+        check_or_write(
+            output_dir / f"systolic_{phase}.bin",
+            phase_bitstream,
+            check=args.check,
+        )
+        check_or_write(
+            output_dir / f"systolic_{phase}.fasm",
+            phase_fasm,
+            check=args.check,
+        )
     check_or_write(
         output_dir / DORA_LICENSE_FILENAME, dora_license, check=args.check
     )

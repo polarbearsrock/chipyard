@@ -12,10 +12,12 @@ outside the production `vsrc` tree at
 `rta_v4_chipyard_adapter.sv.source` is a non-compilable provenance copy. Do not
 add another BaseJump provider to a build that compiles the bundle.
 
-The bundle, add-chain binary, FASM, and provenance copy are generated files.
-Their source paths, hashes, configuration format, and provenance are recorded
-in `rta_v4_artifact_lock.json`. `LICENSE.dora` and
-`LICENSE.basejump_stl` accompany the vendored source snapshot.
+The bundle, add-chain image, six `array_systolic` phase images, their FASMs,
+and the provenance copy are generated files. Their source paths, hashes,
+configuration format, provenance, and the exact ordered state-preserving
+systolic workload protocol are recorded in `rta_v4_artifact_lock.json`.
+`LICENSE.dora` and `LICENSE.basejump_stl` accompany the vendored source
+snapshot.
 
 ## Restage the snapshot from the supplied DORA artifact
 
@@ -36,6 +38,10 @@ cd "$DORA_ROOT"
 PYTHONDONTWRITEBYTECODE=1 scripts/dora-run python \
   examples/devices/ee_526/rta-v4/tests/cgra_add_chain/gen_add_chain_bitstreams.py \
   --out-dir "$TMPDIR/rta_v4_chipyard_add_chain"
+
+PYTHONDONTWRITEBYTECODE=1 scripts/dora-run python \
+  examples/devices/ee_526/rta-v4/tests/array_systolic/gen_systolic_bitstreams.py \
+  --out-dir "$TMPDIR/rta_v4_chipyard_systolic"
 ```
 
 Then stage the deterministic Chipyard artifact:
@@ -45,7 +51,8 @@ cd "$CHIPYARD_ROOT"
 python3 scripts/prepare-rta-v4-bundle.py \
   --dora-root "$DORA_ROOT" \
   --add-chain-bitstream "$TMPDIR/rta_v4_chipyard_add_chain/compute.bin" \
-  --add-chain-fasm "$TMPDIR/rta_v4_chipyard_add_chain/compute.fasm"
+  --add-chain-fasm "$TMPDIR/rta_v4_chipyard_add_chain/compute.fasm" \
+  --systolic-dir "$TMPDIR/rta_v4_chipyard_systolic"
 ```
 
 Use `--check` with the same arguments to verify that the checked-in generated
@@ -63,7 +70,15 @@ It verifies every bundled source section and runs adversarial corruption
 checks, compiles only the self-contained bundle and testbench, checks every
 packed adapter connection against a synthetic raw top, programs all 3,140
 bits, checks the exact scan write-enable/tail timing, and exercises the
-add-chain under continuous and stalled enabled-clock execution.
+add-chain under continuous and stalled enabled-clock execution. It also locks
+and verifies every systolic phase image, then adversarially corrupts
+representative systolic bitstream and FASM images and the multi-image protocol
+metadata. The full state-retention and systolic datapath proof runs through the
+Chipyard controller and TileLink shell with:
+
+```sh
+make -C generators/chipyard/src/test/resources/rta_v4 soc-systolic-smoke
+```
 
 The add-chain's enabled-cycle latency is 13 when expressed as the difference
 between launch and observation cycle indices. Manual bring-up from reset must

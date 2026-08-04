@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Verify the frozen RTA V4 bundle and add-chain image without DORA."""
+"""Verify the frozen RTA V4 bundle and golden workloads without DORA."""
 
 from __future__ import annotations
 
@@ -27,6 +27,122 @@ EXPECTED_BITSTREAM_SHA256 = (
 EXPECTED_FASM_SHA256 = (
     "d0355eb0d564f3a266ed262b873f4ba5a1762b4cb8d932d29bcd309557d0b1d0"
 )
+EXPECTED_SYSTOLIC_SHA256 = {
+    "clear": {
+        "bin": "b1bf5027957a95a3cf225ccb3214fbe2acc45dbb7d074d454f735f871ba81084",
+        "fasm": "df671716683aeaab6a3078c4d8d9666a9802813767be9d719ff25fae01918a09",
+    },
+    "compute": {
+        "bin": "58e2d7f526a6a6c67185880a220c539726f14d80e5d79c3eb8721ad894af571d",
+        "fasm": "a292b81673e9bb31fbff446f33f64af1d15afc9296d2c424767f792d6ad5d84a",
+    },
+    "drain_col0": {
+        "bin": "d2cb47bb1670fed8253a70dda94ac99c778f7a3e0c760980ae59eaaa285c5e05",
+        "fasm": "c838ad21bb274f0fb589e8f0593bf43e2fc28d17fdcb6485a9c88b94a130df39",
+    },
+    "drain_col1": {
+        "bin": "fe341d9cfd5c99fd026b1b98ca3a8fe69d107f2c4c25d18024446b069e07578e",
+        "fasm": "f0fdf21209b9b30bd5024a6d52e3b970deaa39d7d30a48913acb256a672a8e2a",
+    },
+    "drain_col2": {
+        "bin": "1362fb728db0330a423b0dbd6db7c1930fc1778098afc7918e710d82e63ce26a",
+        "fasm": "98b1252f4395794920f76e9f491e52b8d992ff1950c4f5fe6727b9f7a885b4c1",
+    },
+    "drain_col3": {
+        "bin": "cf2cb5a1b74648122b648a30fea1eaac18a026cf716248fb2e34c395a1c75d3a",
+        "fasm": "23107c21a5b6790b4ee399f5cc658906dbb6f2ddee4fe352aea41371e13f1105",
+    },
+}
+EXPECTED_SYSTOLIC_WORKLOAD_PROTOCOL = {
+    "oracle": "tests/array_systolic",
+    "rows": 4,
+    "columns": 4,
+    "lanes_per_packet": 4,
+    "operand_format": "signed_int4",
+    "accumulator_bits": 16,
+    "accumulator_signed": True,
+    "k_min": 1,
+    "k_max": 8,
+    "configuration_modes": {
+        "cold": {
+            "reset_compute_state": True,
+            "compute_enabled_during_scan": False,
+        },
+        "preserve_compute_state": {
+            "reset_compute_state": False,
+            "compute_enabled_during_scan": False,
+        },
+    },
+    "phase_order": [
+        "clear",
+        "compute",
+        "drain_col3",
+        "drain_col2",
+        "drain_col1",
+        "drain_col0",
+    ],
+    "phases": [
+        {
+            "phase": "clear",
+            "bitstream": "systolic_clear.bin",
+            "fasm": "systolic_clear.fasm",
+            "configuration": "cold",
+            "release_compute_reset": True,
+            "input": "zero",
+            "enabled_cycles": 3,
+        },
+        {
+            "phase": "compute",
+            "bitstream": "systolic_compute.bin",
+            "fasm": "systolic_compute.fasm",
+            "configuration": "preserve_compute_state",
+            "input": "west_A_rows_north_B_columns",
+            "input_cycles": "K",
+            "flush_input": "zero",
+            "flush_cycles": 16,
+        },
+        {
+            "phase": "drain_col3",
+            "bitstream": "systolic_drain_col3.bin",
+            "fasm": "systolic_drain_col3.fasm",
+            "configuration": "preserve_compute_state",
+            "input": "zero",
+            "enabled_cycles": 2,
+            "output_column": 3,
+            "output": "east_data1:east_data0_per_row",
+        },
+        {
+            "phase": "drain_col2",
+            "bitstream": "systolic_drain_col2.bin",
+            "fasm": "systolic_drain_col2.fasm",
+            "configuration": "preserve_compute_state",
+            "input": "zero",
+            "enabled_cycles": 3,
+            "output_column": 2,
+            "output": "east_data1:east_data0_per_row",
+        },
+        {
+            "phase": "drain_col1",
+            "bitstream": "systolic_drain_col1.bin",
+            "fasm": "systolic_drain_col1.fasm",
+            "configuration": "preserve_compute_state",
+            "input": "zero",
+            "enabled_cycles": 4,
+            "output_column": 1,
+            "output": "east_data1:east_data0_per_row",
+        },
+        {
+            "phase": "drain_col0",
+            "bitstream": "systolic_drain_col0.bin",
+            "fasm": "systolic_drain_col0.fasm",
+            "configuration": "preserve_compute_state",
+            "input": "zero",
+            "enabled_cycles": 5,
+            "output_column": 0,
+            "output": "east_data1:east_data0_per_row",
+        },
+    ],
+}
 EXPECTED_DORA_REVISION = "f57db1855de46f68b976db12fa9400a59d54d55a"
 EXPECTED_BASEJUMP_REVISION = "b8142d3c3b0c673a1d92041b24fba5fdef4c393a"
 EXPECTED_UNBUNDLED_INPUTS = {
@@ -50,6 +166,28 @@ EXPECTED_RMU_FILELIST = [
     "rmu/rta_v4_rmu_systolic_dot4_backend.sv",
     "rmu/rta_v4_rmu.sv",
 ]
+EXPECTED_BUNDLED_ARTIFACT_FILENAMES = frozenset(
+    {
+        "LICENSE.basejump_stl",
+        "LICENSE.dora",
+        "RtaV4Bundle.sv",
+        "add_chain_compute.bin",
+        "add_chain_compute.fasm",
+        "rta_v4_chipyard_adapter.sv.source",
+    }
+    | {
+        f"systolic_{phase}{suffix}"
+        for phase in EXPECTED_SYSTOLIC_SHA256
+        for suffix in (".bin", ".fasm")
+    }
+)
+EXPECTED_RESOURCE_FILENAMES = EXPECTED_BUNDLED_ARTIFACT_FILENAMES | {
+    "README.md",
+    "rta_v4_artifact_lock.json",
+}
+EXPECTED_ARTIFACT_RECORD_NAMES = EXPECTED_BUNDLED_ARTIFACT_FILENAMES | frozenset(
+    EXPECTED_UNBUNDLED_INPUTS
+)
 SOURCE_DIVIDER = "// " + "=" * 76
 BUNDLE_PREFIX = (
     "// Generated by scripts/prepare-rta-v4-bundle.py. DO NOT EDIT.\n"
@@ -78,8 +216,36 @@ def require_record(
     return record
 
 
+def require_regular_file(path: Path, description: str) -> None:
+    require(
+        not path.is_symlink() and path.is_file(),
+        f"{description} is not a regular non-symlink file: {path.name}",
+    )
+
+
+def verify_resource_closure(resource_dir: Path) -> None:
+    require(
+        not resource_dir.is_symlink() and resource_dir.is_dir(),
+        f"artifact resource path is not a regular directory: {resource_dir}",
+    )
+    entries = {path.name: path for path in resource_dir.iterdir()}
+    missing = sorted(EXPECTED_RESOURCE_FILENAMES - entries.keys())
+    unexpected = sorted(entries.keys() - EXPECTED_RESOURCE_FILENAMES)
+    if missing or unexpected:
+        details = []
+        if missing:
+            details.append("missing: " + ", ".join(missing))
+        if unexpected:
+            details.append("unexpected: " + ", ".join(unexpected))
+        raise ValueError(
+            "artifact directory closure mismatch (" + "; ".join(details) + ")"
+        )
+    for name, path in sorted(entries.items()):
+        require_regular_file(path, "artifact entry")
+
+
 def verify_file(path: Path, record: dict[str, object]) -> bytes:
-    require(path.is_file(), f"missing artifact: {path}")
+    require_regular_file(path, "artifact")
     data = path.read_bytes()
     require(len(data) == record.get("bytes"), f"size mismatch: {path}")
     require(sha256(data) == record.get("sha256"), f"SHA-256 mismatch: {path}")
@@ -154,9 +320,9 @@ def parse_args() -> argparse.Namespace:
 
 def main() -> int:
     args = parse_args()
-    resource_dir = args.resource_dir.resolve()
+    resource_dir = args.resource_dir.absolute()
+    verify_resource_closure(resource_dir)
     lock_path = resource_dir / "rta_v4_artifact_lock.json"
-    require(lock_path.is_file(), f"missing artifact lock: {lock_path}")
     lock = json.loads(lock_path.read_text(encoding="utf-8"))
 
     require(lock.get("schema") == EXPECTED_SCHEMA, "unexpected lock schema")
@@ -251,7 +417,18 @@ def main() -> int:
         "scan-tail drain timing mismatch",
     )
 
+    require(
+        lock.get("workloads")
+        == {"systolic_dot4_gemm": EXPECTED_SYSTOLIC_WORKLOAD_PROTOCOL},
+        "systolic workload protocol mismatch",
+    )
+
     artifacts = lock.get("artifacts", {})
+    require(isinstance(artifacts, dict), "invalid artifact record collection")
+    require(
+        set(artifacts) == EXPECTED_ARTIFACT_RECORD_NAMES,
+        "artifact record closure mismatch",
+    )
     provenance = lock.get("provenance", {})
     require(
         provenance.get("dora_revision") == EXPECTED_DORA_REVISION,
@@ -299,7 +476,7 @@ def main() -> int:
     )
     if args.adapter_source is not None:
         adapter_source = args.adapter_source.resolve()
-        require(adapter_source.is_file(), f"missing artifact: {adapter_source}")
+        require_regular_file(adapter_source, "authored adapter")
         adapter_source_data = normalized_source_bytes(
             adapter_source.read_bytes(), adapter_source
         )
@@ -336,6 +513,55 @@ def main() -> int:
         and fasm_record.get("kernel") == "cgra_add_chain",
         "golden FASM provenance mismatch",
     )
+
+    for phase, expected_digests in EXPECTED_SYSTOLIC_SHA256.items():
+        bitstream_name = f"systolic_{phase}.bin"
+        phase_bitstream = verify_file(
+            resource_dir / bitstream_name,
+            require_record(artifacts, bitstream_name),
+        )
+        require(
+            sha256(phase_bitstream) == expected_digests["bin"],
+            f"golden systolic {phase} bitstream mismatch",
+        )
+        require(
+            len(phase_bitstream) == EXPECTED_BITSTREAM_BYTES,
+            f"systolic {phase} bitstream byte count mismatch",
+        )
+        require(
+            phase_bitstream[-1] & 0xF0 == 0,
+            f"unused high bits in systolic {phase} bitstream are nonzero",
+        )
+        bitstream_record = require_record(artifacts, bitstream_name)
+        require(
+            bitstream_record.get("kernel") == "systolic_dot4_gemm"
+            and bitstream_record.get("phase") == phase
+            and bitstream_record.get("oracle") == "tests/array_systolic",
+            f"systolic {phase} bitstream provenance mismatch",
+        )
+
+        fasm_name = f"systolic_{phase}.fasm"
+        phase_fasm = verify_file(
+            resource_dir / fasm_name,
+            require_record(artifacts, fasm_name),
+        )
+        require(
+            sha256(phase_fasm) == expected_digests["fasm"],
+            f"golden systolic {phase} FASM mismatch",
+        )
+        require(
+            f"# dora_layout_hash: {EXPECTED_LAYOUT_HASH}"
+            in phase_fasm.decode("utf-8"),
+            f"systolic {phase} FASM layout hash mismatch",
+        )
+        phase_fasm_record = require_record(artifacts, fasm_name)
+        require(
+            phase_fasm_record.get("layout_hash") == EXPECTED_LAYOUT_HASH
+            and phase_fasm_record.get("kernel") == "systolic_dot4_gemm"
+            and phase_fasm_record.get("phase") == phase
+            and phase_fasm_record.get("oracle") == "tests/array_systolic",
+            f"systolic {phase} FASM provenance mismatch",
+        )
     verify_file(
         resource_dir / "LICENSE.dora", require_record(artifacts, "LICENSE.dora")
     )

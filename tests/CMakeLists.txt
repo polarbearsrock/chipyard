@@ -82,7 +82,38 @@ add_executable(spiflashread spiflashread.c)
 add_executable(spiflashwrite spiflashwrite.c)
 add_executable(fft fft.c)
 add_executable(gcd gcd.c)
-add_executable(rta-v4 rta-v4.c)
+add_executable(rta-v4 rta-v4.c rta-v4-test-runtime.c)
+
+set(RTA_V4_RESOURCE_DIR
+    "${CMAKE_CURRENT_SOURCE_DIR}/../generators/chipyard/src/main/resources/vsrc/rta_v4")
+set(RTA_V4_SYSTOLIC_OBJECTS)
+foreach(phase clear compute drain_col0 drain_col1 drain_col2 drain_col3)
+    set(bitstream "${RTA_V4_RESOURCE_DIR}/systolic_${phase}.bin")
+    set(object "${CMAKE_CURRENT_BINARY_DIR}/rta-v4-systolic-${phase}.o")
+    add_custom_command(
+        OUTPUT "${object}"
+        COMMAND ${CMAKE_OBJCOPY}
+            --input-target=binary
+            --output-target=elf64-littleriscv
+            --binary-architecture=riscv
+            --rename-section .data=.rodata,alloc,load,readonly,data,contents
+            "systolic_${phase}.bin" "${object}"
+        DEPENDS "${bitstream}"
+        WORKING_DIRECTORY "${RTA_V4_RESOURCE_DIR}"
+        COMMENT "Embedding RTA V4 systolic ${phase} bitstream"
+        VERBATIM
+    )
+    set_source_files_properties("${object}" PROPERTIES
+        EXTERNAL_OBJECT TRUE
+        GENERATED TRUE
+    )
+    list(APPEND RTA_V4_SYSTOLIC_OBJECTS "${object}")
+endforeach()
+add_executable(rta-v4-systolic
+    rta-v4-systolic.c
+    rta-v4-test-runtime.c
+    ${RTA_V4_SYSTOLIC_OBJECTS}
+)
 add_executable(hello hello.c)
 add_executable(mt-hello mt-hello.c)
 add_executable(symmetric symmetric.c)
@@ -125,6 +156,7 @@ add_dump_target(spiflashwrite)
 add_dump_target(fft)
 add_dump_target(gcd)
 add_dump_target(rta-v4)
+add_dump_target(rta-v4-systolic)
 add_dump_target(hello)
 add_dump_target(mt-hello)
 add_dump_target(symmetric)

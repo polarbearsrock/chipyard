@@ -9,6 +9,7 @@ endif
 PYTHON ?= python3
 VERILATOR ?= verilator
 FLOCK ?= flock
+CMAKE ?= cmake
 VERILATOR_REALPATH := $(realpath $(shell command -v $(VERILATOR)))
 VERILATOR_TOOL_DIR := $(dir $(VERILATOR_REALPATH))
 export PATH := $(VERILATOR_TOOL_DIR):$(PATH)
@@ -29,10 +30,18 @@ FUNCTIONAL_OBJ_DIR := $(BUILD_DIR)/functional
 MAPPING_OBJ_DIR := $(BUILD_DIR)/mapping
 FUNCTIONAL_SIMV := $(FUNCTIONAL_OBJ_DIR)/simv
 MAPPING_SIMV := $(MAPPING_OBJ_DIR)/simv
+SOC_TEST_SOURCE_DIR := $(CHIPYARD_ROOT)/tests
+SOC_TEST_BUILD_DIR ?= $(TMPDIR)/chipyard_rta_v4_soc_test
+SOC_TEST_BINARY := $(SOC_TEST_BUILD_DIR)/rta-v4.riscv
+SOC_SYSTOLIC_TEST_BINARY := $(SOC_TEST_BUILD_DIR)/rta-v4-systolic.riscv
+SOC_CONFIG ?= RtaV4RocketConfig
+SOC_TIMEOUT_CYCLES ?= 50000000
+SOC_BUILD_JOBS ?= 4
 
 VERILATOR_FLAGS := --timing --assert --timescale 1ns/1ps -o simv -Wno-fatal
 
-.PHONY: all verify verify-negative lint compile run
+.PHONY: all verify verify-negative lint compile run soc-smoke \
+	soc-systolic-smoke soc-smoke-all
 
 all: run
 
@@ -63,3 +72,34 @@ compile: $(MAPPING_SIMV) $(FUNCTIONAL_SIMV)
 run: lint verify-negative compile
 	$(MAPPING_SIMV)
 	$(FUNCTIONAL_SIMV) +BITSTREAM=$(BITSTREAM)
+
+# Opt-in full-SoC proof. LOADMEM preloads DRAM for speed; the Rocket core still
+# boots the ELF and every RTA access traverses the generated TileLink/MMIO path.
+soc-smoke:
+	$(CMAKE) -S $(SOC_TEST_SOURCE_DIR) -B $(SOC_TEST_BUILD_DIR) \
+	  -D CMAKE_BUILD_TYPE=Release
+	$(CMAKE) --build $(SOC_TEST_BUILD_DIR) --target rta-v4 \
+	  --parallel $(SOC_BUILD_JOBS)
+	$(MAKE) -C $(CHIPYARD_ROOT)/sims/verilator \
+	  CONFIG=$(SOC_CONFIG) \
+	  BINARY=$(SOC_TEST_BINARY) \
+	  LOADMEM=1 \
+	  TIMEOUT_CYCLES=$(SOC_TIMEOUT_CYCLES) \
+	  run-binary-fast
+
+# This is the architectural systolic proof: the Rocket core programs six
+# frozen DORA images and warm-reloads between phases without resetting the RMU
+# accumulators, then checks the complete 4x4 signed-INT4 GEMM result matrix.
+soc-systolic-smoke:
+	$(CMAKE) -S $(SOC_TEST_SOURCE_DIR) -B $(SOC_TEST_BUILD_DIR) \
+	  -D CMAKE_BUILD_TYPE=Release
+	$(CMAKE) --build $(SOC_TEST_BUILD_DIR) --target rta-v4-systolic \
+	  --parallel $(SOC_BUILD_JOBS)
+	$(MAKE) -C $(CHIPYARD_ROOT)/sims/verilator \
+	  CONFIG=$(SOC_CONFIG) \
+	  BINARY=$(SOC_SYSTOLIC_TEST_BINARY) \
+	  LOADMEM=1 \
+	  TIMEOUT_CYCLES=$(SOC_TIMEOUT_CYCLES) \
+	  run-binary-fast
+
+soc-smoke-all: soc-smoke soc-systolic-smoke

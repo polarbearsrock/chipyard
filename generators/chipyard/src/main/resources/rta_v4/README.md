@@ -20,7 +20,7 @@ interrupt, independent CGRA clock, or ready/valid streaming interface in this
 phase. The activity masks are informational configuration metadata, not
 backpressure signals.
 
-## MMIO ABI v1
+## MMIO ABI v1.1
 
 All implemented payloads are at most 32 bits, and every register occupies its
 own 8-byte slot. Software should use aligned 32-bit volatile accesses. The
@@ -29,12 +29,12 @@ upper half of an aligned 64-bit access is reserved and reads as zero.
 | Offset | Name | Access | Meaning |
 | ---: | --- | --- | --- |
 | `0x000` | `DEVICE_ID` | RO | `0x52544134` (`RTA4`) |
-| `0x008` | `ABI_VERSION` | RO | `0x00010000` |
+| `0x008` | `ABI_VERSION` | RO | `0x00010001` |
 | `0x010` | `CAPABILITIES` | RO | `0x12080404`; rows, columns, data width, planes, predicate width |
 | `0x018` | `BITSTREAM_BITS` | RO | `3140` |
 | `0x020..0x058` | `LAYOUT_HASH[0..7]` | RO | frozen 256-bit DORA layout hash |
 | `0x060` | `SCRATCH` | RW | bus bring-up register |
-| `0x080` | `CONFIG_COMMAND` | WO | bit 0 START, bit 1 ABORT |
+| `0x080` | `CONFIG_COMMAND` | WO | bit 0 START, bit 1 ABORT; bit 2 makes START preserve compute state |
 | `0x088` | `CONFIG_STATUS` | RO | state and scan status |
 | `0x090` | `CONFIG_DATA` | WO | next 32 bits, LSB first |
 | `0x098` | `CONFIG_BITS_IN` | RO | bits shifted into the scan chain |
@@ -77,9 +77,19 @@ bit 4 for a tail timeout. `COMPUTE_ERROR` uses bit 0 for an invalid command,
 bit 1 for STEP while running, bit 2 for CAPTURE while running, bit 3 for an
 input write while running, bit 4 for conflicting command bits, and bit 5 for
 a STEP or CAPTURE pulse while software reset is asserted. Invalid or
-conflicting commands are acknowledged, made sticky, and otherwise have no
-side effects. Both error registers are write-one-to-clear; START or ABORT is
+conflicting `COMPUTE_CONTROL` commands are acknowledged, made sticky, and
+otherwise have no side effects. Invalid configuration commands fail closed:
+they enter ERROR, assert compute reset, stop RUN, and invalidate the output
+snapshot. Both error registers are write-one-to-clear; START or ABORT is
 required to leave the terminal configuration-error state.
+
+A normal START (`0x1`) is a cold configuration and asserts compute reset. A
+state-preserving START (`0x5`, START plus bit 2) is accepted only from READY
+after software has released compute reset and stopped RUN. It gates compute
+enable while programming but does not assert the independent compute reset,
+so sequential datapath state such as the RMU accumulators survives. It still
+invalidates the previous output snapshot. ABORT, an illegal command, or any
+configuration failure returns to the reset-safe behavior.
 
 ## Programming sequence
 
@@ -99,7 +109,33 @@ required to leave the terminal configuration-error state.
    before CAPTURE and read only the captured outputs.
 
 The bare-metal `rta-v4` test in the repository `tests/` directory performs
-this sequence with the frozen add-chain image.
+this sequence with the frozen add-chain image. The `rta-v4-systolic` test uses
+the DORA `array_systolic` oracle's clear, compute, and four drain images. It
+performs a 4x4 signed-INT4 dot4 GEMM and uses state-preserving START between
+all six phases so the 16 RMU accumulators survive reconfiguration.
+
+## End-to-end SoC regression
+
+Run the complete Rocket/TileLink/RTA V4 regression from an initialized
+Chipyard shell:
+
+```sh
+source env.sh
+make -C generators/chipyard/src/test/resources/rta_v4 soc-smoke
+make -C generators/chipyard/src/test/resources/rta_v4 soc-systolic-smoke
+```
+
+Each opt-in target builds its corresponding source (`tests/rta-v4.c` or
+`tests/rta-v4-systolic.c`) under `TMPDIR`, builds or reuses the
+`RtaV4RocketConfig` Verilator simulator, preloads the ELF into simulated DRAM,
+and boots it on the Rocket core. Direct DRAM preload avoids a slow serial
+transfer; it does not bypass CPU execution or the TileLink/MMIO path. A passing
+add-chain run prints `RTA V4 add-chain result 0xb1 is correct` and exits with
+status zero. The systolic run prints
+`RTA V4 systolic 4x4 signed-INT4 dot4 GEMM is correct`. Run both with
+`soc-smoke-all`.
+Simulation output is retained under
+`sims/verilator/output/chipyard.harness.TestHarness.RtaV4RocketConfig/`.
 
 ## DORA/Chipyard ownership boundary
 
@@ -109,4 +145,6 @@ mapping, scan length/order, tail requirement, and layout hash. Chipyard should
 continue to own TileLink, the register ABI, interrupts, clock crossings, and
 future DMA/streaming infrastructure. This keeps DORA artifacts portable to
 non-Chipyard SoCs while allowing CHIA exploration to select and validate an
-artifact through its manifest.
+artifact through its manifest. Stateful multi-image workloads also need the
+manifest to declare which phase transitions preserve compute state; the
+systolic regression is the first executable contract for that requirement.

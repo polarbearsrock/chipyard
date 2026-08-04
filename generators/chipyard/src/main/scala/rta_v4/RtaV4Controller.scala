@@ -130,6 +130,10 @@ class RtaV4Controller(params: RtaV4ControllerParams) extends Module {
 
   val softwareComputeReset = RegInit(true.B)
   val runEnable = RegInit(false.B)
+  // A warm reload reprograms the scan chain while the compute clock is
+  // quiesced, but deliberately leaves the independent compute reset low so
+  // stateful resources such as the RTA V4 RMU accumulators survive.
+  val preserveComputeState = RegInit(false.B)
   val stepPulse = WireDefault(false.B)
 
   val snapshotEastData0 = RegInit(0.U(32.W))
@@ -161,7 +165,8 @@ class RtaV4Controller(params: RtaV4ControllerParams) extends Module {
   io.progWriteEnable := state === sLoad && wordValid
   io.progDataOut := shiftWord(0)
 
-  io.computeReset := softwareComputeReset || !configured || configErrors.orR
+  io.computeReset := softwareComputeReset ||
+    (!configured && !preserveComputeState) || configErrors.orR
   io.computeEnable := configured && !io.computeReset && (runEnable || stepPulse)
   io.inputWritable := !runEnable
 
@@ -217,6 +222,7 @@ class RtaV4Controller(params: RtaV4ControllerParams) extends Module {
     settleCounter := 0.U
     softwareComputeReset := true.B
     runEnable := false.B
+    preserveComputeState := false.B
     snapshotValid := false.B
   }
 
@@ -226,6 +232,27 @@ class RtaV4Controller(params: RtaV4ControllerParams) extends Module {
     wordValid := false.B
     softwareComputeReset := true.B
     runEnable := false.B
+    preserveComputeState := false.B
+    snapshotValid := false.B
+  }
+
+  def beginConfiguration(preserveState: Bool): Unit = {
+    state := sReset
+    configErrors := 0.U
+    computeErrors := 0.U
+    scanBitsShifted := 0.U
+    scanBitsAtTail := 0.U
+    scanTailSeen := false.B
+    shiftWord := 0.U
+    wordValid := false.B
+    wordBitsRemaining := 0.U
+    resetCounter := 0.U
+    releaseCounter := 0.U
+    tailCounter := 0.U
+    settleCounter := 0.U
+    softwareComputeReset := !preserveState
+    runEnable := false.B
+    preserveComputeState := preserveState
     snapshotValid := false.B
   }
 
@@ -239,33 +266,32 @@ class RtaV4Controller(params: RtaV4ControllerParams) extends Module {
   when (io.configCommand.fire) {
     val startRequested = io.configCommand.bits(0)
     val abortRequested = io.configCommand.bits(1)
-    val invalidCommand = io.configCommand.bits(31, 2).orR ||
-      (startRequested && abortRequested)
+    val preserveRequested = io.configCommand.bits(2)
+    val invalidCommand = io.configCommand.bits(31, 3).orR ||
+      (startRequested && abortRequested) ||
+      (abortRequested && preserveRequested) ||
+      (preserveRequested && !startRequested)
 
     when (invalidCommand) {
       failConfiguration(ConfigErrorInvalidCommand)
     } .elsewhen (abortRequested) {
       enterSafeIdle()
     } .elsewhen (startRequested) {
-      when (state === sIdle || state === sReady || state === sError) {
-        state := sReset
-        configErrors := 0.U
-        computeErrors := 0.U
-        scanBitsShifted := 0.U
-        scanBitsAtTail := 0.U
-        scanTailSeen := false.B
-        shiftWord := 0.U
-        wordValid := false.B
-        wordBitsRemaining := 0.U
-        resetCounter := 0.U
-        releaseCounter := 0.U
-        tailCounter := 0.U
-        settleCounter := 0.U
-        softwareComputeReset := true.B
-        runEnable := false.B
-        snapshotValid := false.B
+      when (preserveRequested) {
+        // State-preserving START is intentionally narrow: software must first
+        // stop RUN and release compute reset in a valid READY configuration.
+        // The compute clock remains gated throughout programming.
+        when (state === sReady && !softwareComputeReset && !runEnable) {
+          beginConfiguration(true.B)
+        } .otherwise {
+          failConfiguration(ConfigErrorInvalidCommand)
+        }
       } .otherwise {
-        failConfiguration(ConfigErrorInvalidCommand)
+        when (state === sIdle || state === sReady || state === sError) {
+          beginConfiguration(false.B)
+        } .otherwise {
+          failConfiguration(ConfigErrorInvalidCommand)
+        }
       }
     }
   }
@@ -356,6 +382,7 @@ class RtaV4Controller(params: RtaV4ControllerParams) extends Module {
           (params.programDoneSettleCycles - 1).U) {
         settleCounter := 0.U
         state := sReady
+        preserveComputeState := false.B
       } .otherwise {
         settleCounter := settleCounter + 1.U
       }

@@ -201,6 +201,116 @@ def main() -> int:
         )
 
         case_resource, case_adapter = copy_case(
+            root, "systolic-bitstream-corruption", resource_dir, adapter
+        )
+        bitstream = case_resource / "systolic_compute.bin"
+        data = bytearray(bitstream.read_bytes())
+        data[0] ^= 1
+        bitstream.write_bytes(data)
+        refresh_artifact_record(case_resource, "systolic_compute.bin")
+        require_fail(
+            case_resource,
+            case_adapter,
+            "systolic bitstream corruption",
+            "golden systolic compute bitstream mismatch",
+        )
+
+        case_resource, case_adapter = copy_case(
+            root, "systolic-fasm-corruption", resource_dir, adapter
+        )
+        fasm = case_resource / "systolic_compute.fasm"
+        replace_once(
+            fasm,
+            b"pe_0_0.rmu_inst[4:0] = 5'b00011",
+            b"pe_0_0.rmu_inst[4:0] = 5'b00010",
+        )
+        refresh_artifact_record(case_resource, "systolic_compute.fasm")
+        require_fail(
+            case_resource,
+            case_adapter,
+            "systolic FASM corruption",
+            "golden systolic compute FASM mismatch",
+        )
+
+        case_resource, case_adapter = copy_case(
+            root, "systolic-protocol-corruption", resource_dir, adapter
+        )
+        lock = load_lock(case_resource)
+        workloads = lock.get("workloads")
+        if not isinstance(workloads, dict):
+            raise RuntimeError("invalid workload records")
+        workload = workloads.get("systolic_dot4_gemm")
+        if not isinstance(workload, dict):
+            raise RuntimeError("missing systolic workload record")
+        phases = workload.get("phases")
+        if not isinstance(phases, list) or not isinstance(phases[1], dict):
+            raise RuntimeError("invalid systolic phase records")
+        phases[1]["configuration"] = "cold"
+        write_lock(case_resource, lock)
+        require_fail(
+            case_resource,
+            case_adapter,
+            "systolic protocol corruption",
+            "systolic workload protocol mismatch",
+        )
+
+        case_resource, case_adapter = copy_case(
+            root, "systolic-provenance-corruption", resource_dir, adapter
+        )
+        lock = load_lock(case_resource)
+        artifacts = lock.get("artifacts")
+        if not isinstance(artifacts, dict):
+            raise RuntimeError("invalid artifact records")
+        record = artifacts.get("systolic_compute.bin")
+        if not isinstance(record, dict):
+            raise RuntimeError("missing systolic compute record")
+        record["oracle"] = "tests/not_the_array_systolic_oracle"
+        write_lock(case_resource, lock)
+        require_fail(
+            case_resource,
+            case_adapter,
+            "systolic provenance corruption",
+            "systolic compute bitstream provenance mismatch",
+        )
+
+        case_resource, case_adapter = copy_case(
+            root, "unexpected-artifact", resource_dir, adapter
+        )
+        (case_resource / "unexpected.txt").write_text(
+            "not part of the locked artifact\n", encoding="utf-8"
+        )
+        require_fail(
+            case_resource,
+            case_adapter,
+            "unexpected artifact entry",
+            "artifact directory closure mismatch (unexpected: unexpected.txt)",
+        )
+
+        case_resource, case_adapter = copy_case(
+            root, "missing-artifact", resource_dir, adapter
+        )
+        (case_resource / "systolic_drain_col0.fasm").unlink()
+        require_fail(
+            case_resource,
+            case_adapter,
+            "missing artifact entry",
+            "artifact directory closure mismatch (missing: systolic_drain_col0.fasm)",
+        )
+
+        case_resource, case_adapter = copy_case(
+            root, "symlink-artifact", resource_dir, adapter
+        )
+        symlink = case_resource / "LICENSE.dora"
+        symlink.unlink()
+        symlink.symlink_to("LICENSE.basejump_stl")
+        require_fail(
+            case_resource,
+            case_adapter,
+            "symlink artifact entry",
+            "artifact entry is not a regular non-symlink file: LICENSE.dora",
+        )
+
+        case_resource, case_adapter = copy_case(
             root, "metadata-corruption", resource_dir, adapter
         )
         lock = load_lock(case_resource)

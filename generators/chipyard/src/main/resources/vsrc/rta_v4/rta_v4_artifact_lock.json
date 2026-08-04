@@ -49,6 +49,96 @@
       "role": "five-file RMU subset; not the complete RTL closure",
       "sha256": "c25d5484268a5a8b16ee8f8ab01379c065e0237709ac81e958a94638e4f12f26"
     },
+    "systolic_clear.bin": {
+      "bytes": 393,
+      "kernel": "systolic_dot4_gemm",
+      "oracle": "tests/array_systolic",
+      "phase": "clear",
+      "sha256": "b1bf5027957a95a3cf225ccb3214fbe2acc45dbb7d074d454f735f871ba81084"
+    },
+    "systolic_clear.fasm": {
+      "bytes": 4932,
+      "kernel": "systolic_dot4_gemm",
+      "layout_hash": "36c02b053e3686484ccd7b8433bd5facfc295734667b01ac7a4ba9268a0b9e7a",
+      "oracle": "tests/array_systolic",
+      "phase": "clear",
+      "sha256": "df671716683aeaab6a3078c4d8d9666a9802813767be9d719ff25fae01918a09"
+    },
+    "systolic_compute.bin": {
+      "bytes": 393,
+      "kernel": "systolic_dot4_gemm",
+      "oracle": "tests/array_systolic",
+      "phase": "compute",
+      "sha256": "58e2d7f526a6a6c67185880a220c539726f14d80e5d79c3eb8721ad894af571d"
+    },
+    "systolic_compute.fasm": {
+      "bytes": 12932,
+      "kernel": "systolic_dot4_gemm",
+      "layout_hash": "36c02b053e3686484ccd7b8433bd5facfc295734667b01ac7a4ba9268a0b9e7a",
+      "oracle": "tests/array_systolic",
+      "phase": "compute",
+      "sha256": "a292b81673e9bb31fbff446f33f64af1d15afc9296d2c424767f792d6ad5d84a"
+    },
+    "systolic_drain_col0.bin": {
+      "bytes": 393,
+      "kernel": "systolic_dot4_gemm",
+      "oracle": "tests/array_systolic",
+      "phase": "drain_col0",
+      "sha256": "d2cb47bb1670fed8253a70dda94ac99c778f7a3e0c760980ae59eaaa285c5e05"
+    },
+    "systolic_drain_col0.fasm": {
+      "bytes": 7540,
+      "kernel": "systolic_dot4_gemm",
+      "layout_hash": "36c02b053e3686484ccd7b8433bd5facfc295734667b01ac7a4ba9268a0b9e7a",
+      "oracle": "tests/array_systolic",
+      "phase": "drain_col0",
+      "sha256": "c838ad21bb274f0fb589e8f0593bf43e2fc28d17fdcb6485a9c88b94a130df39"
+    },
+    "systolic_drain_col1.bin": {
+      "bytes": 393,
+      "kernel": "systolic_dot4_gemm",
+      "oracle": "tests/array_systolic",
+      "phase": "drain_col1",
+      "sha256": "fe341d9cfd5c99fd026b1b98ca3a8fe69d107f2c4c25d18024446b069e07578e"
+    },
+    "systolic_drain_col1.fasm": {
+      "bytes": 6700,
+      "kernel": "systolic_dot4_gemm",
+      "layout_hash": "36c02b053e3686484ccd7b8433bd5facfc295734667b01ac7a4ba9268a0b9e7a",
+      "oracle": "tests/array_systolic",
+      "phase": "drain_col1",
+      "sha256": "f0fdf21209b9b30bd5024a6d52e3b970deaa39d7d30a48913acb256a672a8e2a"
+    },
+    "systolic_drain_col2.bin": {
+      "bytes": 393,
+      "kernel": "systolic_dot4_gemm",
+      "oracle": "tests/array_systolic",
+      "phase": "drain_col2",
+      "sha256": "1362fb728db0330a423b0dbd6db7c1930fc1778098afc7918e710d82e63ce26a"
+    },
+    "systolic_drain_col2.fasm": {
+      "bytes": 5860,
+      "kernel": "systolic_dot4_gemm",
+      "layout_hash": "36c02b053e3686484ccd7b8433bd5facfc295734667b01ac7a4ba9268a0b9e7a",
+      "oracle": "tests/array_systolic",
+      "phase": "drain_col2",
+      "sha256": "98b1252f4395794920f76e9f491e52b8d992ff1950c4f5fe6727b9f7a885b4c1"
+    },
+    "systolic_drain_col3.bin": {
+      "bytes": 393,
+      "kernel": "systolic_dot4_gemm",
+      "oracle": "tests/array_systolic",
+      "phase": "drain_col3",
+      "sha256": "cf2cb5a1b74648122b648a30fea1eaac18a026cf716248fb2e34c395a1c75d3a"
+    },
+    "systolic_drain_col3.fasm": {
+      "bytes": 5020,
+      "kernel": "systolic_dot4_gemm",
+      "layout_hash": "36c02b053e3686484ccd7b8433bd5facfc295734667b01ac7a4ba9268a0b9e7a",
+      "oracle": "tests/array_systolic",
+      "phase": "drain_col3",
+      "sha256": "23107c21a5b6790b4ee399f5cc658906dbb6f2ddee4fe352aea41371e13f1105"
+    },
     "workspace.pkl": {
       "bundled": false,
       "bytes": 1207100,
@@ -410,5 +500,97 @@
   },
   "schema": "chipyard.rta_v4.reference_artifact_lock",
   "schema_version": 1,
-  "stability": "experimental_reference_snapshot"
+  "stability": "experimental_reference_snapshot",
+  "workloads": {
+    "systolic_dot4_gemm": {
+      "accumulator_bits": 16,
+      "accumulator_signed": true,
+      "columns": 4,
+      "configuration_modes": {
+        "cold": {
+          "compute_enabled_during_scan": false,
+          "reset_compute_state": true
+        },
+        "preserve_compute_state": {
+          "compute_enabled_during_scan": false,
+          "reset_compute_state": false
+        }
+      },
+      "k_max": 8,
+      "k_min": 1,
+      "lanes_per_packet": 4,
+      "operand_format": "signed_int4",
+      "oracle": "tests/array_systolic",
+      "phase_order": [
+        "clear",
+        "compute",
+        "drain_col3",
+        "drain_col2",
+        "drain_col1",
+        "drain_col0"
+      ],
+      "phases": [
+        {
+          "bitstream": "systolic_clear.bin",
+          "configuration": "cold",
+          "enabled_cycles": 3,
+          "fasm": "systolic_clear.fasm",
+          "input": "zero",
+          "phase": "clear",
+          "release_compute_reset": true
+        },
+        {
+          "bitstream": "systolic_compute.bin",
+          "configuration": "preserve_compute_state",
+          "fasm": "systolic_compute.fasm",
+          "flush_cycles": 16,
+          "flush_input": "zero",
+          "input": "west_A_rows_north_B_columns",
+          "input_cycles": "K",
+          "phase": "compute"
+        },
+        {
+          "bitstream": "systolic_drain_col3.bin",
+          "configuration": "preserve_compute_state",
+          "enabled_cycles": 2,
+          "fasm": "systolic_drain_col3.fasm",
+          "input": "zero",
+          "output": "east_data1:east_data0_per_row",
+          "output_column": 3,
+          "phase": "drain_col3"
+        },
+        {
+          "bitstream": "systolic_drain_col2.bin",
+          "configuration": "preserve_compute_state",
+          "enabled_cycles": 3,
+          "fasm": "systolic_drain_col2.fasm",
+          "input": "zero",
+          "output": "east_data1:east_data0_per_row",
+          "output_column": 2,
+          "phase": "drain_col2"
+        },
+        {
+          "bitstream": "systolic_drain_col1.bin",
+          "configuration": "preserve_compute_state",
+          "enabled_cycles": 4,
+          "fasm": "systolic_drain_col1.fasm",
+          "input": "zero",
+          "output": "east_data1:east_data0_per_row",
+          "output_column": 1,
+          "phase": "drain_col1"
+        },
+        {
+          "bitstream": "systolic_drain_col0.bin",
+          "configuration": "preserve_compute_state",
+          "enabled_cycles": 5,
+          "fasm": "systolic_drain_col0.fasm",
+          "input": "zero",
+          "output": "east_data1:east_data0_per_row",
+          "output_column": 0,
+          "phase": "drain_col0"
+        }
+      ],
+      "rows": 4
+    }
+  }
 }

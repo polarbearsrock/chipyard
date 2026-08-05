@@ -5,7 +5,7 @@
 `timescale 1ns/1ps
 
 // ============================================================================
-// BEGIN SOURCE: basejump_stl/bsg_misc/bsg_defines.sv
+// BEGIN SOURCE: rtl/src/dependencies/basejump_stl/bsg_misc/bsg_defines.sv
 // ============================================================================
 `ifndef BSG_DEFINES_V
 `define BSG_DEFINES_V
@@ -226,14 +226,12 @@
     `endif
 
 `endif
+// END SOURCE: rtl/src/dependencies/basejump_stl/bsg_misc/bsg_defines.sv
 // ============================================================================
-// END SOURCE: basejump_stl/bsg_misc/bsg_defines.sv
+// BEGIN SOURCE: rtl/src/dependencies/basejump_stl/bsg_misc/bsg_dff.sv
 // ============================================================================
 
-// ============================================================================
-// BEGIN SOURCE: basejump_stl/bsg_misc/bsg_dff.sv
-// ============================================================================
-// bsg_defines.sv is inlined at the start of this bundle.
+
 module bsg_dff #(parameter `BSG_INV_PARAM(width_p)
 		 ,harden_p=0
 		 ,strength_p=1   // set drive strength
@@ -253,14 +251,11 @@ module bsg_dff #(parameter `BSG_INV_PARAM(width_p)
 endmodule
 
 `BSG_ABSTRACT_MODULE(bsg_dff)
+// END SOURCE: rtl/src/dependencies/basejump_stl/bsg_misc/bsg_dff.sv
 // ============================================================================
-// END SOURCE: basejump_stl/bsg_misc/bsg_dff.sv
+// BEGIN SOURCE: rtl/src/dependencies/basejump_stl/bsg_misc/bsg_dff_async_reset.sv
 // ============================================================================
 
-// ============================================================================
-// BEGIN SOURCE: basejump_stl/bsg_misc/bsg_dff_async_reset.sv
-// ============================================================================
-// bsg_defines.sv is inlined at the start of this bundle.
 module bsg_dff_async_reset
 
  #(parameter `BSG_INV_PARAM(width_p     )
@@ -287,14 +282,11 @@ module bsg_dff_async_reset
 endmodule
 
 `BSG_ABSTRACT_MODULE(bsg_dff_async_reset)
+// END SOURCE: rtl/src/dependencies/basejump_stl/bsg_misc/bsg_dff_async_reset.sv
 // ============================================================================
-// END SOURCE: basejump_stl/bsg_misc/bsg_dff_async_reset.sv
+// BEGIN SOURCE: rtl/src/dependencies/basejump_stl/bsg_misc/bsg_dff_reset.sv
 // ============================================================================
 
-// ============================================================================
-// BEGIN SOURCE: basejump_stl/bsg_misc/bsg_dff_reset.sv
-// ============================================================================
-// bsg_defines.sv is inlined at the start of this bundle.
 module bsg_dff_reset #(`BSG_INV_PARAM(width_p), reset_val_p=0, harden_p=0)
    (input   clk_i
    ,input  reset_i
@@ -317,17 +309,15 @@ module bsg_dff_reset #(`BSG_INV_PARAM(width_p), reset_val_p=0, harden_p=0)
 endmodule
 
 `BSG_ABSTRACT_MODULE(bsg_dff_reset)
+// END SOURCE: rtl/src/dependencies/basejump_stl/bsg_misc/bsg_dff_reset.sv
 // ============================================================================
-// END SOURCE: basejump_stl/bsg_misc/bsg_dff_reset.sv
-// ============================================================================
-
-// ============================================================================
-// BEGIN SOURCE: basejump_stl/bsg_misc/bsg_dff_reset_en.sv
+// BEGIN SOURCE: rtl/src/dependencies/basejump_stl/bsg_misc/bsg_dff_reset_en.sv
 // ============================================================================
 /**
  *  bsg_dff_reset_en.sv
  */
-// bsg_defines.sv is inlined at the start of this bundle.
+
+
 module bsg_dff_reset_en
   #(parameter `BSG_INV_PARAM(width_p)
     , parameter reset_val_p=0
@@ -359,15 +349,12 @@ module bsg_dff_reset_en
 endmodule
 
 `BSG_ABSTRACT_MODULE(bsg_dff_reset_en)
+// END SOURCE: rtl/src/dependencies/basejump_stl/bsg_misc/bsg_dff_reset_en.sv
 // ============================================================================
-// END SOURCE: basejump_stl/bsg_misc/bsg_dff_reset_en.sv
-// ============================================================================
-
-// ============================================================================
-// BEGIN SOURCE: basejump_stl/bsg_misc/bsg_adder_cin.sv
+// BEGIN SOURCE: rtl/src/dependencies/basejump_stl/bsg_misc/bsg_adder_cin.sv
 // ============================================================================
 //This module implements a simple adder with cin
-// bsg_defines.sv is inlined at the start of this bundle.
+
 module bsg_adder_cin #(parameter `BSG_INV_PARAM(width_p)
                  , harden_p=1)
    ( input [width_p-1:0] a_i
@@ -381,19 +368,17 @@ module bsg_adder_cin #(parameter `BSG_INV_PARAM(width_p)
 endmodule
 
 `BSG_ABSTRACT_MODULE(bsg_adder_cin)
+// END SOURCE: rtl/src/dependencies/basejump_stl/bsg_misc/bsg_adder_cin.sv
 // ============================================================================
-// END SOURCE: basejump_stl/bsg_misc/bsg_adder_cin.sv
-// ============================================================================
-
-// ============================================================================
-// BEGIN SOURCE: basejump_stl/bsg_misc/bsg_mul_synth.sv
+// BEGIN SOURCE: rtl/src/dependencies/basejump_stl/bsg_misc/bsg_mul_synth.sv
 // ============================================================================
 /**
  *  bsg_mul_synth.sv
  *
  *  synthesized multiplier
  */
-// bsg_defines.sv is inlined at the start of this bundle.
+
+
 module bsg_mul_synth #(parameter `BSG_INV_PARAM(width_p))
 (
   input [width_p-1:0] a_i
@@ -407,69 +392,12 @@ module bsg_mul_synth #(parameter `BSG_INV_PARAM(width_p))
 endmodule
 
 `BSG_ABSTRACT_MODULE(bsg_mul_synth)
+// END SOURCE: rtl/src/dependencies/basejump_stl/bsg_misc/bsg_mul_synth.sv
 // ============================================================================
-// END SOURCE: basejump_stl/bsg_misc/bsg_mul_synth.sv
-// ============================================================================
-
-// ============================================================================
-// BEGIN SOURCE: rta_v4/rtl/common/rta_v4_pkg.sv
-// ============================================================================
-// rta_v4_pkg.sv
-// Shwet & Claude (AI-generated)
-
-package rta_v4_pkg;
-
-  localparam int rta_v4_data_width_gp   = 8;
-  localparam int rta_v4_nibble_width_gp = 4;
-  localparam int rta_v4_wide_width_gp   = 16;
-  localparam int rta_v4_acc_width_gp    = 16;
-
-  localparam int rta_v4_rmu_op_width_gp       = 3;
-  localparam int rta_v4_rmu_reserved_width_gp = 2;
-  localparam int rta_v4_rmu_prog_width_gp     = rta_v4_rmu_op_width_gp
-                                                 + rta_v4_rmu_reserved_width_gp;
-
-  typedef enum logic [rta_v4_rmu_op_width_gp-1:0]
-  { e_rmu_idle                 = 3'd0
-   ,e_rmu_cgra_mul_s8          = 3'd1
-   ,e_rmu_systolic_clear       = 3'd2
-   ,e_rmu_systolic_dot4_compute= 3'd3
-   ,e_rmu_systolic_drain       = 3'd4
-  } rta_v4_rmu_op_e;
-
-endpackage
-// ============================================================================
-// END SOURCE: rta_v4/rtl/common/rta_v4_pkg.sv
-// ============================================================================
-
-// ============================================================================
-// BEGIN SOURCE: rta_v4/rtl/stdlib/simple_buf.sv
+// BEGIN SOURCE: rtl/src/generated/stdlib/simple_bufr.sv
 // ============================================================================
 // Shwet & Claude (AI-generated)
-// bsg_defines.sv is inlined at the start of this bundle.
-module simple_buf (
-    input  logic clk_i   // clock
-    ,input  logic data_i  // data in
-    ,output logic data_o  // registered data out
-);
 
-    bsg_dff #(.width_p(1)
-             )
-      buf_dff (.clk_i(clk_i)
-              ,.data_i(data_i)
-              ,.data_o(data_o)
-              );
-
-endmodule
-// ============================================================================
-// END SOURCE: rta_v4/rtl/stdlib/simple_buf.sv
-// ============================================================================
-
-// ============================================================================
-// BEGIN SOURCE: rta_v4/rtl/stdlib/simple_bufr.sv
-// ============================================================================
-// Shwet & Claude (AI-generated)
-// bsg_defines.sv is inlined at the start of this bundle.
 module simple_bufr (
     input  logic clk_i     // clock
     ,input  logic reset_i   // reset (active-high)
@@ -486,16 +414,33 @@ module simple_bufr (
               );
 
 endmodule
+// END SOURCE: rtl/src/generated/stdlib/simple_bufr.sv
 // ============================================================================
-// END SOURCE: rta_v4/rtl/stdlib/simple_bufr.sv
+// BEGIN SOURCE: rtl/src/generated/stdlib/simple_buf.sv
 // ============================================================================
+// Shwet & Claude (AI-generated)
 
+module simple_buf (
+    input  logic clk_i   // clock
+    ,input  logic data_i  // data in
+    ,output logic data_o  // registered data out
+);
+
+    bsg_dff #(.width_p(1)
+             )
+      buf_dff (.clk_i(clk_i)
+              ,.data_i(data_i)
+              ,.data_o(data_o)
+              );
+
+endmodule
+// END SOURCE: rtl/src/generated/stdlib/simple_buf.sv
 // ============================================================================
-// BEGIN SOURCE: rta_v4/rtl/scanchain_delim.sv
+// BEGIN SOURCE: rtl/src/generated/scanchain_delim.sv
 // ============================================================================
 // Automatically generated by PRGA's RTL generator
 `timescale 1ns/1ps
-// bsg_defines.sv is inlined at the start of this bundle.
+
 module scanchain_delim #(
     parameter int data_width_p = 1
 )(
@@ -531,16 +476,13 @@ module scanchain_delim #(
     assign prog_dout_o = prog_payload_r[data_width_p-1:0];
 
 endmodule
+// END SOURCE: rtl/src/generated/scanchain_delim.sv
 // ============================================================================
-// END SOURCE: rta_v4/rtl/scanchain_delim.sv
-// ============================================================================
-
-// ============================================================================
-// BEGIN SOURCE: rta_v4/rtl/scanchain_data_d1_contexts_1.sv
+// BEGIN SOURCE: rtl/src/generated/scanchain_data_d1_contexts_1.sv
 // ============================================================================
 // Automatically generated by DORA's RTL generator
 `timescale 1ns/1ps
-// bsg_defines.sv is inlined at the start of this bundle.
+
 module scanchain_data_d1_contexts_1 #(
     parameter int chain_bitcount_p = 1,
     parameter int chain_width_p    = 1
@@ -580,309 +522,719 @@ module scanchain_data_d1_contexts_1 #(
     assign prog_dout_o = prog_data_next[chain_bitcount_p +: chain_width_p];
 
 endmodule
+// END SOURCE: rtl/src/generated/scanchain_data_d1_contexts_1.sv
 // ============================================================================
-// END SOURCE: rta_v4/rtl/scanchain_data_d1_contexts_1.sv
-// ============================================================================
-
-// ============================================================================
-// BEGIN SOURCE: rta_v4/rtl/scanchain_data_d2_contexts_1.sv
+// BEGIN SOURCE: rtl/src/generated/rta_v4_output_pad_8b_s0.sv
 // ============================================================================
 // Automatically generated by DORA's RTL generator
 `timescale 1ns/1ps
-// bsg_defines.sv is inlined at the start of this bundle.
-module scanchain_data_d2_contexts_1 #(
-    parameter int chain_bitcount_p = 2,
-    parameter int chain_width_p    = 1
+module rta_v4_output_pad_8b_s0 #(
+    parameter int width_p = 8
 )(
-    input  logic                  prog_clk_i,
-    input  logic                  prog_rst_i,
-    input  logic                  prog_done_i,
+    input  logic [width_p-1:0] outpad_i      // from fabric
+    ,output logic [width_p-1:0] opin_o       // to external world
 
-    input  logic                  prog_we_i,
-    input  logic [chain_width_p-1:0] prog_din_i,
-
-    output logic [chain_bitcount_p-1:0] prog_data_o,
-    output logic [chain_width_p-1:0]    prog_dout_o
-);
-
-    // Concatenate existing data and new input bits
-    logic [chain_bitcount_p + chain_width_p - 1:0] prog_data_next;
-    logic [chain_bitcount_p-1:0] prog_data_n;
-
-    assign prog_data_next = {prog_data_o, prog_din_i};
-
-    assign prog_data_n = (!prog_done_i && prog_we_i)
-                         ? prog_data_next[0 +: chain_bitcount_p]
-                         : prog_data_o;
-
-    // Programming-domain reset is synchronous to prog_clk_i.
-    bsg_dff_reset #(.width_p(chain_bitcount_p)
-                    ,.reset_val_p(0)
-                    ) prog_data_reg
-      (.clk_i(prog_clk_i)
-       ,.reset_i(prog_rst_i)
-       ,.data_i(prog_data_n)
-       ,.data_o(prog_data_o)
-       );
-
-    // Output the shifted-out bits
-    assign prog_dout_o = prog_data_next[chain_bitcount_p +: chain_width_p];
-
-endmodule
-// ============================================================================
-// END SOURCE: rta_v4/rtl/scanchain_data_d2_contexts_1.sv
-// ============================================================================
-
-// ============================================================================
-// BEGIN SOURCE: rta_v4/rtl/scanchain_data_d4_contexts_1.sv
-// ============================================================================
-// Automatically generated by DORA's RTL generator
-`timescale 1ns/1ps
-// bsg_defines.sv is inlined at the start of this bundle.
-module scanchain_data_d4_contexts_1 #(
-    parameter int chain_bitcount_p = 4,
-    parameter int chain_width_p    = 1
-)(
-    input  logic                  prog_clk_i,
-    input  logic                  prog_rst_i,
-    input  logic                  prog_done_i,
-
-    input  logic                  prog_we_i,
-    input  logic [chain_width_p-1:0] prog_din_i,
-
-    output logic [chain_bitcount_p-1:0] prog_data_o,
-    output logic [chain_width_p-1:0]    prog_dout_o
-);
-
-    // Concatenate existing data and new input bits
-    logic [chain_bitcount_p + chain_width_p - 1:0] prog_data_next;
-    logic [chain_bitcount_p-1:0] prog_data_n;
-
-    assign prog_data_next = {prog_data_o, prog_din_i};
-
-    assign prog_data_n = (!prog_done_i && prog_we_i)
-                         ? prog_data_next[0 +: chain_bitcount_p]
-                         : prog_data_o;
-
-    // Programming-domain reset is synchronous to prog_clk_i.
-    bsg_dff_reset #(.width_p(chain_bitcount_p)
-                    ,.reset_val_p(0)
-                    ) prog_data_reg
-      (.clk_i(prog_clk_i)
-       ,.reset_i(prog_rst_i)
-       ,.data_i(prog_data_n)
-       ,.data_o(prog_data_o)
-       );
-
-    // Output the shifted-out bits
-    assign prog_dout_o = prog_data_next[chain_bitcount_p +: chain_width_p];
-
-endmodule
-// ============================================================================
-// END SOURCE: rta_v4/rtl/scanchain_data_d4_contexts_1.sv
-// ============================================================================
-
-// ============================================================================
-// BEGIN SOURCE: rta_v4/rtl/scanchain_data_d5_contexts_1.sv
-// ============================================================================
-// Automatically generated by DORA's RTL generator
-`timescale 1ns/1ps
-// bsg_defines.sv is inlined at the start of this bundle.
-module scanchain_data_d5_contexts_1 #(
-    parameter int chain_bitcount_p = 5,
-    parameter int chain_width_p    = 1
-)(
-    input  logic                  prog_clk_i,
-    input  logic                  prog_rst_i,
-    input  logic                  prog_done_i,
-
-    input  logic                  prog_we_i,
-    input  logic [chain_width_p-1:0] prog_din_i,
-
-    output logic [chain_bitcount_p-1:0] prog_data_o,
-    output logic [chain_width_p-1:0]    prog_dout_o
-);
-
-    // Concatenate existing data and new input bits
-    logic [chain_bitcount_p + chain_width_p - 1:0] prog_data_next;
-    logic [chain_bitcount_p-1:0] prog_data_n;
-
-    assign prog_data_next = {prog_data_o, prog_din_i};
-
-    assign prog_data_n = (!prog_done_i && prog_we_i)
-                         ? prog_data_next[0 +: chain_bitcount_p]
-                         : prog_data_o;
-
-    // Programming-domain reset is synchronous to prog_clk_i.
-    bsg_dff_reset #(.width_p(chain_bitcount_p)
-                    ,.reset_val_p(0)
-                    ) prog_data_reg
-      (.clk_i(prog_clk_i)
-       ,.reset_i(prog_rst_i)
-       ,.data_i(prog_data_n)
-       ,.data_o(prog_data_o)
-       );
-
-    // Output the shifted-out bits
-    assign prog_dout_o = prog_data_next[chain_bitcount_p +: chain_width_p];
-
-endmodule
-// ============================================================================
-// END SOURCE: rta_v4/rtl/scanchain_data_d5_contexts_1.sv
-// ============================================================================
-
-// ============================================================================
-// BEGIN SOURCE: rta_v4/rtl/scanchain_data_d8_contexts_1.sv
-// ============================================================================
-// Automatically generated by DORA's RTL generator
-`timescale 1ns/1ps
-// bsg_defines.sv is inlined at the start of this bundle.
-module scanchain_data_d8_contexts_1 #(
-    parameter int chain_bitcount_p = 8,
-    parameter int chain_width_p    = 1
-)(
-    input  logic                  prog_clk_i,
-    input  logic                  prog_rst_i,
-    input  logic                  prog_done_i,
-
-    input  logic                  prog_we_i,
-    input  logic [chain_width_p-1:0] prog_din_i,
-
-    output logic [chain_bitcount_p-1:0] prog_data_o,
-    output logic [chain_width_p-1:0]    prog_dout_o
-);
-
-    // Concatenate existing data and new input bits
-    logic [chain_bitcount_p + chain_width_p - 1:0] prog_data_next;
-    logic [chain_bitcount_p-1:0] prog_data_n;
-
-    assign prog_data_next = {prog_data_o, prog_din_i};
-
-    assign prog_data_n = (!prog_done_i && prog_we_i)
-                         ? prog_data_next[0 +: chain_bitcount_p]
-                         : prog_data_o;
-
-    // Programming-domain reset is synchronous to prog_clk_i.
-    bsg_dff_reset #(.width_p(chain_bitcount_p)
-                    ,.reset_val_p(0)
-                    ) prog_data_reg
-      (.clk_i(prog_clk_i)
-       ,.reset_i(prog_rst_i)
-       ,.data_i(prog_data_n)
-       ,.data_o(prog_data_o)
-       );
-
-    // Output the shifted-out bits
-    assign prog_dout_o = prog_data_next[chain_bitcount_p +: chain_width_p];
-
-endmodule
-// ============================================================================
-// END SOURCE: rta_v4/rtl/scanchain_data_d8_contexts_1.sv
-// ============================================================================
-
-// ============================================================================
-// BEGIN SOURCE: rta_v4/rtl/sw_11_8b.sv
-// ============================================================================
-// Automatically generated by DORA's RTL generator
-`timescale 1ns/1ps
-
-module sw_11_8b #(
-    parameter int width_p      = 8
-    ,parameter int sel_width_p  = 4
-    ,parameter int num_inputs_p = 11
-)(
-    input  logic [width_p-1:0] i_0
-    ,
-    input  logic [width_p-1:0] i_1
-    ,
-    input  logic [width_p-1:0] i_2
-    ,
-    input  logic [width_p-1:0] i_3
-    ,
-    input  logic [width_p-1:0] i_4
-    ,
-    input  logic [width_p-1:0] i_5
-    ,
-    input  logic [width_p-1:0] i_6
-    ,
-    input  logic [width_p-1:0] i_7
-    ,
-    input  logic [width_p-1:0] i_8
-    ,
-    input  logic [width_p-1:0] i_9
-    ,
-    input  logic [width_p-1:0] i_10
-    ,
-    input  logic             prog_done_i
-    ,input  logic [sel_width_p-1:0] prog_data_i
-    ,output logic [width_p-1:0] out_o
+    ,input  logic prog_done_i // programming done signal
+    ,input  logic prog_data_i // mode: 0=disabled, 1=enabled
+    ,output logic prog_active_o // sideband: tap of prog_data_i
 );
 
     always_comb begin
-        if (!prog_done_i) begin
-            out_o = '0;
-        end else begin
-            unique case (prog_data_i)
-                4'd0: out_o = i_0;
-                4'd1: out_o = i_1;
-                4'd2: out_o = i_2;
-                4'd3: out_o = i_3;
-                4'd4: out_o = i_4;
-                4'd5: out_o = i_5;
-                4'd6: out_o = i_6;
-                4'd7: out_o = i_7;
-                4'd8: out_o = i_8;
-                4'd9: out_o = i_9;
-                4'd10: out_o = i_10;
-                default: out_o = '0;
-            endcase
+        opin_o = {width_p{1'b0}};
+        if (prog_done_i && prog_data_i) begin
+            opin_o = outpad_i;
         end
     end
 
-endmodule
-// ============================================================================
-// END SOURCE: rta_v4/rtl/sw_11_8b.sv
-// ============================================================================
+    assign prog_active_o = prog_data_i;
 
+endmodule
+// END SOURCE: rtl/src/generated/rta_v4_output_pad_8b_s0.sv
 // ============================================================================
-// BEGIN SOURCE: rta_v4/rtl/sw_2_1b.sv
+// BEGIN SOURCE: rtl/src/generated/rta_v4_output_pad_8b_s1.sv
 // ============================================================================
 // Automatically generated by DORA's RTL generator
 `timescale 1ns/1ps
-
-module sw_2_1b #(
-    parameter int width_p      = 1
-    ,parameter int sel_width_p  = 1
-    ,parameter int num_inputs_p = 2
+module rta_v4_output_pad_8b_s1 #(
+    parameter int width_p = 8
 )(
-    input  logic [width_p-1:0] i_0
-    ,
-    input  logic [width_p-1:0] i_1
-    ,
-    input  logic             prog_done_i
-    ,input  logic [sel_width_p-1:0] prog_data_i
-    ,output logic [width_p-1:0] out_o
+    input  logic [width_p-1:0] outpad_i      // from fabric
+    ,output logic [width_p-1:0] opin_o       // to external world
+
+    ,input  logic prog_done_i // programming done signal
+    ,input  logic prog_data_i // mode: 0=disabled, 1=enabled
+    ,output logic prog_active_o // sideband: tap of prog_data_i
 );
 
     always_comb begin
-        if (!prog_done_i) begin
-            out_o = '0;
-        end else begin
-            unique case (prog_data_i)
-                1'd0: out_o = i_0;
-                1'd1: out_o = i_1;
-                default: out_o = '0;
-            endcase
+        opin_o = {width_p{1'b0}};
+        if (prog_done_i && prog_data_i) begin
+            opin_o = outpad_i;
         end
     end
 
-endmodule
-// ============================================================================
-// END SOURCE: rta_v4/rtl/sw_2_1b.sv
-// ============================================================================
+    assign prog_active_o = prog_data_i;
 
+endmodule
+// END SOURCE: rtl/src/generated/rta_v4_output_pad_8b_s1.sv
 // ============================================================================
-// BEGIN SOURCE: rta_v4/rtl/sw_2_8b.sv
+// BEGIN SOURCE: rtl/src/generated/rta_v4_output_pad_1b_s2.sv
+// ============================================================================
+// Automatically generated by DORA's RTL generator
+`timescale 1ns/1ps
+module rta_v4_output_pad_1b_s2 #(
+    parameter int width_p = 1
+)(
+    input  logic [width_p-1:0] outpad_i      // from fabric
+    ,output logic [width_p-1:0] opin_o       // to external world
+
+    ,input  logic prog_done_i // programming done signal
+    ,input  logic prog_data_i // mode: 0=disabled, 1=enabled
+    ,output logic prog_active_o // sideband: tap of prog_data_i
+);
+
+    always_comb begin
+        opin_o = {width_p{1'b0}};
+        if (prog_done_i && prog_data_i) begin
+            opin_o = outpad_i;
+        end
+    end
+
+    assign prog_active_o = prog_data_i;
+
+endmodule
+// END SOURCE: rtl/src/generated/rta_v4_output_pad_1b_s2.sv
+// ============================================================================
+// BEGIN SOURCE: rtl/src/generated/reg_8b.sv
+// ============================================================================
+// bsg_dffre.tmpl.sv - Wrapper for bsg_dff_reset_en
+// Dora & Claude (AI-generated)
+
+`timescale 1ns/1ps
+
+module reg_8b #(
+    parameter int width_p = 8
+)(
+    input  logic             clk_i
+    ,input  logic             reset_i
+    ,input  logic             en_i
+    ,input  logic [width_p-1:0] data_i
+    ,output logic [width_p-1:0] data_o
+);
+
+    bsg_dff_reset_en #(.width_p(width_p)
+                      ,.reset_val_p(0)
+                      )
+      dff (.clk_i(clk_i)
+          ,.reset_i(reset_i)
+          ,.en_i(en_i)
+          ,.data_i(data_i)
+          ,.data_o(data_o)
+          );
+
+endmodule
+// END SOURCE: rtl/src/generated/reg_8b.sv
+// ============================================================================
+// BEGIN SOURCE: rtl/src/generated/reg_1b.sv
+// ============================================================================
+// bsg_dffre.tmpl.sv - Wrapper for bsg_dff_reset_en
+// Dora & Claude (AI-generated)
+
+`timescale 1ns/1ps
+
+module reg_1b #(
+    parameter int width_p = 1
+)(
+    input  logic             clk_i
+    ,input  logic             reset_i
+    ,input  logic             en_i
+    ,input  logic [width_p-1:0] data_i
+    ,output logic [width_p-1:0] data_o
+);
+
+    bsg_dff_reset_en #(.width_p(width_p)
+                      ,.reset_val_p(0)
+                      )
+      dff (.clk_i(clk_i)
+          ,.reset_i(reset_i)
+          ,.en_i(en_i)
+          ,.data_i(data_i)
+          ,.data_o(data_o)
+          );
+
+endmodule
+// END SOURCE: rtl/src/generated/reg_1b.sv
+// ============================================================================
+// BEGIN SOURCE: rtl/src/generated/rta_v4_output_io_tile_2x8b_pred.sv
+// ============================================================================
+// SystemVerilog auto-generated by DORA RTL generator
+// Copyright (c) 2025, Pᴺ Computer Engineering Lab.
+
+module rta_v4_output_io_tile_2x8b_pred (
+    // Ports
+    input  logic clk_i,
+    input  logic reset_i,
+    input  logic en_i,
+    input  logic [7:0] data0_from_fabric,
+    input  logic [7:0] data1_from_fabric,
+    input  logic pred_from_fabric,
+    output logic opin_x0y0_2,
+    output logic [7:0] opin_x0y0_0,
+    output logic [7:0] opin_x0y0_1,
+    output logic prog_active_data0_o,
+    output logic prog_active_data1_o,
+    output logic prog_active_pred_o,
+    input  logic prog_clk_i,
+    input  logic prog_rst_i,
+    input  logic prog_done_i,
+    input  logic prog_we_i,
+    input  logic prog_din_i,
+    output logic prog_dout_o
+);
+    logic [7:0] reg_in_data0_data_o;
+    logic [7:0] output_pad_data0_opin_o;
+    logic output_pad_data0_prog_active_o;
+    logic [7:0] reg_in_data1_data_o;
+    logic [7:0] output_pad_data1_opin_o;
+    logic output_pad_data1_prog_active_o;
+    logic output_pad_pred_opin_o;
+    logic output_pad_pred_prog_active_o;
+    logic reg_in_pred_data_o;
+    logic i_prog_data_output_pad_data0_prog_data_o;
+    logic i_prog_data_output_pad_data0_prog_dout_o;
+    logic i_prog_data_output_pad_data1_prog_data_o;
+    logic i_prog_data_output_pad_data1_prog_dout_o;
+    logic i_prog_data_output_pad_pred_prog_data_o;
+    logic i_prog_data_output_pad_pred_prog_dout_o;
+
+    // Unconnected Wires
+
+    // Instances
+    reg_8b reg_in_data0 (
+        .clk_i(clk_i),
+        .reset_i(reset_i),
+        .en_i(en_i),
+        .data_i(data0_from_fabric),
+        .data_o(reg_in_data0_data_o)
+    );
+
+    rta_v4_output_pad_8b_s0 output_pad_data0 (
+        .outpad_i(reg_in_data0_data_o),
+        .opin_o(output_pad_data0_opin_o),
+        .prog_done_i(prog_done_i),
+        .prog_active_o(output_pad_data0_prog_active_o),
+        .prog_data_i(i_prog_data_output_pad_data0_prog_data_o)
+    );
+
+    reg_8b reg_in_data1 (
+        .clk_i(clk_i),
+        .reset_i(reset_i),
+        .en_i(en_i),
+        .data_i(data1_from_fabric),
+        .data_o(reg_in_data1_data_o)
+    );
+
+    rta_v4_output_pad_8b_s1 output_pad_data1 (
+        .outpad_i(reg_in_data1_data_o),
+        .opin_o(output_pad_data1_opin_o),
+        .prog_done_i(prog_done_i),
+        .prog_active_o(output_pad_data1_prog_active_o),
+        .prog_data_i(i_prog_data_output_pad_data1_prog_data_o)
+    );
+
+    rta_v4_output_pad_1b_s2 output_pad_pred (
+        .outpad_i(reg_in_pred_data_o),
+        .opin_o(output_pad_pred_opin_o),
+        .prog_done_i(prog_done_i),
+        .prog_active_o(output_pad_pred_prog_active_o),
+        .prog_data_i(i_prog_data_output_pad_pred_prog_data_o)
+    );
+
+    reg_1b reg_in_pred (
+        .clk_i(clk_i),
+        .reset_i(reset_i),
+        .en_i(en_i),
+        .data_i(pred_from_fabric),
+        .data_o(reg_in_pred_data_o)
+    );
+
+    scanchain_data_d1_contexts_1 i_prog_data_output_pad_data0 (
+        .prog_data_o(i_prog_data_output_pad_data0_prog_data_o),
+        .prog_clk_i(prog_clk_i),
+        .prog_rst_i(prog_rst_i),
+        .prog_done_i(prog_done_i),
+        .prog_we_i(prog_we_i),
+        .prog_din_i(prog_din_i),
+        .prog_dout_o(i_prog_data_output_pad_data0_prog_dout_o)
+    );
+
+    scanchain_data_d1_contexts_1 i_prog_data_output_pad_data1 (
+        .prog_data_o(i_prog_data_output_pad_data1_prog_data_o),
+        .prog_clk_i(prog_clk_i),
+        .prog_rst_i(prog_rst_i),
+        .prog_done_i(prog_done_i),
+        .prog_we_i(prog_we_i),
+        .prog_din_i(i_prog_data_output_pad_data0_prog_dout_o),
+        .prog_dout_o(i_prog_data_output_pad_data1_prog_dout_o)
+    );
+
+    scanchain_data_d1_contexts_1 i_prog_data_output_pad_pred (
+        .prog_data_o(i_prog_data_output_pad_pred_prog_data_o),
+        .prog_clk_i(prog_clk_i),
+        .prog_rst_i(prog_rst_i),
+        .prog_done_i(prog_done_i),
+        .prog_we_i(prog_we_i),
+        .prog_din_i(i_prog_data_output_pad_data1_prog_dout_o),
+        .prog_dout_o(i_prog_data_output_pad_pred_prog_dout_o)
+    );
+
+    // Output Port Connections
+    assign opin_x0y0_2 = output_pad_pred_opin_o;
+    assign opin_x0y0_0 = output_pad_data0_opin_o;
+    assign opin_x0y0_1 = output_pad_data1_opin_o;
+    assign prog_active_data0_o = output_pad_data0_prog_active_o;
+    assign prog_active_data1_o = output_pad_data1_prog_active_o;
+    assign prog_active_pred_o = output_pad_pred_prog_active_o;
+    assign prog_dout_o = i_prog_data_output_pad_pred_prog_dout_o;
+endmodule
+// END SOURCE: rtl/src/generated/rta_v4_output_io_tile_2x8b_pred.sv
+// ============================================================================
+// BEGIN SOURCE: rtl/src/generated/rta_v4_output_boundary_cell_2x8b_pred.sv
+// ============================================================================
+// SystemVerilog auto-generated by DORA RTL generator
+// Copyright (c) 2025, Pᴺ Computer Engineering Lab.
+
+module rta_v4_output_boundary_cell_2x8b_pred (
+    // Ports
+    input  logic clk_i,
+    input  logic reset_i,
+    input  logic en_i,
+    input  logic [7:0] data0_from_fabric,
+    input  logic [7:0] data1_from_fabric,
+    input  logic pred_from_fabric,
+    output logic [7:0] opin_x0y0_0,
+    output logic [7:0] opin_x0y0_1,
+    output logic opin_x0y0_2,
+    output logic prog_active_data0_o,
+    output logic prog_active_data1_o,
+    output logic prog_active_pred_o,
+    input  logic prog_clk_i,
+    input  logic prog_rst_i,
+    input  logic prog_done_i,
+    input  logic prog_we_i,
+    input  logic prog_din_i,
+    output logic prog_dout_o,
+    output logic prog_we_o
+);
+    logic output_io_tile_opin_x0y0_2;
+    logic [7:0] output_io_tile_opin_x0y0_0;
+    logic [7:0] output_io_tile_opin_x0y0_1;
+    logic output_io_tile_prog_active_data0_o;
+    logic output_io_tile_prog_active_data1_o;
+    logic output_io_tile_prog_active_pred_o;
+    logic output_io_tile_prog_dout_o;
+    logic i_buf_prog_rst_l0_data_o;
+    logic i_buf_prog_done_l0_data_o;
+    logic i_scanchain_head_prog_we_o;
+    logic i_scanchain_head_prog_dout_o;
+    logic i_scanchain_tail_prog_we_o;
+    logic i_scanchain_tail_prog_dout_o;
+
+    // Unconnected Wires
+
+    // Instances
+    rta_v4_output_io_tile_2x8b_pred output_io_tile (
+        .clk_i(clk_i),
+        .reset_i(reset_i),
+        .en_i(en_i),
+        .data0_from_fabric(data0_from_fabric),
+        .data1_from_fabric(data1_from_fabric),
+        .pred_from_fabric(pred_from_fabric),
+        .opin_x0y0_2(output_io_tile_opin_x0y0_2),
+        .opin_x0y0_0(output_io_tile_opin_x0y0_0),
+        .opin_x0y0_1(output_io_tile_opin_x0y0_1),
+        .prog_active_data0_o(output_io_tile_prog_active_data0_o),
+        .prog_active_data1_o(output_io_tile_prog_active_data1_o),
+        .prog_active_pred_o(output_io_tile_prog_active_pred_o),
+        .prog_clk_i(prog_clk_i),
+        .prog_rst_i(i_buf_prog_rst_l0_data_o),
+        .prog_done_i(i_buf_prog_done_l0_data_o),
+        .prog_we_i(i_scanchain_head_prog_we_o),
+        .prog_din_i(i_scanchain_head_prog_dout_o),
+        .prog_dout_o(output_io_tile_prog_dout_o)
+    );
+
+    simple_buf i_buf_prog_rst_l0 (
+        .clk_i(prog_clk_i),
+        .data_i(prog_rst_i),
+        .data_o(i_buf_prog_rst_l0_data_o)
+    );
+
+    simple_bufr i_buf_prog_done_l0 (
+        .clk_i(prog_clk_i),
+        .reset_i(i_buf_prog_rst_l0_data_o),
+        .data_i(prog_done_i),
+        .data_o(i_buf_prog_done_l0_data_o)
+    );
+
+    scanchain_delim i_scanchain_head (
+        .prog_we_o(i_scanchain_head_prog_we_o),
+        .prog_clk_i(prog_clk_i),
+        .prog_rst_i(i_buf_prog_rst_l0_data_o),
+        .prog_done_i(i_buf_prog_done_l0_data_o),
+        .prog_we_i(prog_we_i),
+        .prog_din_i(prog_din_i),
+        .prog_dout_o(i_scanchain_head_prog_dout_o)
+    );
+
+    scanchain_delim i_scanchain_tail (
+        .prog_we_o(i_scanchain_tail_prog_we_o),
+        .prog_clk_i(prog_clk_i),
+        .prog_rst_i(i_buf_prog_rst_l0_data_o),
+        .prog_done_i(i_buf_prog_done_l0_data_o),
+        .prog_we_i(i_scanchain_head_prog_we_o),
+        .prog_din_i(output_io_tile_prog_dout_o),
+        .prog_dout_o(i_scanchain_tail_prog_dout_o)
+    );
+
+    // Output Port Connections
+    assign opin_x0y0_0 = output_io_tile_opin_x0y0_0;
+    assign opin_x0y0_1 = output_io_tile_opin_x0y0_1;
+    assign opin_x0y0_2 = output_io_tile_opin_x0y0_2;
+    assign prog_active_data0_o = output_io_tile_prog_active_data0_o;
+    assign prog_active_data1_o = output_io_tile_prog_active_data1_o;
+    assign prog_active_pred_o = output_io_tile_prog_active_pred_o;
+    assign prog_dout_o = i_scanchain_tail_prog_dout_o;
+    assign prog_we_o = i_scanchain_tail_prog_we_o;
+endmodule
+// END SOURCE: rtl/src/generated/rta_v4_output_boundary_cell_2x8b_pred.sv
+// ============================================================================
+// BEGIN SOURCE: rtl/src/generated/rta_v4_input_pad_8b_s0.sv
+// ============================================================================
+// Automatically generated by DORA's RTL generator
+`timescale 1ns/1ps
+module rta_v4_input_pad_8b_s0 #(
+    parameter int width_p = 8
+)(
+    input  logic [width_p-1:0] ipin_i        // from external world
+    ,output logic [width_p-1:0] inpad_o      // to fabric
+
+    ,input  logic prog_done_i // programming done signal
+    ,input  logic prog_data_i // mode: 0=disabled, 1=enabled
+    ,output logic prog_active_o // sideband: tap of prog_data_i
+);
+
+    always_comb begin
+        inpad_o = {width_p{1'b0}};
+        if (prog_done_i && prog_data_i) begin
+            inpad_o = ipin_i;
+        end
+    end
+
+    assign prog_active_o = prog_data_i;
+
+endmodule
+// END SOURCE: rtl/src/generated/rta_v4_input_pad_8b_s0.sv
+// ============================================================================
+// BEGIN SOURCE: rtl/src/generated/rta_v4_input_pad_8b_s1.sv
+// ============================================================================
+// Automatically generated by DORA's RTL generator
+`timescale 1ns/1ps
+module rta_v4_input_pad_8b_s1 #(
+    parameter int width_p = 8
+)(
+    input  logic [width_p-1:0] ipin_i        // from external world
+    ,output logic [width_p-1:0] inpad_o      // to fabric
+
+    ,input  logic prog_done_i // programming done signal
+    ,input  logic prog_data_i // mode: 0=disabled, 1=enabled
+    ,output logic prog_active_o // sideband: tap of prog_data_i
+);
+
+    always_comb begin
+        inpad_o = {width_p{1'b0}};
+        if (prog_done_i && prog_data_i) begin
+            inpad_o = ipin_i;
+        end
+    end
+
+    assign prog_active_o = prog_data_i;
+
+endmodule
+// END SOURCE: rtl/src/generated/rta_v4_input_pad_8b_s1.sv
+// ============================================================================
+// BEGIN SOURCE: rtl/src/generated/rta_v4_input_pad_1b_s2.sv
+// ============================================================================
+// Automatically generated by DORA's RTL generator
+`timescale 1ns/1ps
+module rta_v4_input_pad_1b_s2 #(
+    parameter int width_p = 1
+)(
+    input  logic [width_p-1:0] ipin_i        // from external world
+    ,output logic [width_p-1:0] inpad_o      // to fabric
+
+    ,input  logic prog_done_i // programming done signal
+    ,input  logic prog_data_i // mode: 0=disabled, 1=enabled
+    ,output logic prog_active_o // sideband: tap of prog_data_i
+);
+
+    always_comb begin
+        inpad_o = {width_p{1'b0}};
+        if (prog_done_i && prog_data_i) begin
+            inpad_o = ipin_i;
+        end
+    end
+
+    assign prog_active_o = prog_data_i;
+
+endmodule
+// END SOURCE: rtl/src/generated/rta_v4_input_pad_1b_s2.sv
+// ============================================================================
+// BEGIN SOURCE: rtl/src/generated/rta_v4_input_io_tile_2x8b_pred.sv
+// ============================================================================
+// SystemVerilog auto-generated by DORA RTL generator
+// Copyright (c) 2025, Pᴺ Computer Engineering Lab.
+
+module rta_v4_input_io_tile_2x8b_pred (
+    // Ports
+    input  logic clk_i,
+    input  logic reset_i,
+    input  logic en_i,
+    output logic [7:0] data0_to_fabric,
+    output logic [7:0] data1_to_fabric,
+    input  logic ipin_x0y0_2,
+    output logic pred_to_fabric,
+    input  logic [7:0] ipin_x0y0_0,
+    input  logic [7:0] ipin_x0y0_1,
+    output logic prog_active_data0_o,
+    output logic prog_active_data1_o,
+    output logic prog_active_pred_o,
+    input  logic prog_clk_i,
+    input  logic prog_rst_i,
+    input  logic prog_done_i,
+    input  logic prog_we_i,
+    input  logic prog_din_i,
+    output logic prog_dout_o
+);
+    logic [7:0] reg_out_data0_data_o;
+    logic [7:0] input_pad_data0_inpad_o;
+    logic input_pad_data0_prog_active_o;
+    logic [7:0] reg_out_data1_data_o;
+    logic [7:0] input_pad_data1_inpad_o;
+    logic input_pad_data1_prog_active_o;
+    logic input_pad_pred_inpad_o;
+    logic input_pad_pred_prog_active_o;
+    logic reg_out_pred_data_o;
+    logic i_prog_data_input_pad_data0_prog_data_o;
+    logic i_prog_data_input_pad_data0_prog_dout_o;
+    logic i_prog_data_input_pad_data1_prog_data_o;
+    logic i_prog_data_input_pad_data1_prog_dout_o;
+    logic i_prog_data_input_pad_pred_prog_data_o;
+    logic i_prog_data_input_pad_pred_prog_dout_o;
+
+    // Unconnected Wires
+
+    // Instances
+    reg_8b reg_out_data0 (
+        .clk_i(clk_i),
+        .reset_i(reset_i),
+        .en_i(en_i),
+        .data_i(input_pad_data0_inpad_o),
+        .data_o(reg_out_data0_data_o)
+    );
+
+    rta_v4_input_pad_8b_s0 input_pad_data0 (
+        .ipin_i(ipin_x0y0_0),
+        .inpad_o(input_pad_data0_inpad_o),
+        .prog_done_i(prog_done_i),
+        .prog_active_o(input_pad_data0_prog_active_o),
+        .prog_data_i(i_prog_data_input_pad_data0_prog_data_o)
+    );
+
+    reg_8b reg_out_data1 (
+        .clk_i(clk_i),
+        .reset_i(reset_i),
+        .en_i(en_i),
+        .data_i(input_pad_data1_inpad_o),
+        .data_o(reg_out_data1_data_o)
+    );
+
+    rta_v4_input_pad_8b_s1 input_pad_data1 (
+        .ipin_i(ipin_x0y0_1),
+        .inpad_o(input_pad_data1_inpad_o),
+        .prog_done_i(prog_done_i),
+        .prog_active_o(input_pad_data1_prog_active_o),
+        .prog_data_i(i_prog_data_input_pad_data1_prog_data_o)
+    );
+
+    rta_v4_input_pad_1b_s2 input_pad_pred (
+        .ipin_i(ipin_x0y0_2),
+        .inpad_o(input_pad_pred_inpad_o),
+        .prog_done_i(prog_done_i),
+        .prog_active_o(input_pad_pred_prog_active_o),
+        .prog_data_i(i_prog_data_input_pad_pred_prog_data_o)
+    );
+
+    reg_1b reg_out_pred (
+        .clk_i(clk_i),
+        .reset_i(reset_i),
+        .en_i(en_i),
+        .data_i(input_pad_pred_inpad_o),
+        .data_o(reg_out_pred_data_o)
+    );
+
+    scanchain_data_d1_contexts_1 i_prog_data_input_pad_data0 (
+        .prog_data_o(i_prog_data_input_pad_data0_prog_data_o),
+        .prog_clk_i(prog_clk_i),
+        .prog_rst_i(prog_rst_i),
+        .prog_done_i(prog_done_i),
+        .prog_we_i(prog_we_i),
+        .prog_din_i(prog_din_i),
+        .prog_dout_o(i_prog_data_input_pad_data0_prog_dout_o)
+    );
+
+    scanchain_data_d1_contexts_1 i_prog_data_input_pad_data1 (
+        .prog_data_o(i_prog_data_input_pad_data1_prog_data_o),
+        .prog_clk_i(prog_clk_i),
+        .prog_rst_i(prog_rst_i),
+        .prog_done_i(prog_done_i),
+        .prog_we_i(prog_we_i),
+        .prog_din_i(i_prog_data_input_pad_data0_prog_dout_o),
+        .prog_dout_o(i_prog_data_input_pad_data1_prog_dout_o)
+    );
+
+    scanchain_data_d1_contexts_1 i_prog_data_input_pad_pred (
+        .prog_data_o(i_prog_data_input_pad_pred_prog_data_o),
+        .prog_clk_i(prog_clk_i),
+        .prog_rst_i(prog_rst_i),
+        .prog_done_i(prog_done_i),
+        .prog_we_i(prog_we_i),
+        .prog_din_i(i_prog_data_input_pad_data1_prog_dout_o),
+        .prog_dout_o(i_prog_data_input_pad_pred_prog_dout_o)
+    );
+
+    // Output Port Connections
+    assign data0_to_fabric = reg_out_data0_data_o;
+    assign data1_to_fabric = reg_out_data1_data_o;
+    assign pred_to_fabric = reg_out_pred_data_o;
+    assign prog_active_data0_o = input_pad_data0_prog_active_o;
+    assign prog_active_data1_o = input_pad_data1_prog_active_o;
+    assign prog_active_pred_o = input_pad_pred_prog_active_o;
+    assign prog_dout_o = i_prog_data_input_pad_pred_prog_dout_o;
+endmodule
+// END SOURCE: rtl/src/generated/rta_v4_input_io_tile_2x8b_pred.sv
+// ============================================================================
+// BEGIN SOURCE: rtl/src/generated/rta_v4_input_boundary_cell_2x8b_pred.sv
+// ============================================================================
+// SystemVerilog auto-generated by DORA RTL generator
+// Copyright (c) 2025, Pᴺ Computer Engineering Lab.
+
+module rta_v4_input_boundary_cell_2x8b_pred (
+    // Ports
+    input  logic clk_i,
+    input  logic reset_i,
+    input  logic en_i,
+    output logic [7:0] data0_to_fabric,
+    output logic [7:0] data1_to_fabric,
+    output logic pred_to_fabric,
+    input  logic [7:0] ipin_x0y0_0,
+    input  logic [7:0] ipin_x0y0_1,
+    input  logic ipin_x0y0_2,
+    output logic prog_active_data0_o,
+    output logic prog_active_data1_o,
+    output logic prog_active_pred_o,
+    input  logic prog_clk_i,
+    input  logic prog_rst_i,
+    input  logic prog_done_i,
+    input  logic prog_we_i,
+    input  logic prog_din_i,
+    output logic prog_dout_o,
+    output logic prog_we_o
+);
+    logic [7:0] input_io_tile_data0_to_fabric;
+    logic [7:0] input_io_tile_data1_to_fabric;
+    logic input_io_tile_pred_to_fabric;
+    logic input_io_tile_prog_active_data0_o;
+    logic input_io_tile_prog_active_data1_o;
+    logic input_io_tile_prog_active_pred_o;
+    logic input_io_tile_prog_dout_o;
+    logic i_buf_prog_rst_l0_data_o;
+    logic i_buf_prog_done_l0_data_o;
+    logic i_scanchain_head_prog_we_o;
+    logic i_scanchain_head_prog_dout_o;
+    logic i_scanchain_tail_prog_we_o;
+    logic i_scanchain_tail_prog_dout_o;
+
+    // Unconnected Wires
+
+    // Instances
+    rta_v4_input_io_tile_2x8b_pred input_io_tile (
+        .clk_i(clk_i),
+        .reset_i(reset_i),
+        .en_i(en_i),
+        .data0_to_fabric(input_io_tile_data0_to_fabric),
+        .data1_to_fabric(input_io_tile_data1_to_fabric),
+        .ipin_x0y0_2(ipin_x0y0_2),
+        .pred_to_fabric(input_io_tile_pred_to_fabric),
+        .ipin_x0y0_0(ipin_x0y0_0),
+        .ipin_x0y0_1(ipin_x0y0_1),
+        .prog_active_data0_o(input_io_tile_prog_active_data0_o),
+        .prog_active_data1_o(input_io_tile_prog_active_data1_o),
+        .prog_active_pred_o(input_io_tile_prog_active_pred_o),
+        .prog_clk_i(prog_clk_i),
+        .prog_rst_i(i_buf_prog_rst_l0_data_o),
+        .prog_done_i(i_buf_prog_done_l0_data_o),
+        .prog_we_i(i_scanchain_head_prog_we_o),
+        .prog_din_i(i_scanchain_head_prog_dout_o),
+        .prog_dout_o(input_io_tile_prog_dout_o)
+    );
+
+    simple_buf i_buf_prog_rst_l0 (
+        .clk_i(prog_clk_i),
+        .data_i(prog_rst_i),
+        .data_o(i_buf_prog_rst_l0_data_o)
+    );
+
+    simple_bufr i_buf_prog_done_l0 (
+        .clk_i(prog_clk_i),
+        .reset_i(i_buf_prog_rst_l0_data_o),
+        .data_i(prog_done_i),
+        .data_o(i_buf_prog_done_l0_data_o)
+    );
+
+    scanchain_delim i_scanchain_head (
+        .prog_we_o(i_scanchain_head_prog_we_o),
+        .prog_clk_i(prog_clk_i),
+        .prog_rst_i(i_buf_prog_rst_l0_data_o),
+        .prog_done_i(i_buf_prog_done_l0_data_o),
+        .prog_we_i(prog_we_i),
+        .prog_din_i(prog_din_i),
+        .prog_dout_o(i_scanchain_head_prog_dout_o)
+    );
+
+    scanchain_delim i_scanchain_tail (
+        .prog_we_o(i_scanchain_tail_prog_we_o),
+        .prog_clk_i(prog_clk_i),
+        .prog_rst_i(i_buf_prog_rst_l0_data_o),
+        .prog_done_i(i_buf_prog_done_l0_data_o),
+        .prog_we_i(i_scanchain_head_prog_we_o),
+        .prog_din_i(input_io_tile_prog_dout_o),
+        .prog_dout_o(i_scanchain_tail_prog_dout_o)
+    );
+
+    // Output Port Connections
+    assign data0_to_fabric = input_io_tile_data0_to_fabric;
+    assign data1_to_fabric = input_io_tile_data1_to_fabric;
+    assign pred_to_fabric = input_io_tile_pred_to_fabric;
+    assign prog_active_data0_o = input_io_tile_prog_active_data0_o;
+    assign prog_active_data1_o = input_io_tile_prog_active_data1_o;
+    assign prog_active_pred_o = input_io_tile_prog_active_pred_o;
+    assign prog_dout_o = i_scanchain_tail_prog_dout_o;
+    assign prog_we_o = i_scanchain_tail_prog_we_o;
+endmodule
+// END SOURCE: rtl/src/generated/rta_v4_input_boundary_cell_2x8b_pred.sv
+// ============================================================================
+// BEGIN SOURCE: rtl/src/generated/sw_2_8b.sv
 // ============================================================================
 // Automatically generated by DORA's RTL generator
 `timescale 1ns/1ps
@@ -914,78 +1266,21 @@ module sw_2_8b #(
     end
 
 endmodule
+// END SOURCE: rtl/src/generated/sw_2_8b.sv
 // ============================================================================
-// END SOURCE: rta_v4/rtl/sw_2_8b.sv
-// ============================================================================
-
-// ============================================================================
-// BEGIN SOURCE: rta_v4/rtl/sw_3_8b.sv
+// BEGIN SOURCE: rtl/src/generated/sw_2_1b.sv
 // ============================================================================
 // Automatically generated by DORA's RTL generator
 `timescale 1ns/1ps
 
-module sw_3_8b #(
-    parameter int width_p      = 8
-    ,parameter int sel_width_p  = 2
-    ,parameter int num_inputs_p = 3
-)(
-    input  logic [width_p-1:0] i_0
-    ,
-    input  logic [width_p-1:0] i_1
-    ,
-    input  logic [width_p-1:0] i_2
-    ,
-    input  logic             prog_done_i
-    ,input  logic [sel_width_p-1:0] prog_data_i
-    ,output logic [width_p-1:0] out_o
-);
-
-    always_comb begin
-        if (!prog_done_i) begin
-            out_o = '0;
-        end else begin
-            unique case (prog_data_i)
-                2'd0: out_o = i_0;
-                2'd1: out_o = i_1;
-                2'd2: out_o = i_2;
-                default: out_o = '0;
-            endcase
-        end
-    end
-
-endmodule
-// ============================================================================
-// END SOURCE: rta_v4/rtl/sw_3_8b.sv
-// ============================================================================
-
-// ============================================================================
-// BEGIN SOURCE: rta_v4/rtl/sw_9_1b.sv
-// ============================================================================
-// Automatically generated by DORA's RTL generator
-`timescale 1ns/1ps
-
-module sw_9_1b #(
+module sw_2_1b #(
     parameter int width_p      = 1
-    ,parameter int sel_width_p  = 4
-    ,parameter int num_inputs_p = 9
+    ,parameter int sel_width_p  = 1
+    ,parameter int num_inputs_p = 2
 )(
     input  logic [width_p-1:0] i_0
     ,
     input  logic [width_p-1:0] i_1
-    ,
-    input  logic [width_p-1:0] i_2
-    ,
-    input  logic [width_p-1:0] i_3
-    ,
-    input  logic [width_p-1:0] i_4
-    ,
-    input  logic [width_p-1:0] i_5
-    ,
-    input  logic [width_p-1:0] i_6
-    ,
-    input  logic [width_p-1:0] i_7
-    ,
-    input  logic [width_p-1:0] i_8
     ,
     input  logic             prog_done_i
     ,input  logic [sel_width_p-1:0] prog_data_i
@@ -997,93 +1292,790 @@ module sw_9_1b #(
             out_o = '0;
         end else begin
             unique case (prog_data_i)
-                4'd0: out_o = i_0;
-                4'd1: out_o = i_1;
-                4'd2: out_o = i_2;
-                4'd3: out_o = i_3;
-                4'd4: out_o = i_4;
-                4'd5: out_o = i_5;
-                4'd6: out_o = i_6;
-                4'd7: out_o = i_7;
-                4'd8: out_o = i_8;
+                1'd0: out_o = i_0;
+                1'd1: out_o = i_1;
                 default: out_o = '0;
             endcase
         end
     end
 
 endmodule
+// END SOURCE: rtl/src/generated/sw_2_1b.sv
 // ============================================================================
-// END SOURCE: rta_v4/rtl/sw_9_1b.sv
+// BEGIN SOURCE: rtl/src/generated/rta_v4_skew_bypass_2x8b_pred.sv
 // ============================================================================
+// SystemVerilog auto-generated by DORA RTL generator
+// Copyright (c) 2025, Pᴺ Computer Engineering Lab.
 
+module rta_v4_skew_bypass_2x8b_pred (
+    // Ports
+    input  logic [7:0] data0_bypass_i,
+    input  logic [7:0] data0_delay_i,
+    output logic [7:0] data0_o,
+    input  logic [7:0] data1_bypass_i,
+    input  logic [7:0] data1_delay_i,
+    output logic [7:0] data1_o,
+    input  logic pred_bypass_i,
+    input  logic pred_delay_i,
+    output logic pred_o,
+    input  logic prog_clk_i,
+    input  logic prog_rst_i,
+    input  logic prog_done_i,
+    input  logic prog_we_i,
+    input  logic prog_din_i,
+    output logic prog_dout_o
+);
+    logic [7:0] i_sw_data0_o_out_o;
+    logic [7:0] i_sw_data1_o_out_o;
+    logic i_sw_pred_o_out_o;
+    logic i_prog_data_i_sw_data0_o_prog_data_o;
+    logic i_prog_data_i_sw_data0_o_prog_dout_o;
+    logic i_prog_data_i_sw_data1_o_prog_data_o;
+    logic i_prog_data_i_sw_data1_o_prog_dout_o;
+    logic i_prog_data_i_sw_pred_o_prog_data_o;
+    logic i_prog_data_i_sw_pred_o_prog_dout_o;
+
+    // Unconnected Wires
+
+    // Instances
+    sw_2_8b i_sw_data0_o (
+        .i_0(data0_bypass_i),
+        .i_1(data0_delay_i),
+        .out_o(i_sw_data0_o_out_o),
+        .prog_done_i(prog_done_i),
+        .prog_data_i(i_prog_data_i_sw_data0_o_prog_data_o)
+    );
+
+    sw_2_8b i_sw_data1_o (
+        .i_0(data1_bypass_i),
+        .i_1(data1_delay_i),
+        .out_o(i_sw_data1_o_out_o),
+        .prog_done_i(prog_done_i),
+        .prog_data_i(i_prog_data_i_sw_data1_o_prog_data_o)
+    );
+
+    sw_2_1b i_sw_pred_o (
+        .i_0(pred_bypass_i),
+        .i_1(pred_delay_i),
+        .out_o(i_sw_pred_o_out_o),
+        .prog_done_i(prog_done_i),
+        .prog_data_i(i_prog_data_i_sw_pred_o_prog_data_o)
+    );
+
+    scanchain_data_d1_contexts_1 i_prog_data_i_sw_data0_o (
+        .prog_data_o(i_prog_data_i_sw_data0_o_prog_data_o),
+        .prog_clk_i(prog_clk_i),
+        .prog_rst_i(prog_rst_i),
+        .prog_done_i(prog_done_i),
+        .prog_we_i(prog_we_i),
+        .prog_din_i(prog_din_i),
+        .prog_dout_o(i_prog_data_i_sw_data0_o_prog_dout_o)
+    );
+
+    scanchain_data_d1_contexts_1 i_prog_data_i_sw_data1_o (
+        .prog_data_o(i_prog_data_i_sw_data1_o_prog_data_o),
+        .prog_clk_i(prog_clk_i),
+        .prog_rst_i(prog_rst_i),
+        .prog_done_i(prog_done_i),
+        .prog_we_i(prog_we_i),
+        .prog_din_i(i_prog_data_i_sw_data0_o_prog_dout_o),
+        .prog_dout_o(i_prog_data_i_sw_data1_o_prog_dout_o)
+    );
+
+    scanchain_data_d1_contexts_1 i_prog_data_i_sw_pred_o (
+        .prog_data_o(i_prog_data_i_sw_pred_o_prog_data_o),
+        .prog_clk_i(prog_clk_i),
+        .prog_rst_i(prog_rst_i),
+        .prog_done_i(prog_done_i),
+        .prog_we_i(prog_we_i),
+        .prog_din_i(i_prog_data_i_sw_data1_o_prog_dout_o),
+        .prog_dout_o(i_prog_data_i_sw_pred_o_prog_dout_o)
+    );
+
+    // Output Port Connections
+    assign data0_o = i_sw_data0_o_out_o;
+    assign data1_o = i_sw_data1_o_out_o;
+    assign pred_o = i_sw_pred_o_out_o;
+    assign prog_dout_o = i_prog_data_i_sw_pred_o_prog_dout_o;
+endmodule
+// END SOURCE: rtl/src/generated/rta_v4_skew_bypass_2x8b_pred.sv
 // ============================================================================
-// BEGIN SOURCE: rta_v4/rtl/reg_1b.sv
+// BEGIN SOURCE: rtl/src/generated/rta_v4_input_boundary_cell_2x8b_pred_skew1.sv
 // ============================================================================
-// bsg_dffre.tmpl.sv - Wrapper for bsg_dff_reset_en
-// Dora & Claude (AI-generated)
-// bsg_defines.sv is inlined at the start of this bundle.
+// SystemVerilog auto-generated by DORA RTL generator
+// Copyright (c) 2025, Pᴺ Computer Engineering Lab.
+
+module rta_v4_input_boundary_cell_2x8b_pred_skew1 (
+    // Ports
+    input  logic clk_i,
+    input  logic reset_i,
+    input  logic en_i,
+    output logic [7:0] data0_to_fabric,
+    output logic [7:0] data1_to_fabric,
+    output logic pred_to_fabric,
+    input  logic [7:0] ipin_x0y0_0,
+    input  logic [7:0] ipin_x0y0_1,
+    input  logic ipin_x0y0_2,
+    output logic prog_active_data0_o,
+    output logic prog_active_data1_o,
+    output logic prog_active_pred_o,
+    input  logic prog_clk_i,
+    input  logic prog_rst_i,
+    input  logic prog_done_i,
+    input  logic prog_we_i,
+    input  logic prog_din_i,
+    output logic prog_dout_o,
+    output logic prog_we_o
+);
+    logic [7:0] input_io_tile_data0_to_fabric;
+    logic [7:0] input_io_tile_data1_to_fabric;
+    logic input_io_tile_pred_to_fabric;
+    logic input_io_tile_prog_active_data0_o;
+    logic input_io_tile_prog_active_data1_o;
+    logic input_io_tile_prog_active_pred_o;
+    logic input_io_tile_prog_dout_o;
+    logic [7:0] skew_s0_data0_reg_data_o;
+    logic [7:0] skew_s0_data1_reg_data_o;
+    logic skew_s0_pred_reg_data_o;
+    logic [7:0] skew_s0_mux_data0_o;
+    logic [7:0] skew_s0_mux_data1_o;
+    logic skew_s0_mux_pred_o;
+    logic skew_s0_mux_prog_dout_o;
+    logic i_buf_prog_rst_l0_data_o;
+    logic i_buf_prog_done_l0_data_o;
+    logic i_scanchain_head_prog_we_o;
+    logic i_scanchain_head_prog_dout_o;
+    logic i_scanchain_tail_prog_we_o;
+    logic i_scanchain_tail_prog_dout_o;
+
+    // Unconnected Wires
+
+    // Instances
+    rta_v4_input_io_tile_2x8b_pred input_io_tile (
+        .clk_i(clk_i),
+        .reset_i(reset_i),
+        .en_i(en_i),
+        .data0_to_fabric(input_io_tile_data0_to_fabric),
+        .data1_to_fabric(input_io_tile_data1_to_fabric),
+        .ipin_x0y0_2(ipin_x0y0_2),
+        .pred_to_fabric(input_io_tile_pred_to_fabric),
+        .ipin_x0y0_0(ipin_x0y0_0),
+        .ipin_x0y0_1(ipin_x0y0_1),
+        .prog_active_data0_o(input_io_tile_prog_active_data0_o),
+        .prog_active_data1_o(input_io_tile_prog_active_data1_o),
+        .prog_active_pred_o(input_io_tile_prog_active_pred_o),
+        .prog_clk_i(prog_clk_i),
+        .prog_rst_i(i_buf_prog_rst_l0_data_o),
+        .prog_done_i(i_buf_prog_done_l0_data_o),
+        .prog_we_i(i_scanchain_head_prog_we_o),
+        .prog_din_i(i_scanchain_head_prog_dout_o),
+        .prog_dout_o(input_io_tile_prog_dout_o)
+    );
+
+    reg_8b skew_s0_data0_reg (
+        .clk_i(clk_i),
+        .reset_i(reset_i),
+        .en_i(en_i),
+        .data_i(input_io_tile_data0_to_fabric),
+        .data_o(skew_s0_data0_reg_data_o)
+    );
+
+    reg_8b skew_s0_data1_reg (
+        .clk_i(clk_i),
+        .reset_i(reset_i),
+        .en_i(en_i),
+        .data_i(input_io_tile_data1_to_fabric),
+        .data_o(skew_s0_data1_reg_data_o)
+    );
+
+    reg_1b skew_s0_pred_reg (
+        .clk_i(clk_i),
+        .reset_i(reset_i),
+        .en_i(en_i),
+        .data_i(input_io_tile_pred_to_fabric),
+        .data_o(skew_s0_pred_reg_data_o)
+    );
+
+    rta_v4_skew_bypass_2x8b_pred skew_s0_mux (
+        .data0_bypass_i(input_io_tile_data0_to_fabric),
+        .data0_delay_i(skew_s0_data0_reg_data_o),
+        .data0_o(skew_s0_mux_data0_o),
+        .data1_bypass_i(input_io_tile_data1_to_fabric),
+        .data1_delay_i(skew_s0_data1_reg_data_o),
+        .data1_o(skew_s0_mux_data1_o),
+        .pred_bypass_i(input_io_tile_pred_to_fabric),
+        .pred_delay_i(skew_s0_pred_reg_data_o),
+        .pred_o(skew_s0_mux_pred_o),
+        .prog_clk_i(prog_clk_i),
+        .prog_rst_i(i_buf_prog_rst_l0_data_o),
+        .prog_done_i(i_buf_prog_done_l0_data_o),
+        .prog_we_i(i_scanchain_head_prog_we_o),
+        .prog_din_i(input_io_tile_prog_dout_o),
+        .prog_dout_o(skew_s0_mux_prog_dout_o)
+    );
+
+    simple_buf i_buf_prog_rst_l0 (
+        .clk_i(prog_clk_i),
+        .data_i(prog_rst_i),
+        .data_o(i_buf_prog_rst_l0_data_o)
+    );
+
+    simple_bufr i_buf_prog_done_l0 (
+        .clk_i(prog_clk_i),
+        .reset_i(i_buf_prog_rst_l0_data_o),
+        .data_i(prog_done_i),
+        .data_o(i_buf_prog_done_l0_data_o)
+    );
+
+    scanchain_delim i_scanchain_head (
+        .prog_we_o(i_scanchain_head_prog_we_o),
+        .prog_clk_i(prog_clk_i),
+        .prog_rst_i(i_buf_prog_rst_l0_data_o),
+        .prog_done_i(i_buf_prog_done_l0_data_o),
+        .prog_we_i(prog_we_i),
+        .prog_din_i(prog_din_i),
+        .prog_dout_o(i_scanchain_head_prog_dout_o)
+    );
+
+    scanchain_delim i_scanchain_tail (
+        .prog_we_o(i_scanchain_tail_prog_we_o),
+        .prog_clk_i(prog_clk_i),
+        .prog_rst_i(i_buf_prog_rst_l0_data_o),
+        .prog_done_i(i_buf_prog_done_l0_data_o),
+        .prog_we_i(i_scanchain_head_prog_we_o),
+        .prog_din_i(skew_s0_mux_prog_dout_o),
+        .prog_dout_o(i_scanchain_tail_prog_dout_o)
+    );
+
+    // Output Port Connections
+    assign data0_to_fabric = skew_s0_mux_data0_o;
+    assign data1_to_fabric = skew_s0_mux_data1_o;
+    assign pred_to_fabric = skew_s0_mux_pred_o;
+    assign prog_active_data0_o = input_io_tile_prog_active_data0_o;
+    assign prog_active_data1_o = input_io_tile_prog_active_data1_o;
+    assign prog_active_pred_o = input_io_tile_prog_active_pred_o;
+    assign prog_dout_o = i_scanchain_tail_prog_dout_o;
+    assign prog_we_o = i_scanchain_tail_prog_we_o;
+endmodule
+// END SOURCE: rtl/src/generated/rta_v4_input_boundary_cell_2x8b_pred_skew1.sv
+// ============================================================================
+// BEGIN SOURCE: rtl/src/generated/rta_v4_input_boundary_cell_2x8b_pred_skew2.sv
+// ============================================================================
+// SystemVerilog auto-generated by DORA RTL generator
+// Copyright (c) 2025, Pᴺ Computer Engineering Lab.
+
+module rta_v4_input_boundary_cell_2x8b_pred_skew2 (
+    // Ports
+    input  logic clk_i,
+    input  logic reset_i,
+    input  logic en_i,
+    output logic [7:0] data0_to_fabric,
+    output logic [7:0] data1_to_fabric,
+    output logic pred_to_fabric,
+    input  logic [7:0] ipin_x0y0_0,
+    input  logic [7:0] ipin_x0y0_1,
+    input  logic ipin_x0y0_2,
+    output logic prog_active_data0_o,
+    output logic prog_active_data1_o,
+    output logic prog_active_pred_o,
+    input  logic prog_clk_i,
+    input  logic prog_rst_i,
+    input  logic prog_done_i,
+    input  logic prog_we_i,
+    input  logic prog_din_i,
+    output logic prog_dout_o,
+    output logic prog_we_o
+);
+    logic [7:0] input_io_tile_data0_to_fabric;
+    logic [7:0] input_io_tile_data1_to_fabric;
+    logic input_io_tile_pred_to_fabric;
+    logic input_io_tile_prog_active_data0_o;
+    logic input_io_tile_prog_active_data1_o;
+    logic input_io_tile_prog_active_pred_o;
+    logic input_io_tile_prog_dout_o;
+    logic [7:0] skew_s0_data0_reg_data_o;
+    logic [7:0] skew_s0_data1_reg_data_o;
+    logic skew_s0_pred_reg_data_o;
+    logic [7:0] skew_s0_mux_data0_o;
+    logic [7:0] skew_s0_mux_data1_o;
+    logic skew_s0_mux_pred_o;
+    logic skew_s0_mux_prog_dout_o;
+    logic [7:0] skew_s1_data0_reg_data_o;
+    logic [7:0] skew_s1_data1_reg_data_o;
+    logic skew_s1_pred_reg_data_o;
+    logic [7:0] skew_s1_mux_data0_o;
+    logic [7:0] skew_s1_mux_data1_o;
+    logic skew_s1_mux_pred_o;
+    logic skew_s1_mux_prog_dout_o;
+    logic i_buf_prog_rst_l0_data_o;
+    logic i_buf_prog_done_l0_data_o;
+    logic i_scanchain_head_prog_we_o;
+    logic i_scanchain_head_prog_dout_o;
+    logic i_scanchain_tail_prog_we_o;
+    logic i_scanchain_tail_prog_dout_o;
+
+    // Unconnected Wires
+
+    // Instances
+    rta_v4_input_io_tile_2x8b_pred input_io_tile (
+        .clk_i(clk_i),
+        .reset_i(reset_i),
+        .en_i(en_i),
+        .data0_to_fabric(input_io_tile_data0_to_fabric),
+        .data1_to_fabric(input_io_tile_data1_to_fabric),
+        .ipin_x0y0_2(ipin_x0y0_2),
+        .pred_to_fabric(input_io_tile_pred_to_fabric),
+        .ipin_x0y0_0(ipin_x0y0_0),
+        .ipin_x0y0_1(ipin_x0y0_1),
+        .prog_active_data0_o(input_io_tile_prog_active_data0_o),
+        .prog_active_data1_o(input_io_tile_prog_active_data1_o),
+        .prog_active_pred_o(input_io_tile_prog_active_pred_o),
+        .prog_clk_i(prog_clk_i),
+        .prog_rst_i(i_buf_prog_rst_l0_data_o),
+        .prog_done_i(i_buf_prog_done_l0_data_o),
+        .prog_we_i(i_scanchain_head_prog_we_o),
+        .prog_din_i(i_scanchain_head_prog_dout_o),
+        .prog_dout_o(input_io_tile_prog_dout_o)
+    );
+
+    reg_8b skew_s0_data0_reg (
+        .clk_i(clk_i),
+        .reset_i(reset_i),
+        .en_i(en_i),
+        .data_i(input_io_tile_data0_to_fabric),
+        .data_o(skew_s0_data0_reg_data_o)
+    );
+
+    reg_8b skew_s0_data1_reg (
+        .clk_i(clk_i),
+        .reset_i(reset_i),
+        .en_i(en_i),
+        .data_i(input_io_tile_data1_to_fabric),
+        .data_o(skew_s0_data1_reg_data_o)
+    );
+
+    reg_1b skew_s0_pred_reg (
+        .clk_i(clk_i),
+        .reset_i(reset_i),
+        .en_i(en_i),
+        .data_i(input_io_tile_pred_to_fabric),
+        .data_o(skew_s0_pred_reg_data_o)
+    );
+
+    rta_v4_skew_bypass_2x8b_pred skew_s0_mux (
+        .data0_bypass_i(input_io_tile_data0_to_fabric),
+        .data0_delay_i(skew_s0_data0_reg_data_o),
+        .data0_o(skew_s0_mux_data0_o),
+        .data1_bypass_i(input_io_tile_data1_to_fabric),
+        .data1_delay_i(skew_s0_data1_reg_data_o),
+        .data1_o(skew_s0_mux_data1_o),
+        .pred_bypass_i(input_io_tile_pred_to_fabric),
+        .pred_delay_i(skew_s0_pred_reg_data_o),
+        .pred_o(skew_s0_mux_pred_o),
+        .prog_clk_i(prog_clk_i),
+        .prog_rst_i(i_buf_prog_rst_l0_data_o),
+        .prog_done_i(i_buf_prog_done_l0_data_o),
+        .prog_we_i(i_scanchain_head_prog_we_o),
+        .prog_din_i(input_io_tile_prog_dout_o),
+        .prog_dout_o(skew_s0_mux_prog_dout_o)
+    );
+
+    reg_8b skew_s1_data0_reg (
+        .clk_i(clk_i),
+        .reset_i(reset_i),
+        .en_i(en_i),
+        .data_i(skew_s0_mux_data0_o),
+        .data_o(skew_s1_data0_reg_data_o)
+    );
+
+    reg_8b skew_s1_data1_reg (
+        .clk_i(clk_i),
+        .reset_i(reset_i),
+        .en_i(en_i),
+        .data_i(skew_s0_mux_data1_o),
+        .data_o(skew_s1_data1_reg_data_o)
+    );
+
+    reg_1b skew_s1_pred_reg (
+        .clk_i(clk_i),
+        .reset_i(reset_i),
+        .en_i(en_i),
+        .data_i(skew_s0_mux_pred_o),
+        .data_o(skew_s1_pred_reg_data_o)
+    );
+
+    rta_v4_skew_bypass_2x8b_pred skew_s1_mux (
+        .data0_bypass_i(skew_s0_mux_data0_o),
+        .data0_delay_i(skew_s1_data0_reg_data_o),
+        .data0_o(skew_s1_mux_data0_o),
+        .data1_bypass_i(skew_s0_mux_data1_o),
+        .data1_delay_i(skew_s1_data1_reg_data_o),
+        .data1_o(skew_s1_mux_data1_o),
+        .pred_bypass_i(skew_s0_mux_pred_o),
+        .pred_delay_i(skew_s1_pred_reg_data_o),
+        .pred_o(skew_s1_mux_pred_o),
+        .prog_clk_i(prog_clk_i),
+        .prog_rst_i(i_buf_prog_rst_l0_data_o),
+        .prog_done_i(i_buf_prog_done_l0_data_o),
+        .prog_we_i(i_scanchain_head_prog_we_o),
+        .prog_din_i(skew_s0_mux_prog_dout_o),
+        .prog_dout_o(skew_s1_mux_prog_dout_o)
+    );
+
+    simple_buf i_buf_prog_rst_l0 (
+        .clk_i(prog_clk_i),
+        .data_i(prog_rst_i),
+        .data_o(i_buf_prog_rst_l0_data_o)
+    );
+
+    simple_bufr i_buf_prog_done_l0 (
+        .clk_i(prog_clk_i),
+        .reset_i(i_buf_prog_rst_l0_data_o),
+        .data_i(prog_done_i),
+        .data_o(i_buf_prog_done_l0_data_o)
+    );
+
+    scanchain_delim i_scanchain_head (
+        .prog_we_o(i_scanchain_head_prog_we_o),
+        .prog_clk_i(prog_clk_i),
+        .prog_rst_i(i_buf_prog_rst_l0_data_o),
+        .prog_done_i(i_buf_prog_done_l0_data_o),
+        .prog_we_i(prog_we_i),
+        .prog_din_i(prog_din_i),
+        .prog_dout_o(i_scanchain_head_prog_dout_o)
+    );
+
+    scanchain_delim i_scanchain_tail (
+        .prog_we_o(i_scanchain_tail_prog_we_o),
+        .prog_clk_i(prog_clk_i),
+        .prog_rst_i(i_buf_prog_rst_l0_data_o),
+        .prog_done_i(i_buf_prog_done_l0_data_o),
+        .prog_we_i(i_scanchain_head_prog_we_o),
+        .prog_din_i(skew_s1_mux_prog_dout_o),
+        .prog_dout_o(i_scanchain_tail_prog_dout_o)
+    );
+
+    // Output Port Connections
+    assign data0_to_fabric = skew_s1_mux_data0_o;
+    assign data1_to_fabric = skew_s1_mux_data1_o;
+    assign pred_to_fabric = skew_s1_mux_pred_o;
+    assign prog_active_data0_o = input_io_tile_prog_active_data0_o;
+    assign prog_active_data1_o = input_io_tile_prog_active_data1_o;
+    assign prog_active_pred_o = input_io_tile_prog_active_pred_o;
+    assign prog_dout_o = i_scanchain_tail_prog_dout_o;
+    assign prog_we_o = i_scanchain_tail_prog_we_o;
+endmodule
+// END SOURCE: rtl/src/generated/rta_v4_input_boundary_cell_2x8b_pred_skew2.sv
+// ============================================================================
+// BEGIN SOURCE: rtl/src/generated/rta_v4_input_boundary_cell_2x8b_pred_skew3.sv
+// ============================================================================
+// SystemVerilog auto-generated by DORA RTL generator
+// Copyright (c) 2025, Pᴺ Computer Engineering Lab.
+
+module rta_v4_input_boundary_cell_2x8b_pred_skew3 (
+    // Ports
+    input  logic clk_i,
+    input  logic reset_i,
+    input  logic en_i,
+    output logic [7:0] data0_to_fabric,
+    output logic [7:0] data1_to_fabric,
+    output logic pred_to_fabric,
+    input  logic [7:0] ipin_x0y0_0,
+    input  logic [7:0] ipin_x0y0_1,
+    input  logic ipin_x0y0_2,
+    output logic prog_active_data0_o,
+    output logic prog_active_data1_o,
+    output logic prog_active_pred_o,
+    input  logic prog_clk_i,
+    input  logic prog_rst_i,
+    input  logic prog_done_i,
+    input  logic prog_we_i,
+    input  logic prog_din_i,
+    output logic prog_dout_o,
+    output logic prog_we_o
+);
+    logic [7:0] input_io_tile_data0_to_fabric;
+    logic [7:0] input_io_tile_data1_to_fabric;
+    logic input_io_tile_pred_to_fabric;
+    logic input_io_tile_prog_active_data0_o;
+    logic input_io_tile_prog_active_data1_o;
+    logic input_io_tile_prog_active_pred_o;
+    logic input_io_tile_prog_dout_o;
+    logic [7:0] skew_s0_data0_reg_data_o;
+    logic [7:0] skew_s0_data1_reg_data_o;
+    logic skew_s0_pred_reg_data_o;
+    logic [7:0] skew_s0_mux_data0_o;
+    logic [7:0] skew_s0_mux_data1_o;
+    logic skew_s0_mux_pred_o;
+    logic skew_s0_mux_prog_dout_o;
+    logic [7:0] skew_s1_data0_reg_data_o;
+    logic [7:0] skew_s1_data1_reg_data_o;
+    logic skew_s1_pred_reg_data_o;
+    logic [7:0] skew_s1_mux_data0_o;
+    logic [7:0] skew_s1_mux_data1_o;
+    logic skew_s1_mux_pred_o;
+    logic skew_s1_mux_prog_dout_o;
+    logic [7:0] skew_s2_data0_reg_data_o;
+    logic [7:0] skew_s2_data1_reg_data_o;
+    logic skew_s2_pred_reg_data_o;
+    logic [7:0] skew_s2_mux_data0_o;
+    logic [7:0] skew_s2_mux_data1_o;
+    logic skew_s2_mux_pred_o;
+    logic skew_s2_mux_prog_dout_o;
+    logic i_buf_prog_rst_l0_data_o;
+    logic i_buf_prog_done_l0_data_o;
+    logic i_scanchain_head_prog_we_o;
+    logic i_scanchain_head_prog_dout_o;
+    logic i_scanchain_tail_prog_we_o;
+    logic i_scanchain_tail_prog_dout_o;
+
+    // Unconnected Wires
+
+    // Instances
+    rta_v4_input_io_tile_2x8b_pred input_io_tile (
+        .clk_i(clk_i),
+        .reset_i(reset_i),
+        .en_i(en_i),
+        .data0_to_fabric(input_io_tile_data0_to_fabric),
+        .data1_to_fabric(input_io_tile_data1_to_fabric),
+        .ipin_x0y0_2(ipin_x0y0_2),
+        .pred_to_fabric(input_io_tile_pred_to_fabric),
+        .ipin_x0y0_0(ipin_x0y0_0),
+        .ipin_x0y0_1(ipin_x0y0_1),
+        .prog_active_data0_o(input_io_tile_prog_active_data0_o),
+        .prog_active_data1_o(input_io_tile_prog_active_data1_o),
+        .prog_active_pred_o(input_io_tile_prog_active_pred_o),
+        .prog_clk_i(prog_clk_i),
+        .prog_rst_i(i_buf_prog_rst_l0_data_o),
+        .prog_done_i(i_buf_prog_done_l0_data_o),
+        .prog_we_i(i_scanchain_head_prog_we_o),
+        .prog_din_i(i_scanchain_head_prog_dout_o),
+        .prog_dout_o(input_io_tile_prog_dout_o)
+    );
+
+    reg_8b skew_s0_data0_reg (
+        .clk_i(clk_i),
+        .reset_i(reset_i),
+        .en_i(en_i),
+        .data_i(input_io_tile_data0_to_fabric),
+        .data_o(skew_s0_data0_reg_data_o)
+    );
+
+    reg_8b skew_s0_data1_reg (
+        .clk_i(clk_i),
+        .reset_i(reset_i),
+        .en_i(en_i),
+        .data_i(input_io_tile_data1_to_fabric),
+        .data_o(skew_s0_data1_reg_data_o)
+    );
+
+    reg_1b skew_s0_pred_reg (
+        .clk_i(clk_i),
+        .reset_i(reset_i),
+        .en_i(en_i),
+        .data_i(input_io_tile_pred_to_fabric),
+        .data_o(skew_s0_pred_reg_data_o)
+    );
+
+    rta_v4_skew_bypass_2x8b_pred skew_s0_mux (
+        .data0_bypass_i(input_io_tile_data0_to_fabric),
+        .data0_delay_i(skew_s0_data0_reg_data_o),
+        .data0_o(skew_s0_mux_data0_o),
+        .data1_bypass_i(input_io_tile_data1_to_fabric),
+        .data1_delay_i(skew_s0_data1_reg_data_o),
+        .data1_o(skew_s0_mux_data1_o),
+        .pred_bypass_i(input_io_tile_pred_to_fabric),
+        .pred_delay_i(skew_s0_pred_reg_data_o),
+        .pred_o(skew_s0_mux_pred_o),
+        .prog_clk_i(prog_clk_i),
+        .prog_rst_i(i_buf_prog_rst_l0_data_o),
+        .prog_done_i(i_buf_prog_done_l0_data_o),
+        .prog_we_i(i_scanchain_head_prog_we_o),
+        .prog_din_i(input_io_tile_prog_dout_o),
+        .prog_dout_o(skew_s0_mux_prog_dout_o)
+    );
+
+    reg_8b skew_s1_data0_reg (
+        .clk_i(clk_i),
+        .reset_i(reset_i),
+        .en_i(en_i),
+        .data_i(skew_s0_mux_data0_o),
+        .data_o(skew_s1_data0_reg_data_o)
+    );
+
+    reg_8b skew_s1_data1_reg (
+        .clk_i(clk_i),
+        .reset_i(reset_i),
+        .en_i(en_i),
+        .data_i(skew_s0_mux_data1_o),
+        .data_o(skew_s1_data1_reg_data_o)
+    );
+
+    reg_1b skew_s1_pred_reg (
+        .clk_i(clk_i),
+        .reset_i(reset_i),
+        .en_i(en_i),
+        .data_i(skew_s0_mux_pred_o),
+        .data_o(skew_s1_pred_reg_data_o)
+    );
+
+    rta_v4_skew_bypass_2x8b_pred skew_s1_mux (
+        .data0_bypass_i(skew_s0_mux_data0_o),
+        .data0_delay_i(skew_s1_data0_reg_data_o),
+        .data0_o(skew_s1_mux_data0_o),
+        .data1_bypass_i(skew_s0_mux_data1_o),
+        .data1_delay_i(skew_s1_data1_reg_data_o),
+        .data1_o(skew_s1_mux_data1_o),
+        .pred_bypass_i(skew_s0_mux_pred_o),
+        .pred_delay_i(skew_s1_pred_reg_data_o),
+        .pred_o(skew_s1_mux_pred_o),
+        .prog_clk_i(prog_clk_i),
+        .prog_rst_i(i_buf_prog_rst_l0_data_o),
+        .prog_done_i(i_buf_prog_done_l0_data_o),
+        .prog_we_i(i_scanchain_head_prog_we_o),
+        .prog_din_i(skew_s0_mux_prog_dout_o),
+        .prog_dout_o(skew_s1_mux_prog_dout_o)
+    );
+
+    reg_8b skew_s2_data0_reg (
+        .clk_i(clk_i),
+        .reset_i(reset_i),
+        .en_i(en_i),
+        .data_i(skew_s1_mux_data0_o),
+        .data_o(skew_s2_data0_reg_data_o)
+    );
+
+    reg_8b skew_s2_data1_reg (
+        .clk_i(clk_i),
+        .reset_i(reset_i),
+        .en_i(en_i),
+        .data_i(skew_s1_mux_data1_o),
+        .data_o(skew_s2_data1_reg_data_o)
+    );
+
+    reg_1b skew_s2_pred_reg (
+        .clk_i(clk_i),
+        .reset_i(reset_i),
+        .en_i(en_i),
+        .data_i(skew_s1_mux_pred_o),
+        .data_o(skew_s2_pred_reg_data_o)
+    );
+
+    rta_v4_skew_bypass_2x8b_pred skew_s2_mux (
+        .data0_bypass_i(skew_s1_mux_data0_o),
+        .data0_delay_i(skew_s2_data0_reg_data_o),
+        .data0_o(skew_s2_mux_data0_o),
+        .data1_bypass_i(skew_s1_mux_data1_o),
+        .data1_delay_i(skew_s2_data1_reg_data_o),
+        .data1_o(skew_s2_mux_data1_o),
+        .pred_bypass_i(skew_s1_mux_pred_o),
+        .pred_delay_i(skew_s2_pred_reg_data_o),
+        .pred_o(skew_s2_mux_pred_o),
+        .prog_clk_i(prog_clk_i),
+        .prog_rst_i(i_buf_prog_rst_l0_data_o),
+        .prog_done_i(i_buf_prog_done_l0_data_o),
+        .prog_we_i(i_scanchain_head_prog_we_o),
+        .prog_din_i(skew_s1_mux_prog_dout_o),
+        .prog_dout_o(skew_s2_mux_prog_dout_o)
+    );
+
+    simple_buf i_buf_prog_rst_l0 (
+        .clk_i(prog_clk_i),
+        .data_i(prog_rst_i),
+        .data_o(i_buf_prog_rst_l0_data_o)
+    );
+
+    simple_bufr i_buf_prog_done_l0 (
+        .clk_i(prog_clk_i),
+        .reset_i(i_buf_prog_rst_l0_data_o),
+        .data_i(prog_done_i),
+        .data_o(i_buf_prog_done_l0_data_o)
+    );
+
+    scanchain_delim i_scanchain_head (
+        .prog_we_o(i_scanchain_head_prog_we_o),
+        .prog_clk_i(prog_clk_i),
+        .prog_rst_i(i_buf_prog_rst_l0_data_o),
+        .prog_done_i(i_buf_prog_done_l0_data_o),
+        .prog_we_i(prog_we_i),
+        .prog_din_i(prog_din_i),
+        .prog_dout_o(i_scanchain_head_prog_dout_o)
+    );
+
+    scanchain_delim i_scanchain_tail (
+        .prog_we_o(i_scanchain_tail_prog_we_o),
+        .prog_clk_i(prog_clk_i),
+        .prog_rst_i(i_buf_prog_rst_l0_data_o),
+        .prog_done_i(i_buf_prog_done_l0_data_o),
+        .prog_we_i(i_scanchain_head_prog_we_o),
+        .prog_din_i(skew_s2_mux_prog_dout_o),
+        .prog_dout_o(i_scanchain_tail_prog_dout_o)
+    );
+
+    // Output Port Connections
+    assign data0_to_fabric = skew_s2_mux_data0_o;
+    assign data1_to_fabric = skew_s2_mux_data1_o;
+    assign pred_to_fabric = skew_s2_mux_pred_o;
+    assign prog_active_data0_o = input_io_tile_prog_active_data0_o;
+    assign prog_active_data1_o = input_io_tile_prog_active_data1_o;
+    assign prog_active_pred_o = input_io_tile_prog_active_pred_o;
+    assign prog_dout_o = i_scanchain_tail_prog_dout_o;
+    assign prog_we_o = i_scanchain_tail_prog_we_o;
+endmodule
+// END SOURCE: rtl/src/generated/rta_v4_input_boundary_cell_2x8b_pred_skew3.sv
+// ============================================================================
+// BEGIN SOURCE: rtl/src/generated/rta_v4_active_or3.sv
+// ============================================================================
+// rta_v4_active_or3.tmpl.sv
+// Shwet & Claude (AI-generated)
+//
+// Trivial 3-input OR primitive used to combine the per-tile data0/data1/pred
+// pad ``prog_active_o`` sidebands into a single per-tile "scheduled" signal
+// at the array level. Any activated pad in a tile implies the tile is
+// scheduled for an op, so OR is the canonical reduction.
+
 `timescale 1ns/1ps
 
-module reg_1b #(
-    parameter int width_p = 1
-)(
-    input  logic             clk_i
-    ,input  logic             reset_i
-    ,input  logic             en_i
-    ,input  logic [width_p-1:0] data_i
-    ,output logic [width_p-1:0] data_o
+module rta_v4_active_or3 (
+    input  logic active_0_i
+   ,input  logic active_1_i
+   ,input  logic active_2_i
+
+   ,output logic or_o
 );
 
-    bsg_dff_reset_en #(.width_p(width_p)
-                      ,.reset_val_p(0)
-                      )
-      dff (.clk_i(clk_i)
-          ,.reset_i(reset_i)
-          ,.en_i(en_i)
-          ,.data_i(data_i)
-          ,.data_o(data_o)
-          );
+  assign or_o = active_0_i | active_1_i | active_2_i;
 
 endmodule
+// END SOURCE: rtl/src/generated/rta_v4_active_or3.sv
 // ============================================================================
-// END SOURCE: rta_v4/rtl/reg_1b.sv
+// BEGIN SOURCE: rtl/src/generated/rta_v4_active_pack4.sv
 // ============================================================================
+// rta_v4_active_pack4.tmpl.sv
+// Shwet & Claude (AI-generated)
+//
+// Trivial concat primitive: packs four 1-bit *_active_o sidebands into one
+// 4-bit bus. Used by rta_v4_array to aggregate per-tile activity sidebands
+// per edge (N/W input, S/E output). Arch ports cannot be bit-indexed in
+// Dora, so this structural primitive is the canonical concat operator.
 
-// ============================================================================
-// BEGIN SOURCE: rta_v4/rtl/reg_8b.sv
-// ============================================================================
-// bsg_dffre.tmpl.sv - Wrapper for bsg_dff_reset_en
-// Dora & Claude (AI-generated)
-// bsg_defines.sv is inlined at the start of this bundle.
 `timescale 1ns/1ps
 
-module reg_8b #(
-    parameter int width_p = 8
-)(
-    input  logic             clk_i
-    ,input  logic             reset_i
-    ,input  logic             en_i
-    ,input  logic [width_p-1:0] data_i
-    ,output logic [width_p-1:0] data_o
+module rta_v4_active_pack4 (
+    input  logic       active_0_i
+   ,input  logic       active_1_i
+   ,input  logic       active_2_i
+   ,input  logic       active_3_i
+
+   ,output logic [3:0] active_o
 );
 
-    bsg_dff_reset_en #(.width_p(width_p)
-                      ,.reset_val_p(0)
-                      )
-      dff (.clk_i(clk_i)
-          ,.reset_i(reset_i)
-          ,.en_i(en_i)
-          ,.data_i(data_i)
-          ,.data_o(data_o)
-          );
+  assign active_o = {active_3_i, active_2_i, active_1_i, active_0_i};
 
 endmodule
+// END SOURCE: rtl/src/generated/rta_v4_active_pack4.sv
 // ============================================================================
-// END SOURCE: rta_v4/rtl/reg_8b.sv
-// ============================================================================
-
-// ============================================================================
-// BEGIN SOURCE: rta_v4/rtl/rta_alu.sv
+// BEGIN SOURCE: rtl/src/generated/rta_alu.sv
 // ============================================================================
 // rta_alu.tmpl.sv
 // Shwet & Codex (AI-generated)
@@ -1096,7 +2088,7 @@ endmodule
 //   0 = ADD, 1 = SUB, 2 = LSL, 3 = LSR, 4 = ASR, 5 = MUL_LO,
 //   6 = AND, 7 = OR,  8 = XOR, 9 = SLT (signed less-than),
 //   10 = SELECT (pred_i ? A_i : B_i)
-// bsg_defines.sv is inlined at the start of this bundle.
+
 `timescale 1ns/1ps
 
 module rta_alu #(
@@ -1207,19 +2199,16 @@ module rta_alu #(
   assign nz_o  = prog_done_i ? (|mux_result_lo) : 1'b0;
 
 endmodule
+// END SOURCE: rtl/src/generated/rta_alu.sv
 // ============================================================================
-// END SOURCE: rta_v4/rtl/rta_alu.sv
-// ============================================================================
-
-// ============================================================================
-// BEGIN SOURCE: rta_v4/rtl/rta_const_unit_8b.sv
+// BEGIN SOURCE: rtl/src/generated/rta_const_unit_8b.sv
 // ============================================================================
 // rta_const_unit.tmpl.sv
 // Shwet & Codex (AI-generated)
 //
 // Dora-rendered constant generator for the RTA V4 PE. The constant value is
 // loaded through the configuration fabric and gated until programming is done.
-// bsg_defines.sv is inlined at the start of this bundle.
+
 `timescale 1ns/1ps
 
 module rta_const_unit_8b #(
@@ -1233,442 +2222,119 @@ module rta_const_unit_8b #(
   assign out_o = prog_done_i ? prog_data_i : '0;
 
 endmodule
+// END SOURCE: rtl/src/generated/rta_const_unit_8b.sv
 // ============================================================================
-// END SOURCE: rta_v4/rtl/rta_const_unit_8b.sv
+// BEGIN SOURCE: rtl/src/generated/scanchain_data_d4_contexts_1.sv
 // ============================================================================
+// Automatically generated by DORA's RTL generator
+`timescale 1ns/1ps
 
-// ============================================================================
-// BEGIN SOURCE: rta_v4/rtl/rmu/rta_v4_rmu_mul_array.sv
-// ============================================================================
-// rta_v4_rmu_mul_array.sv
-// Shwet & Claude (AI-generated)
-//
-// Shared four-lane unsigned 4x4 multiplier array. The parent RMU chooses
-// whether each lane receives CGRA partial-product operands or systolic dot4
-// operands.
-// bsg_defines.sv is inlined at the start of this bundle.
-module rta_v4_rmu_mul_array #(
-    parameter int nibble_width_p = 4
-) (
-    input  logic [3:0][nibble_width_p-1:0]          a_i
-   ,input  logic [3:0][nibble_width_p-1:0]          b_i
-   ,output logic [3:0][(2*nibble_width_p)-1:0]      pp_o
+module scanchain_data_d4_contexts_1 #(
+    parameter int chain_bitcount_p = 4,
+    parameter int chain_width_p    = 1
+)(
+    input  logic                  prog_clk_i,
+    input  logic                  prog_rst_i,
+    input  logic                  prog_done_i,
+
+    input  logic                  prog_we_i,
+    input  logic [chain_width_p-1:0] prog_din_i,
+
+    output logic [chain_bitcount_p-1:0] prog_data_o,
+    output logic [chain_width_p-1:0]    prog_dout_o
 );
 
-  for (genvar i = 0; i < 4; i++) begin : rof_mul
-    bsg_mul_synth #(.width_p(nibble_width_p))
-      mul (.a_i(a_i[i])
-          ,.b_i(b_i[i])
-          ,.o(pp_o[i])
-          );
-  end
+    // Concatenate existing data and new input bits
+    logic [chain_bitcount_p + chain_width_p - 1:0] prog_data_next;
+    logic [chain_bitcount_p-1:0] prog_data_n;
+
+    assign prog_data_next = {prog_data_o, prog_din_i};
+
+    assign prog_data_n = (!prog_done_i && prog_we_i)
+                         ? prog_data_next[0 +: chain_bitcount_p]
+                         : prog_data_o;
+
+    // Programming-domain reset is synchronous to prog_clk_i.
+    bsg_dff_reset #(.width_p(chain_bitcount_p)
+                    ,.reset_val_p(0)
+                    ) prog_data_reg
+      (.clk_i(prog_clk_i)
+       ,.reset_i(prog_rst_i)
+       ,.data_i(prog_data_n)
+       ,.data_o(prog_data_o)
+       );
+
+    // Output the shifted-out bits
+    assign prog_dout_o = prog_data_next[chain_bitcount_p +: chain_width_p];
 
 endmodule
+// END SOURCE: rtl/src/generated/scanchain_data_d4_contexts_1.sv
+// ============================================================================
+// BEGIN SOURCE: rtl/src/generated/sw_11_8b.sv
+// ============================================================================
+// Automatically generated by DORA's RTL generator
+`timescale 1ns/1ps
 
-`BSG_ABSTRACT_MODULE(rta_v4_rmu_mul_array)
-// ============================================================================
-// END SOURCE: rta_v4/rtl/rmu/rta_v4_rmu_mul_array.sv
-// ============================================================================
-
-// ============================================================================
-// BEGIN SOURCE: rta_v4/rtl/rmu/rta_v4_rmu_cgra_mul_backend.sv
-// ============================================================================
-// rta_v4_rmu_cgra_mul_backend.sv
-// Shwet & Claude (AI-generated)
-//
-// Recombines four unsigned 4x4 partial products into a signed 8x8 product.
-// Partial-product order is:
-//   pp_i[0] = lo*lo, pp_i[1] = lo*hi, pp_i[2] = hi*lo, pp_i[3] = hi*hi.
-// bsg_defines.sv is inlined at the start of this bundle.
-module rta_v4_rmu_cgra_mul_backend #(
-    parameter int width_p        = 8
-   ,parameter int nibble_width_p = 4
-) (
-    input  logic [width_p-1:0]                       a_i
-   ,input  logic [width_p-1:0]                       b_i
-   ,input  logic [3:0][(2*nibble_width_p)-1:0]       pp_i
-   ,output logic [(2*width_p)-1:0]                   product_o
+module sw_11_8b #(
+    parameter int width_p      = 8
+    ,parameter int sel_width_p  = 4
+    ,parameter int num_inputs_p = 11
+)(
+    input  logic [width_p-1:0] i_0
+    ,
+    input  logic [width_p-1:0] i_1
+    ,
+    input  logic [width_p-1:0] i_2
+    ,
+    input  logic [width_p-1:0] i_3
+    ,
+    input  logic [width_p-1:0] i_4
+    ,
+    input  logic [width_p-1:0] i_5
+    ,
+    input  logic [width_p-1:0] i_6
+    ,
+    input  logic [width_p-1:0] i_7
+    ,
+    input  logic [width_p-1:0] i_8
+    ,
+    input  logic [width_p-1:0] i_9
+    ,
+    input  logic [width_p-1:0] i_10
+    ,
+    input  logic             prog_done_i
+    ,input  logic [sel_width_p-1:0] prog_data_i
+    ,output logic [width_p-1:0] out_o
 );
 
-  localparam int pp_width_lp    = 2 * nibble_width_p;
-  localparam int prod_width_lp  = 2 * width_p;
-  localparam int cross_width_lp = pp_width_lp + 1;
-
-  logic [prod_width_lp-1:0] diag_li;
-  assign diag_li = {pp_i[3], pp_i[0]};
-
-  logic [cross_width_lp-1:0] cross_sum_lo;
-
-  bsg_adder_cin #(.width_p(cross_width_lp))
-    cross_add (.a_i({1'b0, pp_i[2]})
-              ,.b_i({1'b0, pp_i[1]})
-              ,.cin_i(1'b0)
-              ,.o(cross_sum_lo)
-              );
-
-  logic [prod_width_lp-1:0] cross_aligned_li;
-  assign cross_aligned_li = {{(prod_width_lp-cross_width_lp-nibble_width_p){1'b0}}
-                            ,cross_sum_lo
-                            ,{nibble_width_p{1'b0}}};
-
-  logic [width_p-1:0] corr_a_li;
-  logic [width_p-1:0] corr_b_li;
-  logic [width_p-1:0] corr_sum_lo;
-
-  assign corr_a_li = {width_p{a_i[width_p-1]}} & b_i;
-  assign corr_b_li = {width_p{b_i[width_p-1]}} & a_i;
-
-  bsg_adder_cin #(.width_p(width_p))
-    corr_add (.a_i(corr_a_li)
-             ,.b_i(corr_b_li)
-             ,.cin_i(1'b0)
-             ,.o(corr_sum_lo)
-             );
-
-  logic [prod_width_lp-1:0] corr_aligned_li;
-  assign corr_aligned_li = {corr_sum_lo, {width_p{1'b0}}};
-
-  logic [prod_width_lp-1:0] unsigned_product_lo;
-
-  bsg_adder_cin #(.width_p(prod_width_lp))
-    product_add (.a_i(diag_li)
-                ,.b_i(cross_aligned_li)
-                ,.cin_i(1'b0)
-                ,.o(unsigned_product_lo)
-                );
-
-  bsg_adder_cin #(.width_p(prod_width_lp))
-    final_sub (.a_i(unsigned_product_lo)
-              ,.b_i(~corr_aligned_li)
-              ,.cin_i(1'b1)
-              ,.o(product_o)
-              );
-
-endmodule
-
-`BSG_ABSTRACT_MODULE(rta_v4_rmu_cgra_mul_backend)
-// ============================================================================
-// END SOURCE: rta_v4/rtl/rmu/rta_v4_rmu_cgra_mul_backend.sv
-// ============================================================================
-
-// ============================================================================
-// BEGIN SOURCE: rta_v4/rtl/rmu/rta_v4_rmu_systolic_dot4_backend.sv
-// ============================================================================
-// rta_v4_rmu_systolic_dot4_backend.sv
-// Shwet & Claude (AI-generated)
-//
-// Scalar signed-INT4 dot4 systolic backend. Each compute cycle consumes
-// data0/data1 A packets and data0/data1 B packets, reduces four lane-wise
-// products, and accumulates the result into one 16-bit accumulator:
-//   acc += a0*b0 + a1*b1 + a2*b2 + a3*b3
-// where each a_i, b_i is a signed INT4 nibble.
-// bsg_defines.sv is inlined at the start of this bundle.
-module rta_v4_rmu_systolic_dot4_backend #(
-    parameter int nibble_width_p = 4
-   ,parameter int acc_width_p    = 16
-) (
-    input  logic                                     clk_i
-   ,input  logic                                     reset_i
-   ,input  logic                                     compute_i
-   ,input  logic                                     clear_i
-
-   ,input  logic [(2*nibble_width_p)-1:0]            a_data0_pkt_i
-   ,input  logic [(2*nibble_width_p)-1:0]            b_data0_pkt_i
-   ,input  logic [(2*nibble_width_p)-1:0]            a_data1_pkt_i
-   ,input  logic [(2*nibble_width_p)-1:0]            b_data1_pkt_i
-   ,input  logic [3:0][(2*nibble_width_p)-1:0]       pp_i
-
-   ,output logic [acc_width_p-1:0]                   acc_o
-);
-
-  localparam int pp_width_lp  = 2 * nibble_width_p;
-  localparam int sum_width_lp = pp_width_lp + 2;
-
-  logic [3:0][nibble_width_p-1:0] lane_a_li;
-  logic [3:0][nibble_width_p-1:0] lane_b_li;
-
-  assign lane_a_li[0] = a_data0_pkt_i[0 +: nibble_width_p];
-  assign lane_a_li[1] = a_data0_pkt_i[nibble_width_p +: nibble_width_p];
-  assign lane_a_li[2] = a_data1_pkt_i[0 +: nibble_width_p];
-  assign lane_a_li[3] = a_data1_pkt_i[nibble_width_p +: nibble_width_p];
-
-  assign lane_b_li[0] = b_data0_pkt_i[0 +: nibble_width_p];
-  assign lane_b_li[1] = b_data0_pkt_i[nibble_width_p +: nibble_width_p];
-  assign lane_b_li[2] = b_data1_pkt_i[0 +: nibble_width_p];
-  assign lane_b_li[3] = b_data1_pkt_i[nibble_width_p +: nibble_width_p];
-
-  logic [3:0][pp_width_lp-1:0] signed_pp_lo;
-
-  for (genvar i = 0; i < 4; i++) begin : rof_sign_corr
-    logic [nibble_width_p-1:0] corr_a_li;
-    logic [nibble_width_p-1:0] corr_b_li;
-    logic [nibble_width_p-1:0] corr_sum_lo;
-    logic [pp_width_lp-1:0]    corr_shifted_li;
-
-    assign corr_a_li = {nibble_width_p{lane_a_li[i][nibble_width_p-1]}} & lane_b_li[i];
-    assign corr_b_li = {nibble_width_p{lane_b_li[i][nibble_width_p-1]}} & lane_a_li[i];
-
-    bsg_adder_cin #(.width_p(nibble_width_p))
-      corr_add (.a_i(corr_a_li)
-               ,.b_i(corr_b_li)
-               ,.cin_i(1'b0)
-               ,.o(corr_sum_lo)
-               );
-
-    assign corr_shifted_li = {corr_sum_lo, {nibble_width_p{1'b0}}};
-
-    bsg_adder_cin #(.width_p(pp_width_lp))
-      corr_sub (.a_i(pp_i[i])
-               ,.b_i(~corr_shifted_li)
-               ,.cin_i(1'b1)
-               ,.o(signed_pp_lo[i])
-               );
-  end
-
-  logic [3:0][sum_width_lp-1:0] pp_sum_ext_li;
-
-  for (genvar i = 0; i < 4; i++) begin : rof_pp_sum_ext
-    assign pp_sum_ext_li[i] = {{(sum_width_lp-pp_width_lp){signed_pp_lo[i][pp_width_lp-1]}}
-                              ,signed_pp_lo[i]};
-  end
-
-  logic [sum_width_lp-1:0] sum_01_lo;
-  logic [sum_width_lp-1:0] sum_23_lo;
-  logic [sum_width_lp-1:0] dot4_sum_lo;
-
-  bsg_adder_cin #(.width_p(sum_width_lp))
-    sum_01 (.a_i(pp_sum_ext_li[0])
-           ,.b_i(pp_sum_ext_li[1])
-           ,.cin_i(1'b0)
-           ,.o(sum_01_lo)
-           );
-
-  bsg_adder_cin #(.width_p(sum_width_lp))
-    sum_23 (.a_i(pp_sum_ext_li[2])
-           ,.b_i(pp_sum_ext_li[3])
-           ,.cin_i(1'b0)
-           ,.o(sum_23_lo)
-           );
-
-  bsg_adder_cin #(.width_p(sum_width_lp))
-    sum_dot4 (.a_i(sum_01_lo)
-             ,.b_i(sum_23_lo)
-             ,.cin_i(1'b0)
-             ,.o(dot4_sum_lo)
-             );
-
-  logic [acc_width_p-1:0] dot4_sum_ext_li;
-  logic [acc_width_p-1:0] acc_r;
-  logic [acc_width_p-1:0] acc_n_lo;
-
-  assign dot4_sum_ext_li = {{(acc_width_p-sum_width_lp){dot4_sum_lo[sum_width_lp-1]}}
-                            ,dot4_sum_lo};
-
-  bsg_adder_cin #(.width_p(acc_width_p))
-    acc_add (.a_i(acc_r)
-            ,.b_i(dot4_sum_ext_li)
-            ,.cin_i(1'b0)
-            ,.o(acc_n_lo)
-            );
-
-  always_ff @(posedge clk_i)
-    if (reset_i | clear_i)
-      acc_r <= '0;
-    else if (compute_i)
-      acc_r <= acc_n_lo;
-
-  assign acc_o = acc_r;
-
-endmodule
-
-`BSG_ABSTRACT_MODULE(rta_v4_rmu_systolic_dot4_backend)
-// ============================================================================
-// END SOURCE: rta_v4/rtl/rmu/rta_v4_rmu_systolic_dot4_backend.sv
-// ============================================================================
-
-// ============================================================================
-// BEGIN SOURCE: rta_v4/rtl/rmu/rta_v4_rmu.sv
-// ============================================================================
-// rta_v4_rmu.sv
-// Shwet & Claude (AI-generated)
-//
-// RTA v4 reconfigurable multiply unit leaf. CGRA mode preserves signed
-// INT8 x INT8 multiplication. Systolic mode performs signed INT4 dot4
-// accumulation with one scalar 16-bit accumulator. CGRA products and systolic
-// drains leave as paired 8-bit result halves on the data0/data1 result ports.
-// bsg_defines.sv is inlined at the start of this bundle.
-module rta_v4_rmu #(
-    parameter int width_p        = rta_v4_pkg::rta_v4_data_width_gp
-   ,parameter int nibble_width_p = rta_v4_pkg::rta_v4_nibble_width_gp
-   ,parameter int wide_width_p   = rta_v4_pkg::rta_v4_wide_width_gp
-   ,parameter int acc_width_p    = rta_v4_pkg::rta_v4_acc_width_gp
-   ,parameter int prog_width_p   = rta_v4_pkg::rta_v4_rmu_prog_width_gp
-) (
-    input  logic                       clk_i
-   ,input  logic                       reset_i
-   ,input  logic                       en_i
-
-   ,input  logic [width_p-1:0]         a_data0_i
-   ,input  logic [width_p-1:0]         b_data0_i
-   ,input  logic [width_p-1:0]         a_data1_i
-   ,input  logic [width_p-1:0]         b_data1_i
-
-   ,input  logic [prog_width_p-1:0]    prog_data_i
-   ,input  logic                       prog_done_i
-
-   ,output logic [width_p-1:0]         result_data0_o
-   ,output logic [width_p-1:0]         result_data1_o
-);
-
-  localparam int pp_width_lp = 2 * nibble_width_p;
-
-  logic [rta_v4_pkg::rta_v4_rmu_op_width_gp-1:0] op_li;
-
-  assign op_li = prog_data_i[0 +: rta_v4_pkg::rta_v4_rmu_op_width_gp];
-
-  logic [nibble_width_p-1:0] a_data0_lo_li, a_data0_hi_li;
-  logic [nibble_width_p-1:0] b_data0_lo_li, b_data0_hi_li;
-  logic [nibble_width_p-1:0] a_data1_lo_li, a_data1_hi_li;
-  logic [nibble_width_p-1:0] b_data1_lo_li, b_data1_hi_li;
-
-  assign a_data0_lo_li = a_data0_i[0 +: nibble_width_p];
-  assign a_data0_hi_li = a_data0_i[nibble_width_p +: nibble_width_p];
-  assign b_data0_lo_li = b_data0_i[0 +: nibble_width_p];
-  assign b_data0_hi_li = b_data0_i[nibble_width_p +: nibble_width_p];
-  assign a_data1_lo_li = a_data1_i[0 +: nibble_width_p];
-  assign a_data1_hi_li = a_data1_i[nibble_width_p +: nibble_width_p];
-  assign b_data1_lo_li = b_data1_i[0 +: nibble_width_p];
-  assign b_data1_hi_li = b_data1_i[nibble_width_p +: nibble_width_p];
-
-  logic state_en_li;
-  logic systolic_clear_li;
-  logic systolic_compute_li;
-
-  assign state_en_li          = en_i & prog_done_i;
-  assign systolic_clear_li    = state_en_li
-                              & (op_li == rta_v4_pkg::e_rmu_systolic_clear);
-  assign systolic_compute_li  = state_en_li
-                              & (op_li == rta_v4_pkg::e_rmu_systolic_dot4_compute);
-
-  logic systolic_mode_li;
-  assign systolic_mode_li = (op_li == rta_v4_pkg::e_rmu_systolic_dot4_compute);
-
-  logic [3:0][nibble_width_p-1:0] mul_a_li;
-  logic [3:0][nibble_width_p-1:0] mul_b_li;
-  logic [3:0][pp_width_lp-1:0]    pp_lo;
-
-  assign mul_a_li[0] = a_data0_lo_li;
-  assign mul_b_li[0] = b_data0_lo_li;
-
-  assign mul_a_li[1] = systolic_mode_li
-                     ? a_data0_hi_li
-                     : a_data0_lo_li;
-  assign mul_b_li[1] = b_data0_hi_li;
-
-  assign mul_a_li[2] = systolic_mode_li
-                     ? a_data1_lo_li
-                     : a_data0_hi_li;
-  assign mul_b_li[2] = systolic_mode_li
-                     ? b_data1_lo_li
-                     : b_data0_lo_li;
-
-  assign mul_a_li[3] = systolic_mode_li
-                     ? a_data1_hi_li
-                     : a_data0_hi_li;
-  assign mul_b_li[3] = systolic_mode_li
-                     ? b_data1_hi_li
-                     : b_data0_hi_li;
-
-  rta_v4_rmu_mul_array #(.nibble_width_p(nibble_width_p))
-    mul_array (.a_i(mul_a_li)
-              ,.b_i(mul_b_li)
-              ,.pp_o(pp_lo)
-              );
-
-  logic [wide_width_p-1:0] cgra_product_lo;
-
-  rta_v4_rmu_cgra_mul_backend #(.width_p(width_p)
-                               ,.nibble_width_p(nibble_width_p)
-                               )
-    cgra_backend (.a_i(a_data0_i)
-                 ,.b_i(b_data0_i)
-                 ,.pp_i(pp_lo)
-                 ,.product_o(cgra_product_lo)
-                 );
-
-  logic [acc_width_p-1:0] systolic_acc_lo;
-  logic [wide_width_p-1:0] systolic_drain_lo;
-
-  rta_v4_rmu_systolic_dot4_backend #(.nibble_width_p(nibble_width_p)
-                                    ,.acc_width_p(acc_width_p)
-                                    )
-    systolic_backend (.clk_i(clk_i)
-                     ,.reset_i(reset_i)
-                     ,.compute_i(systolic_compute_li)
-                     ,.clear_i(systolic_clear_li)
-                     ,.a_data0_pkt_i(a_data0_i)
-                     ,.b_data0_pkt_i(b_data0_i)
-                     ,.a_data1_pkt_i(a_data1_i)
-                     ,.b_data1_pkt_i(b_data1_i)
-                     ,.pp_i(pp_lo)
-                     ,.acc_o(systolic_acc_lo)
-                     );
-
-  assign systolic_drain_lo = systolic_acc_lo[wide_width_p-1:0];
-
-  logic [wide_width_p-1:0] result_r, result_n;
-
-  always_comb begin
-    result_n = '0;
-
-    unique casez (op_li)
-      rta_v4_pkg::e_rmu_idle: begin
-        result_n = '0;
-      end
-      rta_v4_pkg::e_rmu_cgra_mul_s8: begin
-        result_n = cgra_product_lo;
-      end
-      rta_v4_pkg::e_rmu_systolic_clear: begin
-        result_n = '0;
-      end
-      rta_v4_pkg::e_rmu_systolic_dot4_compute: begin
-        result_n = '0;
-      end
-      rta_v4_pkg::e_rmu_systolic_drain: begin
-        result_n = systolic_drain_lo;
-      end
-      default: begin
-        result_n = '0;
-      end
-    endcase
-  end
-
-  always_ff @(posedge clk_i)
-    if (reset_i) begin
-      result_r <= '0;
-    end
-    else if (state_en_li) begin
-      result_r <= result_n;
+    always_comb begin
+        if (!prog_done_i) begin
+            out_o = '0;
+        end else begin
+            unique case (prog_data_i)
+                4'd0: out_o = i_0;
+                4'd1: out_o = i_1;
+                4'd2: out_o = i_2;
+                4'd3: out_o = i_3;
+                4'd4: out_o = i_4;
+                4'd5: out_o = i_5;
+                4'd6: out_o = i_6;
+                4'd7: out_o = i_7;
+                4'd8: out_o = i_8;
+                4'd9: out_o = i_9;
+                4'd10: out_o = i_10;
+                default: out_o = '0;
+            endcase
+        end
     end
 
-  assign result_data0_o  = prog_done_i ? result_r[0 +: width_p]       : '0;
-  assign result_data1_o  = prog_done_i ? result_r[width_p +: width_p] : '0;
-
 endmodule
-
-`BSG_ABSTRACT_MODULE(rta_v4_rmu)
+// END SOURCE: rtl/src/generated/sw_11_8b.sv
 // ============================================================================
-// END SOURCE: rta_v4/rtl/rmu/rta_v4_rmu.sv
-// ============================================================================
-
-// ============================================================================
-// BEGIN SOURCE: rta_v4/rtl/rta_v4_data0_crossbar_8b.sv
+// BEGIN SOURCE: rtl/src/generated/rta_v4_data0_crossbar_8b.sv
 // ============================================================================
 // SystemVerilog auto-generated by DORA RTL generator
 // Copyright (c) 2025, Pᴺ Computer Engineering Lab.
-
-// Generated on: <canonicalized>
-// Author: <canonicalized>
 
 module rta_v4_data0_crossbar_8b (
     // Ports
@@ -2081,18 +2747,12 @@ module rta_v4_data0_crossbar_8b (
     assign out_rmu_b_data0 = i_sw_out_rmu_b_data0_out_o;
     assign prog_dout_o = i_prog_data_i_sw_out_rmu_b_data0_prog_dout_o;
 endmodule
+// END SOURCE: rtl/src/generated/rta_v4_data0_crossbar_8b.sv
 // ============================================================================
-// END SOURCE: rta_v4/rtl/rta_v4_data0_crossbar_8b.sv
-// ============================================================================
-
-// ============================================================================
-// BEGIN SOURCE: rta_v4/rtl/rta_v4_data1_crossbar_8b.sv
+// BEGIN SOURCE: rtl/src/generated/rta_v4_data1_crossbar_8b.sv
 // ============================================================================
 // SystemVerilog auto-generated by DORA RTL generator
 // Copyright (c) 2025, Pᴺ Computer Engineering Lab.
-
-// Generated on: <canonicalized>
-// Author: <canonicalized>
 
 module rta_v4_data1_crossbar_8b (
     // Ports
@@ -2505,18 +3165,242 @@ module rta_v4_data1_crossbar_8b (
     assign out_rmu_b_data1 = i_sw_out_rmu_b_data1_out_o;
     assign prog_dout_o = i_prog_data_i_sw_out_rmu_b_data1_prog_dout_o;
 endmodule
+// END SOURCE: rtl/src/generated/rta_v4_data1_crossbar_8b.sv
 // ============================================================================
-// END SOURCE: rta_v4/rtl/rta_v4_data1_crossbar_8b.sv
+// BEGIN SOURCE: rtl/src/generated/scanchain_data_d8_contexts_1.sv
 // ============================================================================
+// Automatically generated by DORA's RTL generator
+`timescale 1ns/1ps
 
+module scanchain_data_d8_contexts_1 #(
+    parameter int chain_bitcount_p = 8,
+    parameter int chain_width_p    = 1
+)(
+    input  logic                  prog_clk_i,
+    input  logic                  prog_rst_i,
+    input  logic                  prog_done_i,
+
+    input  logic                  prog_we_i,
+    input  logic [chain_width_p-1:0] prog_din_i,
+
+    output logic [chain_bitcount_p-1:0] prog_data_o,
+    output logic [chain_width_p-1:0]    prog_dout_o
+);
+
+    // Concatenate existing data and new input bits
+    logic [chain_bitcount_p + chain_width_p - 1:0] prog_data_next;
+    logic [chain_bitcount_p-1:0] prog_data_n;
+
+    assign prog_data_next = {prog_data_o, prog_din_i};
+
+    assign prog_data_n = (!prog_done_i && prog_we_i)
+                         ? prog_data_next[0 +: chain_bitcount_p]
+                         : prog_data_o;
+
+    // Programming-domain reset is synchronous to prog_clk_i.
+    bsg_dff_reset #(.width_p(chain_bitcount_p)
+                    ,.reset_val_p(0)
+                    ) prog_data_reg
+      (.clk_i(prog_clk_i)
+       ,.reset_i(prog_rst_i)
+       ,.data_i(prog_data_n)
+       ,.data_o(prog_data_o)
+       );
+
+    // Output the shifted-out bits
+    assign prog_dout_o = prog_data_next[chain_bitcount_p +: chain_width_p];
+
+endmodule
+// END SOURCE: rtl/src/generated/scanchain_data_d8_contexts_1.sv
 // ============================================================================
-// BEGIN SOURCE: rta_v4/rtl/rta_v4_pred_crossbar.sv
+// BEGIN SOURCE: rtl/src/generated/scanchain_data_d2_contexts_1.sv
+// ============================================================================
+// Automatically generated by DORA's RTL generator
+`timescale 1ns/1ps
+
+module scanchain_data_d2_contexts_1 #(
+    parameter int chain_bitcount_p = 2,
+    parameter int chain_width_p    = 1
+)(
+    input  logic                  prog_clk_i,
+    input  logic                  prog_rst_i,
+    input  logic                  prog_done_i,
+
+    input  logic                  prog_we_i,
+    input  logic [chain_width_p-1:0] prog_din_i,
+
+    output logic [chain_bitcount_p-1:0] prog_data_o,
+    output logic [chain_width_p-1:0]    prog_dout_o
+);
+
+    // Concatenate existing data and new input bits
+    logic [chain_bitcount_p + chain_width_p - 1:0] prog_data_next;
+    logic [chain_bitcount_p-1:0] prog_data_n;
+
+    assign prog_data_next = {prog_data_o, prog_din_i};
+
+    assign prog_data_n = (!prog_done_i && prog_we_i)
+                         ? prog_data_next[0 +: chain_bitcount_p]
+                         : prog_data_o;
+
+    // Programming-domain reset is synchronous to prog_clk_i.
+    bsg_dff_reset #(.width_p(chain_bitcount_p)
+                    ,.reset_val_p(0)
+                    ) prog_data_reg
+      (.clk_i(prog_clk_i)
+       ,.reset_i(prog_rst_i)
+       ,.data_i(prog_data_n)
+       ,.data_o(prog_data_o)
+       );
+
+    // Output the shifted-out bits
+    assign prog_dout_o = prog_data_next[chain_bitcount_p +: chain_width_p];
+
+endmodule
+// END SOURCE: rtl/src/generated/scanchain_data_d2_contexts_1.sv
+// ============================================================================
+// BEGIN SOURCE: rtl/src/generated/scanchain_data_d5_contexts_1.sv
+// ============================================================================
+// Automatically generated by DORA's RTL generator
+`timescale 1ns/1ps
+
+module scanchain_data_d5_contexts_1 #(
+    parameter int chain_bitcount_p = 5,
+    parameter int chain_width_p    = 1
+)(
+    input  logic                  prog_clk_i,
+    input  logic                  prog_rst_i,
+    input  logic                  prog_done_i,
+
+    input  logic                  prog_we_i,
+    input  logic [chain_width_p-1:0] prog_din_i,
+
+    output logic [chain_bitcount_p-1:0] prog_data_o,
+    output logic [chain_width_p-1:0]    prog_dout_o
+);
+
+    // Concatenate existing data and new input bits
+    logic [chain_bitcount_p + chain_width_p - 1:0] prog_data_next;
+    logic [chain_bitcount_p-1:0] prog_data_n;
+
+    assign prog_data_next = {prog_data_o, prog_din_i};
+
+    assign prog_data_n = (!prog_done_i && prog_we_i)
+                         ? prog_data_next[0 +: chain_bitcount_p]
+                         : prog_data_o;
+
+    // Programming-domain reset is synchronous to prog_clk_i.
+    bsg_dff_reset #(.width_p(chain_bitcount_p)
+                    ,.reset_val_p(0)
+                    ) prog_data_reg
+      (.clk_i(prog_clk_i)
+       ,.reset_i(prog_rst_i)
+       ,.data_i(prog_data_n)
+       ,.data_o(prog_data_o)
+       );
+
+    // Output the shifted-out bits
+    assign prog_dout_o = prog_data_next[chain_bitcount_p +: chain_width_p];
+
+endmodule
+// END SOURCE: rtl/src/generated/scanchain_data_d5_contexts_1.sv
+// ============================================================================
+// BEGIN SOURCE: rtl/src/generated/sw_3_8b.sv
+// ============================================================================
+// Automatically generated by DORA's RTL generator
+`timescale 1ns/1ps
+
+module sw_3_8b #(
+    parameter int width_p      = 8
+    ,parameter int sel_width_p  = 2
+    ,parameter int num_inputs_p = 3
+)(
+    input  logic [width_p-1:0] i_0
+    ,
+    input  logic [width_p-1:0] i_1
+    ,
+    input  logic [width_p-1:0] i_2
+    ,
+    input  logic             prog_done_i
+    ,input  logic [sel_width_p-1:0] prog_data_i
+    ,output logic [width_p-1:0] out_o
+);
+
+    always_comb begin
+        if (!prog_done_i) begin
+            out_o = '0;
+        end else begin
+            unique case (prog_data_i)
+                2'd0: out_o = i_0;
+                2'd1: out_o = i_1;
+                2'd2: out_o = i_2;
+                default: out_o = '0;
+            endcase
+        end
+    end
+
+endmodule
+// END SOURCE: rtl/src/generated/sw_3_8b.sv
+// ============================================================================
+// BEGIN SOURCE: rtl/src/generated/sw_9_1b.sv
+// ============================================================================
+// Automatically generated by DORA's RTL generator
+`timescale 1ns/1ps
+
+module sw_9_1b #(
+    parameter int width_p      = 1
+    ,parameter int sel_width_p  = 4
+    ,parameter int num_inputs_p = 9
+)(
+    input  logic [width_p-1:0] i_0
+    ,
+    input  logic [width_p-1:0] i_1
+    ,
+    input  logic [width_p-1:0] i_2
+    ,
+    input  logic [width_p-1:0] i_3
+    ,
+    input  logic [width_p-1:0] i_4
+    ,
+    input  logic [width_p-1:0] i_5
+    ,
+    input  logic [width_p-1:0] i_6
+    ,
+    input  logic [width_p-1:0] i_7
+    ,
+    input  logic [width_p-1:0] i_8
+    ,
+    input  logic             prog_done_i
+    ,input  logic [sel_width_p-1:0] prog_data_i
+    ,output logic [width_p-1:0] out_o
+);
+
+    always_comb begin
+        if (!prog_done_i) begin
+            out_o = '0;
+        end else begin
+            unique case (prog_data_i)
+                4'd0: out_o = i_0;
+                4'd1: out_o = i_1;
+                4'd2: out_o = i_2;
+                4'd3: out_o = i_3;
+                4'd4: out_o = i_4;
+                4'd5: out_o = i_5;
+                4'd6: out_o = i_6;
+                4'd7: out_o = i_7;
+                4'd8: out_o = i_8;
+                default: out_o = '0;
+            endcase
+        end
+    end
+
+endmodule
+// END SOURCE: rtl/src/generated/sw_9_1b.sv
+// ============================================================================
+// BEGIN SOURCE: rtl/src/generated/rta_v4_pred_crossbar.sv
 // ============================================================================
 // SystemVerilog auto-generated by DORA RTL generator
 // Copyright (c) 2025, Pᴺ Computer Engineering Lab.
-
-// Generated on: <canonicalized>
-// Author: <canonicalized>
 
 module rta_v4_pred_crossbar (
     // Ports
@@ -2813,1513 +3697,456 @@ module rta_v4_pred_crossbar (
     assign out_alu_pred = i_sw_out_alu_pred_out_o;
     assign prog_dout_o = i_prog_data_i_sw_out_alu_pred_prog_dout_o;
 endmodule
+// END SOURCE: rtl/src/generated/rta_v4_pred_crossbar.sv
 // ============================================================================
-// END SOURCE: rta_v4/rtl/rta_v4_pred_crossbar.sv
+// BEGIN SOURCE: rtl/src/generated/common/rta_v4_pkg.sv
 // ============================================================================
+// rta_v4_pkg.sv
+// Shwet & Claude (AI-generated)
 
+package rta_v4_pkg;
+
+  localparam int rta_v4_data_width_gp   = 8;
+  localparam int rta_v4_nibble_width_gp = 4;
+  localparam int rta_v4_wide_width_gp   = 16;
+  localparam int rta_v4_acc_width_gp    = 16;
+
+  localparam int rta_v4_rmu_op_width_gp       = 3;
+  localparam int rta_v4_rmu_reserved_width_gp = 2;
+  localparam int rta_v4_rmu_prog_width_gp     = rta_v4_rmu_op_width_gp
+                                                 + rta_v4_rmu_reserved_width_gp;
+
+  typedef enum logic [rta_v4_rmu_op_width_gp-1:0]
+  { e_rmu_idle                 = 3'd0
+   ,e_rmu_cgra_mul_s8          = 3'd1
+   ,e_rmu_systolic_clear       = 3'd2
+   ,e_rmu_systolic_dot4_compute= 3'd3
+   ,e_rmu_systolic_drain       = 3'd4
+  } rta_v4_rmu_op_e;
+
+endpackage
+// END SOURCE: rtl/src/generated/common/rta_v4_pkg.sv
 // ============================================================================
-// BEGIN SOURCE: rta_v4/rtl/rta_v4_skew_bypass_2x8b_pred.sv
+// BEGIN SOURCE: rtl/src/generated/rmu/rta_v4_rmu_mul_array.sv
 // ============================================================================
-// SystemVerilog auto-generated by DORA RTL generator
-// Copyright (c) 2025, Pᴺ Computer Engineering Lab.
-
-// Generated on: <canonicalized>
-// Author: <canonicalized>
-
-module rta_v4_skew_bypass_2x8b_pred (
-    // Ports
-    input  logic [7:0] data0_bypass_i,
-    input  logic [7:0] data0_delay_i,
-    output logic [7:0] data0_o,
-    input  logic [7:0] data1_bypass_i,
-    input  logic [7:0] data1_delay_i,
-    output logic [7:0] data1_o,
-    input  logic pred_bypass_i,
-    input  logic pred_delay_i,
-    output logic pred_o,
-    input  logic prog_clk_i,
-    input  logic prog_rst_i,
-    input  logic prog_done_i,
-    input  logic prog_we_i,
-    input  logic prog_din_i,
-    output logic prog_dout_o
-);
-    logic [7:0] i_sw_data0_o_out_o;
-    logic [7:0] i_sw_data1_o_out_o;
-    logic i_sw_pred_o_out_o;
-    logic i_prog_data_i_sw_data0_o_prog_data_o;
-    logic i_prog_data_i_sw_data0_o_prog_dout_o;
-    logic i_prog_data_i_sw_data1_o_prog_data_o;
-    logic i_prog_data_i_sw_data1_o_prog_dout_o;
-    logic i_prog_data_i_sw_pred_o_prog_data_o;
-    logic i_prog_data_i_sw_pred_o_prog_dout_o;
-
-    // Unconnected Wires
-
-    // Instances
-    sw_2_8b i_sw_data0_o (
-        .i_0(data0_bypass_i),
-        .i_1(data0_delay_i),
-        .out_o(i_sw_data0_o_out_o),
-        .prog_done_i(prog_done_i),
-        .prog_data_i(i_prog_data_i_sw_data0_o_prog_data_o)
-    );
-
-    sw_2_8b i_sw_data1_o (
-        .i_0(data1_bypass_i),
-        .i_1(data1_delay_i),
-        .out_o(i_sw_data1_o_out_o),
-        .prog_done_i(prog_done_i),
-        .prog_data_i(i_prog_data_i_sw_data1_o_prog_data_o)
-    );
-
-    sw_2_1b i_sw_pred_o (
-        .i_0(pred_bypass_i),
-        .i_1(pred_delay_i),
-        .out_o(i_sw_pred_o_out_o),
-        .prog_done_i(prog_done_i),
-        .prog_data_i(i_prog_data_i_sw_pred_o_prog_data_o)
-    );
-
-    scanchain_data_d1_contexts_1 i_prog_data_i_sw_data0_o (
-        .prog_data_o(i_prog_data_i_sw_data0_o_prog_data_o),
-        .prog_clk_i(prog_clk_i),
-        .prog_rst_i(prog_rst_i),
-        .prog_done_i(prog_done_i),
-        .prog_we_i(prog_we_i),
-        .prog_din_i(prog_din_i),
-        .prog_dout_o(i_prog_data_i_sw_data0_o_prog_dout_o)
-    );
-
-    scanchain_data_d1_contexts_1 i_prog_data_i_sw_data1_o (
-        .prog_data_o(i_prog_data_i_sw_data1_o_prog_data_o),
-        .prog_clk_i(prog_clk_i),
-        .prog_rst_i(prog_rst_i),
-        .prog_done_i(prog_done_i),
-        .prog_we_i(prog_we_i),
-        .prog_din_i(i_prog_data_i_sw_data0_o_prog_dout_o),
-        .prog_dout_o(i_prog_data_i_sw_data1_o_prog_dout_o)
-    );
-
-    scanchain_data_d1_contexts_1 i_prog_data_i_sw_pred_o (
-        .prog_data_o(i_prog_data_i_sw_pred_o_prog_data_o),
-        .prog_clk_i(prog_clk_i),
-        .prog_rst_i(prog_rst_i),
-        .prog_done_i(prog_done_i),
-        .prog_we_i(prog_we_i),
-        .prog_din_i(i_prog_data_i_sw_data1_o_prog_dout_o),
-        .prog_dout_o(i_prog_data_i_sw_pred_o_prog_dout_o)
-    );
-
-    // Output Port Connections
-    assign data0_o = i_sw_data0_o_out_o;
-    assign data1_o = i_sw_data1_o_out_o;
-    assign pred_o = i_sw_pred_o_out_o;
-    assign prog_dout_o = i_prog_data_i_sw_pred_o_prog_dout_o;
-endmodule
-// ============================================================================
-// END SOURCE: rta_v4/rtl/rta_v4_skew_bypass_2x8b_pred.sv
-// ============================================================================
-
-// ============================================================================
-// BEGIN SOURCE: rta_v4/rtl/rta_v4_input_pad_8b_s0.sv
-// ============================================================================
-// Automatically generated by DORA's RTL generator
-`timescale 1ns/1ps
-module rta_v4_input_pad_8b_s0 #(
-    parameter int width_p = 8
-)(
-    input  logic [width_p-1:0] ipin_i        // from external world
-    ,output logic [width_p-1:0] inpad_o      // to fabric
-
-    ,input  logic prog_done_i // programming done signal
-    ,input  logic prog_data_i // mode: 0=disabled, 1=enabled
-    ,output logic prog_active_o // sideband: tap of prog_data_i
-);
-
-    always_comb begin
-        inpad_o = {width_p{1'b0}};
-        if (prog_done_i && prog_data_i) begin
-            inpad_o = ipin_i;
-        end
-    end
-
-    assign prog_active_o = prog_data_i;
-
-endmodule
-// ============================================================================
-// END SOURCE: rta_v4/rtl/rta_v4_input_pad_8b_s0.sv
-// ============================================================================
-
-// ============================================================================
-// BEGIN SOURCE: rta_v4/rtl/rta_v4_input_pad_8b_s1.sv
-// ============================================================================
-// Automatically generated by DORA's RTL generator
-`timescale 1ns/1ps
-module rta_v4_input_pad_8b_s1 #(
-    parameter int width_p = 8
-)(
-    input  logic [width_p-1:0] ipin_i        // from external world
-    ,output logic [width_p-1:0] inpad_o      // to fabric
-
-    ,input  logic prog_done_i // programming done signal
-    ,input  logic prog_data_i // mode: 0=disabled, 1=enabled
-    ,output logic prog_active_o // sideband: tap of prog_data_i
-);
-
-    always_comb begin
-        inpad_o = {width_p{1'b0}};
-        if (prog_done_i && prog_data_i) begin
-            inpad_o = ipin_i;
-        end
-    end
-
-    assign prog_active_o = prog_data_i;
-
-endmodule
-// ============================================================================
-// END SOURCE: rta_v4/rtl/rta_v4_input_pad_8b_s1.sv
-// ============================================================================
-
-// ============================================================================
-// BEGIN SOURCE: rta_v4/rtl/rta_v4_input_pad_1b_s2.sv
-// ============================================================================
-// Automatically generated by DORA's RTL generator
-`timescale 1ns/1ps
-module rta_v4_input_pad_1b_s2 #(
-    parameter int width_p = 1
-)(
-    input  logic [width_p-1:0] ipin_i        // from external world
-    ,output logic [width_p-1:0] inpad_o      // to fabric
-
-    ,input  logic prog_done_i // programming done signal
-    ,input  logic prog_data_i // mode: 0=disabled, 1=enabled
-    ,output logic prog_active_o // sideband: tap of prog_data_i
-);
-
-    always_comb begin
-        inpad_o = {width_p{1'b0}};
-        if (prog_done_i && prog_data_i) begin
-            inpad_o = ipin_i;
-        end
-    end
-
-    assign prog_active_o = prog_data_i;
-
-endmodule
-// ============================================================================
-// END SOURCE: rta_v4/rtl/rta_v4_input_pad_1b_s2.sv
-// ============================================================================
-
-// ============================================================================
-// BEGIN SOURCE: rta_v4/rtl/rta_v4_output_pad_8b_s0.sv
-// ============================================================================
-// Automatically generated by DORA's RTL generator
-`timescale 1ns/1ps
-module rta_v4_output_pad_8b_s0 #(
-    parameter int width_p = 8
-)(
-    input  logic [width_p-1:0] outpad_i      // from fabric
-    ,output logic [width_p-1:0] opin_o       // to external world
-
-    ,input  logic prog_done_i // programming done signal
-    ,input  logic prog_data_i // mode: 0=disabled, 1=enabled
-    ,output logic prog_active_o // sideband: tap of prog_data_i
-);
-
-    always_comb begin
-        opin_o = {width_p{1'b0}};
-        if (prog_done_i && prog_data_i) begin
-            opin_o = outpad_i;
-        end
-    end
-
-    assign prog_active_o = prog_data_i;
-
-endmodule
-// ============================================================================
-// END SOURCE: rta_v4/rtl/rta_v4_output_pad_8b_s0.sv
-// ============================================================================
-
-// ============================================================================
-// BEGIN SOURCE: rta_v4/rtl/rta_v4_output_pad_8b_s1.sv
-// ============================================================================
-// Automatically generated by DORA's RTL generator
-`timescale 1ns/1ps
-module rta_v4_output_pad_8b_s1 #(
-    parameter int width_p = 8
-)(
-    input  logic [width_p-1:0] outpad_i      // from fabric
-    ,output logic [width_p-1:0] opin_o       // to external world
-
-    ,input  logic prog_done_i // programming done signal
-    ,input  logic prog_data_i // mode: 0=disabled, 1=enabled
-    ,output logic prog_active_o // sideband: tap of prog_data_i
-);
-
-    always_comb begin
-        opin_o = {width_p{1'b0}};
-        if (prog_done_i && prog_data_i) begin
-            opin_o = outpad_i;
-        end
-    end
-
-    assign prog_active_o = prog_data_i;
-
-endmodule
-// ============================================================================
-// END SOURCE: rta_v4/rtl/rta_v4_output_pad_8b_s1.sv
-// ============================================================================
-
-// ============================================================================
-// BEGIN SOURCE: rta_v4/rtl/rta_v4_output_pad_1b_s2.sv
-// ============================================================================
-// Automatically generated by DORA's RTL generator
-`timescale 1ns/1ps
-module rta_v4_output_pad_1b_s2 #(
-    parameter int width_p = 1
-)(
-    input  logic [width_p-1:0] outpad_i      // from fabric
-    ,output logic [width_p-1:0] opin_o       // to external world
-
-    ,input  logic prog_done_i // programming done signal
-    ,input  logic prog_data_i // mode: 0=disabled, 1=enabled
-    ,output logic prog_active_o // sideband: tap of prog_data_i
-);
-
-    always_comb begin
-        opin_o = {width_p{1'b0}};
-        if (prog_done_i && prog_data_i) begin
-            opin_o = outpad_i;
-        end
-    end
-
-    assign prog_active_o = prog_data_i;
-
-endmodule
-// ============================================================================
-// END SOURCE: rta_v4/rtl/rta_v4_output_pad_1b_s2.sv
-// ============================================================================
-
-// ============================================================================
-// BEGIN SOURCE: rta_v4/rtl/rta_v4_input_io_tile_2x8b_pred.sv
-// ============================================================================
-// SystemVerilog auto-generated by DORA RTL generator
-// Copyright (c) 2025, Pᴺ Computer Engineering Lab.
-
-// Generated on: <canonicalized>
-// Author: <canonicalized>
-
-module rta_v4_input_io_tile_2x8b_pred (
-    // Ports
-    input  logic clk_i,
-    input  logic reset_i,
-    input  logic en_i,
-    output logic [7:0] data0_to_fabric,
-    output logic [7:0] data1_to_fabric,
-    input  logic ipin_x0y0_2,
-    output logic pred_to_fabric,
-    input  logic [7:0] ipin_x0y0_0,
-    input  logic [7:0] ipin_x0y0_1,
-    output logic prog_active_data0_o,
-    output logic prog_active_data1_o,
-    output logic prog_active_pred_o,
-    input  logic prog_clk_i,
-    input  logic prog_rst_i,
-    input  logic prog_done_i,
-    input  logic prog_we_i,
-    input  logic prog_din_i,
-    output logic prog_dout_o
-);
-    logic [7:0] reg_out_data0_data_o;
-    logic [7:0] input_pad_data0_inpad_o;
-    logic input_pad_data0_prog_active_o;
-    logic [7:0] reg_out_data1_data_o;
-    logic [7:0] input_pad_data1_inpad_o;
-    logic input_pad_data1_prog_active_o;
-    logic input_pad_pred_inpad_o;
-    logic input_pad_pred_prog_active_o;
-    logic reg_out_pred_data_o;
-    logic i_prog_data_input_pad_data0_prog_data_o;
-    logic i_prog_data_input_pad_data0_prog_dout_o;
-    logic i_prog_data_input_pad_data1_prog_data_o;
-    logic i_prog_data_input_pad_data1_prog_dout_o;
-    logic i_prog_data_input_pad_pred_prog_data_o;
-    logic i_prog_data_input_pad_pred_prog_dout_o;
-
-    // Unconnected Wires
-
-    // Instances
-    reg_8b reg_out_data0 (
-        .clk_i(clk_i),
-        .reset_i(reset_i),
-        .en_i(en_i),
-        .data_i(input_pad_data0_inpad_o),
-        .data_o(reg_out_data0_data_o)
-    );
-
-    rta_v4_input_pad_8b_s0 input_pad_data0 (
-        .ipin_i(ipin_x0y0_0),
-        .inpad_o(input_pad_data0_inpad_o),
-        .prog_done_i(prog_done_i),
-        .prog_active_o(input_pad_data0_prog_active_o),
-        .prog_data_i(i_prog_data_input_pad_data0_prog_data_o)
-    );
-
-    reg_8b reg_out_data1 (
-        .clk_i(clk_i),
-        .reset_i(reset_i),
-        .en_i(en_i),
-        .data_i(input_pad_data1_inpad_o),
-        .data_o(reg_out_data1_data_o)
-    );
-
-    rta_v4_input_pad_8b_s1 input_pad_data1 (
-        .ipin_i(ipin_x0y0_1),
-        .inpad_o(input_pad_data1_inpad_o),
-        .prog_done_i(prog_done_i),
-        .prog_active_o(input_pad_data1_prog_active_o),
-        .prog_data_i(i_prog_data_input_pad_data1_prog_data_o)
-    );
-
-    rta_v4_input_pad_1b_s2 input_pad_pred (
-        .ipin_i(ipin_x0y0_2),
-        .inpad_o(input_pad_pred_inpad_o),
-        .prog_done_i(prog_done_i),
-        .prog_active_o(input_pad_pred_prog_active_o),
-        .prog_data_i(i_prog_data_input_pad_pred_prog_data_o)
-    );
-
-    reg_1b reg_out_pred (
-        .clk_i(clk_i),
-        .reset_i(reset_i),
-        .en_i(en_i),
-        .data_i(input_pad_pred_inpad_o),
-        .data_o(reg_out_pred_data_o)
-    );
-
-    scanchain_data_d1_contexts_1 i_prog_data_input_pad_data0 (
-        .prog_data_o(i_prog_data_input_pad_data0_prog_data_o),
-        .prog_clk_i(prog_clk_i),
-        .prog_rst_i(prog_rst_i),
-        .prog_done_i(prog_done_i),
-        .prog_we_i(prog_we_i),
-        .prog_din_i(prog_din_i),
-        .prog_dout_o(i_prog_data_input_pad_data0_prog_dout_o)
-    );
-
-    scanchain_data_d1_contexts_1 i_prog_data_input_pad_data1 (
-        .prog_data_o(i_prog_data_input_pad_data1_prog_data_o),
-        .prog_clk_i(prog_clk_i),
-        .prog_rst_i(prog_rst_i),
-        .prog_done_i(prog_done_i),
-        .prog_we_i(prog_we_i),
-        .prog_din_i(i_prog_data_input_pad_data0_prog_dout_o),
-        .prog_dout_o(i_prog_data_input_pad_data1_prog_dout_o)
-    );
-
-    scanchain_data_d1_contexts_1 i_prog_data_input_pad_pred (
-        .prog_data_o(i_prog_data_input_pad_pred_prog_data_o),
-        .prog_clk_i(prog_clk_i),
-        .prog_rst_i(prog_rst_i),
-        .prog_done_i(prog_done_i),
-        .prog_we_i(prog_we_i),
-        .prog_din_i(i_prog_data_input_pad_data1_prog_dout_o),
-        .prog_dout_o(i_prog_data_input_pad_pred_prog_dout_o)
-    );
-
-    // Output Port Connections
-    assign data0_to_fabric = reg_out_data0_data_o;
-    assign data1_to_fabric = reg_out_data1_data_o;
-    assign pred_to_fabric = reg_out_pred_data_o;
-    assign prog_active_data0_o = input_pad_data0_prog_active_o;
-    assign prog_active_data1_o = input_pad_data1_prog_active_o;
-    assign prog_active_pred_o = input_pad_pred_prog_active_o;
-    assign prog_dout_o = i_prog_data_input_pad_pred_prog_dout_o;
-endmodule
-// ============================================================================
-// END SOURCE: rta_v4/rtl/rta_v4_input_io_tile_2x8b_pred.sv
-// ============================================================================
-
-// ============================================================================
-// BEGIN SOURCE: rta_v4/rtl/rta_v4_output_io_tile_2x8b_pred.sv
-// ============================================================================
-// SystemVerilog auto-generated by DORA RTL generator
-// Copyright (c) 2025, Pᴺ Computer Engineering Lab.
-
-// Generated on: <canonicalized>
-// Author: <canonicalized>
-
-module rta_v4_output_io_tile_2x8b_pred (
-    // Ports
-    input  logic clk_i,
-    input  logic reset_i,
-    input  logic en_i,
-    input  logic [7:0] data0_from_fabric,
-    input  logic [7:0] data1_from_fabric,
-    input  logic pred_from_fabric,
-    output logic opin_x0y0_2,
-    output logic [7:0] opin_x0y0_0,
-    output logic [7:0] opin_x0y0_1,
-    output logic prog_active_data0_o,
-    output logic prog_active_data1_o,
-    output logic prog_active_pred_o,
-    input  logic prog_clk_i,
-    input  logic prog_rst_i,
-    input  logic prog_done_i,
-    input  logic prog_we_i,
-    input  logic prog_din_i,
-    output logic prog_dout_o
-);
-    logic [7:0] reg_in_data0_data_o;
-    logic [7:0] output_pad_data0_opin_o;
-    logic output_pad_data0_prog_active_o;
-    logic [7:0] reg_in_data1_data_o;
-    logic [7:0] output_pad_data1_opin_o;
-    logic output_pad_data1_prog_active_o;
-    logic output_pad_pred_opin_o;
-    logic output_pad_pred_prog_active_o;
-    logic reg_in_pred_data_o;
-    logic i_prog_data_output_pad_data0_prog_data_o;
-    logic i_prog_data_output_pad_data0_prog_dout_o;
-    logic i_prog_data_output_pad_data1_prog_data_o;
-    logic i_prog_data_output_pad_data1_prog_dout_o;
-    logic i_prog_data_output_pad_pred_prog_data_o;
-    logic i_prog_data_output_pad_pred_prog_dout_o;
-
-    // Unconnected Wires
-
-    // Instances
-    reg_8b reg_in_data0 (
-        .clk_i(clk_i),
-        .reset_i(reset_i),
-        .en_i(en_i),
-        .data_i(data0_from_fabric),
-        .data_o(reg_in_data0_data_o)
-    );
-
-    rta_v4_output_pad_8b_s0 output_pad_data0 (
-        .outpad_i(reg_in_data0_data_o),
-        .opin_o(output_pad_data0_opin_o),
-        .prog_done_i(prog_done_i),
-        .prog_active_o(output_pad_data0_prog_active_o),
-        .prog_data_i(i_prog_data_output_pad_data0_prog_data_o)
-    );
-
-    reg_8b reg_in_data1 (
-        .clk_i(clk_i),
-        .reset_i(reset_i),
-        .en_i(en_i),
-        .data_i(data1_from_fabric),
-        .data_o(reg_in_data1_data_o)
-    );
-
-    rta_v4_output_pad_8b_s1 output_pad_data1 (
-        .outpad_i(reg_in_data1_data_o),
-        .opin_o(output_pad_data1_opin_o),
-        .prog_done_i(prog_done_i),
-        .prog_active_o(output_pad_data1_prog_active_o),
-        .prog_data_i(i_prog_data_output_pad_data1_prog_data_o)
-    );
-
-    rta_v4_output_pad_1b_s2 output_pad_pred (
-        .outpad_i(reg_in_pred_data_o),
-        .opin_o(output_pad_pred_opin_o),
-        .prog_done_i(prog_done_i),
-        .prog_active_o(output_pad_pred_prog_active_o),
-        .prog_data_i(i_prog_data_output_pad_pred_prog_data_o)
-    );
-
-    reg_1b reg_in_pred (
-        .clk_i(clk_i),
-        .reset_i(reset_i),
-        .en_i(en_i),
-        .data_i(pred_from_fabric),
-        .data_o(reg_in_pred_data_o)
-    );
-
-    scanchain_data_d1_contexts_1 i_prog_data_output_pad_data0 (
-        .prog_data_o(i_prog_data_output_pad_data0_prog_data_o),
-        .prog_clk_i(prog_clk_i),
-        .prog_rst_i(prog_rst_i),
-        .prog_done_i(prog_done_i),
-        .prog_we_i(prog_we_i),
-        .prog_din_i(prog_din_i),
-        .prog_dout_o(i_prog_data_output_pad_data0_prog_dout_o)
-    );
-
-    scanchain_data_d1_contexts_1 i_prog_data_output_pad_data1 (
-        .prog_data_o(i_prog_data_output_pad_data1_prog_data_o),
-        .prog_clk_i(prog_clk_i),
-        .prog_rst_i(prog_rst_i),
-        .prog_done_i(prog_done_i),
-        .prog_we_i(prog_we_i),
-        .prog_din_i(i_prog_data_output_pad_data0_prog_dout_o),
-        .prog_dout_o(i_prog_data_output_pad_data1_prog_dout_o)
-    );
-
-    scanchain_data_d1_contexts_1 i_prog_data_output_pad_pred (
-        .prog_data_o(i_prog_data_output_pad_pred_prog_data_o),
-        .prog_clk_i(prog_clk_i),
-        .prog_rst_i(prog_rst_i),
-        .prog_done_i(prog_done_i),
-        .prog_we_i(prog_we_i),
-        .prog_din_i(i_prog_data_output_pad_data1_prog_dout_o),
-        .prog_dout_o(i_prog_data_output_pad_pred_prog_dout_o)
-    );
-
-    // Output Port Connections
-    assign opin_x0y0_2 = output_pad_pred_opin_o;
-    assign opin_x0y0_0 = output_pad_data0_opin_o;
-    assign opin_x0y0_1 = output_pad_data1_opin_o;
-    assign prog_active_data0_o = output_pad_data0_prog_active_o;
-    assign prog_active_data1_o = output_pad_data1_prog_active_o;
-    assign prog_active_pred_o = output_pad_pred_prog_active_o;
-    assign prog_dout_o = i_prog_data_output_pad_pred_prog_dout_o;
-endmodule
-// ============================================================================
-// END SOURCE: rta_v4/rtl/rta_v4_output_io_tile_2x8b_pred.sv
-// ============================================================================
-
-// ============================================================================
-// BEGIN SOURCE: rta_v4/rtl/rta_v4_input_boundary_cell_2x8b_pred.sv
-// ============================================================================
-// SystemVerilog auto-generated by DORA RTL generator
-// Copyright (c) 2025, Pᴺ Computer Engineering Lab.
-
-// Generated on: <canonicalized>
-// Author: <canonicalized>
-
-module rta_v4_input_boundary_cell_2x8b_pred (
-    // Ports
-    input  logic clk_i,
-    input  logic reset_i,
-    input  logic en_i,
-    output logic [7:0] data0_to_fabric,
-    output logic [7:0] data1_to_fabric,
-    output logic pred_to_fabric,
-    input  logic [7:0] ipin_x0y0_0,
-    input  logic [7:0] ipin_x0y0_1,
-    input  logic ipin_x0y0_2,
-    output logic prog_active_data0_o,
-    output logic prog_active_data1_o,
-    output logic prog_active_pred_o,
-    input  logic prog_clk_i,
-    input  logic prog_rst_i,
-    input  logic prog_done_i,
-    input  logic prog_we_i,
-    input  logic prog_din_i,
-    output logic prog_dout_o,
-    output logic prog_we_o
-);
-    logic [7:0] input_io_tile_data0_to_fabric;
-    logic [7:0] input_io_tile_data1_to_fabric;
-    logic input_io_tile_pred_to_fabric;
-    logic input_io_tile_prog_active_data0_o;
-    logic input_io_tile_prog_active_data1_o;
-    logic input_io_tile_prog_active_pred_o;
-    logic input_io_tile_prog_dout_o;
-    logic i_buf_prog_rst_l0_data_o;
-    logic i_buf_prog_done_l0_data_o;
-    logic i_scanchain_head_prog_we_o;
-    logic i_scanchain_head_prog_dout_o;
-    logic i_scanchain_tail_prog_we_o;
-    logic i_scanchain_tail_prog_dout_o;
-
-    // Unconnected Wires
-
-    // Instances
-    rta_v4_input_io_tile_2x8b_pred input_io_tile (
-        .clk_i(clk_i),
-        .reset_i(reset_i),
-        .en_i(en_i),
-        .data0_to_fabric(input_io_tile_data0_to_fabric),
-        .data1_to_fabric(input_io_tile_data1_to_fabric),
-        .ipin_x0y0_2(ipin_x0y0_2),
-        .pred_to_fabric(input_io_tile_pred_to_fabric),
-        .ipin_x0y0_0(ipin_x0y0_0),
-        .ipin_x0y0_1(ipin_x0y0_1),
-        .prog_active_data0_o(input_io_tile_prog_active_data0_o),
-        .prog_active_data1_o(input_io_tile_prog_active_data1_o),
-        .prog_active_pred_o(input_io_tile_prog_active_pred_o),
-        .prog_clk_i(prog_clk_i),
-        .prog_rst_i(i_buf_prog_rst_l0_data_o),
-        .prog_done_i(i_buf_prog_done_l0_data_o),
-        .prog_we_i(i_scanchain_head_prog_we_o),
-        .prog_din_i(i_scanchain_head_prog_dout_o),
-        .prog_dout_o(input_io_tile_prog_dout_o)
-    );
-
-    simple_buf i_buf_prog_rst_l0 (
-        .clk_i(prog_clk_i),
-        .data_i(prog_rst_i),
-        .data_o(i_buf_prog_rst_l0_data_o)
-    );
-
-    simple_bufr i_buf_prog_done_l0 (
-        .clk_i(prog_clk_i),
-        .reset_i(i_buf_prog_rst_l0_data_o),
-        .data_i(prog_done_i),
-        .data_o(i_buf_prog_done_l0_data_o)
-    );
-
-    scanchain_delim i_scanchain_head (
-        .prog_we_o(i_scanchain_head_prog_we_o),
-        .prog_clk_i(prog_clk_i),
-        .prog_rst_i(i_buf_prog_rst_l0_data_o),
-        .prog_done_i(i_buf_prog_done_l0_data_o),
-        .prog_we_i(prog_we_i),
-        .prog_din_i(prog_din_i),
-        .prog_dout_o(i_scanchain_head_prog_dout_o)
-    );
-
-    scanchain_delim i_scanchain_tail (
-        .prog_we_o(i_scanchain_tail_prog_we_o),
-        .prog_clk_i(prog_clk_i),
-        .prog_rst_i(i_buf_prog_rst_l0_data_o),
-        .prog_done_i(i_buf_prog_done_l0_data_o),
-        .prog_we_i(i_scanchain_head_prog_we_o),
-        .prog_din_i(input_io_tile_prog_dout_o),
-        .prog_dout_o(i_scanchain_tail_prog_dout_o)
-    );
-
-    // Output Port Connections
-    assign data0_to_fabric = input_io_tile_data0_to_fabric;
-    assign data1_to_fabric = input_io_tile_data1_to_fabric;
-    assign pred_to_fabric = input_io_tile_pred_to_fabric;
-    assign prog_active_data0_o = input_io_tile_prog_active_data0_o;
-    assign prog_active_data1_o = input_io_tile_prog_active_data1_o;
-    assign prog_active_pred_o = input_io_tile_prog_active_pred_o;
-    assign prog_dout_o = i_scanchain_tail_prog_dout_o;
-    assign prog_we_o = i_scanchain_tail_prog_we_o;
-endmodule
-// ============================================================================
-// END SOURCE: rta_v4/rtl/rta_v4_input_boundary_cell_2x8b_pred.sv
-// ============================================================================
-
-// ============================================================================
-// BEGIN SOURCE: rta_v4/rtl/rta_v4_input_boundary_cell_2x8b_pred_skew1.sv
-// ============================================================================
-// SystemVerilog auto-generated by DORA RTL generator
-// Copyright (c) 2025, Pᴺ Computer Engineering Lab.
-
-// Generated on: <canonicalized>
-// Author: <canonicalized>
-
-module rta_v4_input_boundary_cell_2x8b_pred_skew1 (
-    // Ports
-    input  logic clk_i,
-    input  logic reset_i,
-    input  logic en_i,
-    output logic [7:0] data0_to_fabric,
-    output logic [7:0] data1_to_fabric,
-    output logic pred_to_fabric,
-    input  logic [7:0] ipin_x0y0_0,
-    input  logic [7:0] ipin_x0y0_1,
-    input  logic ipin_x0y0_2,
-    output logic prog_active_data0_o,
-    output logic prog_active_data1_o,
-    output logic prog_active_pred_o,
-    input  logic prog_clk_i,
-    input  logic prog_rst_i,
-    input  logic prog_done_i,
-    input  logic prog_we_i,
-    input  logic prog_din_i,
-    output logic prog_dout_o,
-    output logic prog_we_o
-);
-    logic [7:0] input_io_tile_data0_to_fabric;
-    logic [7:0] input_io_tile_data1_to_fabric;
-    logic input_io_tile_pred_to_fabric;
-    logic input_io_tile_prog_active_data0_o;
-    logic input_io_tile_prog_active_data1_o;
-    logic input_io_tile_prog_active_pred_o;
-    logic input_io_tile_prog_dout_o;
-    logic [7:0] skew_s0_data0_reg_data_o;
-    logic [7:0] skew_s0_data1_reg_data_o;
-    logic skew_s0_pred_reg_data_o;
-    logic [7:0] skew_s0_mux_data0_o;
-    logic [7:0] skew_s0_mux_data1_o;
-    logic skew_s0_mux_pred_o;
-    logic skew_s0_mux_prog_dout_o;
-    logic i_buf_prog_rst_l0_data_o;
-    logic i_buf_prog_done_l0_data_o;
-    logic i_scanchain_head_prog_we_o;
-    logic i_scanchain_head_prog_dout_o;
-    logic i_scanchain_tail_prog_we_o;
-    logic i_scanchain_tail_prog_dout_o;
-
-    // Unconnected Wires
-
-    // Instances
-    rta_v4_input_io_tile_2x8b_pred input_io_tile (
-        .clk_i(clk_i),
-        .reset_i(reset_i),
-        .en_i(en_i),
-        .data0_to_fabric(input_io_tile_data0_to_fabric),
-        .data1_to_fabric(input_io_tile_data1_to_fabric),
-        .ipin_x0y0_2(ipin_x0y0_2),
-        .pred_to_fabric(input_io_tile_pred_to_fabric),
-        .ipin_x0y0_0(ipin_x0y0_0),
-        .ipin_x0y0_1(ipin_x0y0_1),
-        .prog_active_data0_o(input_io_tile_prog_active_data0_o),
-        .prog_active_data1_o(input_io_tile_prog_active_data1_o),
-        .prog_active_pred_o(input_io_tile_prog_active_pred_o),
-        .prog_clk_i(prog_clk_i),
-        .prog_rst_i(i_buf_prog_rst_l0_data_o),
-        .prog_done_i(i_buf_prog_done_l0_data_o),
-        .prog_we_i(i_scanchain_head_prog_we_o),
-        .prog_din_i(i_scanchain_head_prog_dout_o),
-        .prog_dout_o(input_io_tile_prog_dout_o)
-    );
-
-    reg_8b skew_s0_data0_reg (
-        .clk_i(clk_i),
-        .reset_i(reset_i),
-        .en_i(en_i),
-        .data_i(input_io_tile_data0_to_fabric),
-        .data_o(skew_s0_data0_reg_data_o)
-    );
-
-    reg_8b skew_s0_data1_reg (
-        .clk_i(clk_i),
-        .reset_i(reset_i),
-        .en_i(en_i),
-        .data_i(input_io_tile_data1_to_fabric),
-        .data_o(skew_s0_data1_reg_data_o)
-    );
-
-    reg_1b skew_s0_pred_reg (
-        .clk_i(clk_i),
-        .reset_i(reset_i),
-        .en_i(en_i),
-        .data_i(input_io_tile_pred_to_fabric),
-        .data_o(skew_s0_pred_reg_data_o)
-    );
-
-    rta_v4_skew_bypass_2x8b_pred skew_s0_mux (
-        .data0_bypass_i(input_io_tile_data0_to_fabric),
-        .data0_delay_i(skew_s0_data0_reg_data_o),
-        .data0_o(skew_s0_mux_data0_o),
-        .data1_bypass_i(input_io_tile_data1_to_fabric),
-        .data1_delay_i(skew_s0_data1_reg_data_o),
-        .data1_o(skew_s0_mux_data1_o),
-        .pred_bypass_i(input_io_tile_pred_to_fabric),
-        .pred_delay_i(skew_s0_pred_reg_data_o),
-        .pred_o(skew_s0_mux_pred_o),
-        .prog_clk_i(prog_clk_i),
-        .prog_rst_i(i_buf_prog_rst_l0_data_o),
-        .prog_done_i(i_buf_prog_done_l0_data_o),
-        .prog_we_i(i_scanchain_head_prog_we_o),
-        .prog_din_i(input_io_tile_prog_dout_o),
-        .prog_dout_o(skew_s0_mux_prog_dout_o)
-    );
-
-    simple_buf i_buf_prog_rst_l0 (
-        .clk_i(prog_clk_i),
-        .data_i(prog_rst_i),
-        .data_o(i_buf_prog_rst_l0_data_o)
-    );
-
-    simple_bufr i_buf_prog_done_l0 (
-        .clk_i(prog_clk_i),
-        .reset_i(i_buf_prog_rst_l0_data_o),
-        .data_i(prog_done_i),
-        .data_o(i_buf_prog_done_l0_data_o)
-    );
-
-    scanchain_delim i_scanchain_head (
-        .prog_we_o(i_scanchain_head_prog_we_o),
-        .prog_clk_i(prog_clk_i),
-        .prog_rst_i(i_buf_prog_rst_l0_data_o),
-        .prog_done_i(i_buf_prog_done_l0_data_o),
-        .prog_we_i(prog_we_i),
-        .prog_din_i(prog_din_i),
-        .prog_dout_o(i_scanchain_head_prog_dout_o)
-    );
-
-    scanchain_delim i_scanchain_tail (
-        .prog_we_o(i_scanchain_tail_prog_we_o),
-        .prog_clk_i(prog_clk_i),
-        .prog_rst_i(i_buf_prog_rst_l0_data_o),
-        .prog_done_i(i_buf_prog_done_l0_data_o),
-        .prog_we_i(i_scanchain_head_prog_we_o),
-        .prog_din_i(skew_s0_mux_prog_dout_o),
-        .prog_dout_o(i_scanchain_tail_prog_dout_o)
-    );
-
-    // Output Port Connections
-    assign data0_to_fabric = skew_s0_mux_data0_o;
-    assign data1_to_fabric = skew_s0_mux_data1_o;
-    assign pred_to_fabric = skew_s0_mux_pred_o;
-    assign prog_active_data0_o = input_io_tile_prog_active_data0_o;
-    assign prog_active_data1_o = input_io_tile_prog_active_data1_o;
-    assign prog_active_pred_o = input_io_tile_prog_active_pred_o;
-    assign prog_dout_o = i_scanchain_tail_prog_dout_o;
-    assign prog_we_o = i_scanchain_tail_prog_we_o;
-endmodule
-// ============================================================================
-// END SOURCE: rta_v4/rtl/rta_v4_input_boundary_cell_2x8b_pred_skew1.sv
-// ============================================================================
-
-// ============================================================================
-// BEGIN SOURCE: rta_v4/rtl/rta_v4_input_boundary_cell_2x8b_pred_skew2.sv
-// ============================================================================
-// SystemVerilog auto-generated by DORA RTL generator
-// Copyright (c) 2025, Pᴺ Computer Engineering Lab.
-
-// Generated on: <canonicalized>
-// Author: <canonicalized>
-
-module rta_v4_input_boundary_cell_2x8b_pred_skew2 (
-    // Ports
-    input  logic clk_i,
-    input  logic reset_i,
-    input  logic en_i,
-    output logic [7:0] data0_to_fabric,
-    output logic [7:0] data1_to_fabric,
-    output logic pred_to_fabric,
-    input  logic [7:0] ipin_x0y0_0,
-    input  logic [7:0] ipin_x0y0_1,
-    input  logic ipin_x0y0_2,
-    output logic prog_active_data0_o,
-    output logic prog_active_data1_o,
-    output logic prog_active_pred_o,
-    input  logic prog_clk_i,
-    input  logic prog_rst_i,
-    input  logic prog_done_i,
-    input  logic prog_we_i,
-    input  logic prog_din_i,
-    output logic prog_dout_o,
-    output logic prog_we_o
-);
-    logic [7:0] input_io_tile_data0_to_fabric;
-    logic [7:0] input_io_tile_data1_to_fabric;
-    logic input_io_tile_pred_to_fabric;
-    logic input_io_tile_prog_active_data0_o;
-    logic input_io_tile_prog_active_data1_o;
-    logic input_io_tile_prog_active_pred_o;
-    logic input_io_tile_prog_dout_o;
-    logic [7:0] skew_s0_data0_reg_data_o;
-    logic [7:0] skew_s0_data1_reg_data_o;
-    logic skew_s0_pred_reg_data_o;
-    logic [7:0] skew_s0_mux_data0_o;
-    logic [7:0] skew_s0_mux_data1_o;
-    logic skew_s0_mux_pred_o;
-    logic skew_s0_mux_prog_dout_o;
-    logic [7:0] skew_s1_data0_reg_data_o;
-    logic [7:0] skew_s1_data1_reg_data_o;
-    logic skew_s1_pred_reg_data_o;
-    logic [7:0] skew_s1_mux_data0_o;
-    logic [7:0] skew_s1_mux_data1_o;
-    logic skew_s1_mux_pred_o;
-    logic skew_s1_mux_prog_dout_o;
-    logic i_buf_prog_rst_l0_data_o;
-    logic i_buf_prog_done_l0_data_o;
-    logic i_scanchain_head_prog_we_o;
-    logic i_scanchain_head_prog_dout_o;
-    logic i_scanchain_tail_prog_we_o;
-    logic i_scanchain_tail_prog_dout_o;
-
-    // Unconnected Wires
-
-    // Instances
-    rta_v4_input_io_tile_2x8b_pred input_io_tile (
-        .clk_i(clk_i),
-        .reset_i(reset_i),
-        .en_i(en_i),
-        .data0_to_fabric(input_io_tile_data0_to_fabric),
-        .data1_to_fabric(input_io_tile_data1_to_fabric),
-        .ipin_x0y0_2(ipin_x0y0_2),
-        .pred_to_fabric(input_io_tile_pred_to_fabric),
-        .ipin_x0y0_0(ipin_x0y0_0),
-        .ipin_x0y0_1(ipin_x0y0_1),
-        .prog_active_data0_o(input_io_tile_prog_active_data0_o),
-        .prog_active_data1_o(input_io_tile_prog_active_data1_o),
-        .prog_active_pred_o(input_io_tile_prog_active_pred_o),
-        .prog_clk_i(prog_clk_i),
-        .prog_rst_i(i_buf_prog_rst_l0_data_o),
-        .prog_done_i(i_buf_prog_done_l0_data_o),
-        .prog_we_i(i_scanchain_head_prog_we_o),
-        .prog_din_i(i_scanchain_head_prog_dout_o),
-        .prog_dout_o(input_io_tile_prog_dout_o)
-    );
-
-    reg_8b skew_s0_data0_reg (
-        .clk_i(clk_i),
-        .reset_i(reset_i),
-        .en_i(en_i),
-        .data_i(input_io_tile_data0_to_fabric),
-        .data_o(skew_s0_data0_reg_data_o)
-    );
-
-    reg_8b skew_s0_data1_reg (
-        .clk_i(clk_i),
-        .reset_i(reset_i),
-        .en_i(en_i),
-        .data_i(input_io_tile_data1_to_fabric),
-        .data_o(skew_s0_data1_reg_data_o)
-    );
-
-    reg_1b skew_s0_pred_reg (
-        .clk_i(clk_i),
-        .reset_i(reset_i),
-        .en_i(en_i),
-        .data_i(input_io_tile_pred_to_fabric),
-        .data_o(skew_s0_pred_reg_data_o)
-    );
-
-    rta_v4_skew_bypass_2x8b_pred skew_s0_mux (
-        .data0_bypass_i(input_io_tile_data0_to_fabric),
-        .data0_delay_i(skew_s0_data0_reg_data_o),
-        .data0_o(skew_s0_mux_data0_o),
-        .data1_bypass_i(input_io_tile_data1_to_fabric),
-        .data1_delay_i(skew_s0_data1_reg_data_o),
-        .data1_o(skew_s0_mux_data1_o),
-        .pred_bypass_i(input_io_tile_pred_to_fabric),
-        .pred_delay_i(skew_s0_pred_reg_data_o),
-        .pred_o(skew_s0_mux_pred_o),
-        .prog_clk_i(prog_clk_i),
-        .prog_rst_i(i_buf_prog_rst_l0_data_o),
-        .prog_done_i(i_buf_prog_done_l0_data_o),
-        .prog_we_i(i_scanchain_head_prog_we_o),
-        .prog_din_i(input_io_tile_prog_dout_o),
-        .prog_dout_o(skew_s0_mux_prog_dout_o)
-    );
-
-    reg_8b skew_s1_data0_reg (
-        .clk_i(clk_i),
-        .reset_i(reset_i),
-        .en_i(en_i),
-        .data_i(skew_s0_mux_data0_o),
-        .data_o(skew_s1_data0_reg_data_o)
-    );
-
-    reg_8b skew_s1_data1_reg (
-        .clk_i(clk_i),
-        .reset_i(reset_i),
-        .en_i(en_i),
-        .data_i(skew_s0_mux_data1_o),
-        .data_o(skew_s1_data1_reg_data_o)
-    );
-
-    reg_1b skew_s1_pred_reg (
-        .clk_i(clk_i),
-        .reset_i(reset_i),
-        .en_i(en_i),
-        .data_i(skew_s0_mux_pred_o),
-        .data_o(skew_s1_pred_reg_data_o)
-    );
-
-    rta_v4_skew_bypass_2x8b_pred skew_s1_mux (
-        .data0_bypass_i(skew_s0_mux_data0_o),
-        .data0_delay_i(skew_s1_data0_reg_data_o),
-        .data0_o(skew_s1_mux_data0_o),
-        .data1_bypass_i(skew_s0_mux_data1_o),
-        .data1_delay_i(skew_s1_data1_reg_data_o),
-        .data1_o(skew_s1_mux_data1_o),
-        .pred_bypass_i(skew_s0_mux_pred_o),
-        .pred_delay_i(skew_s1_pred_reg_data_o),
-        .pred_o(skew_s1_mux_pred_o),
-        .prog_clk_i(prog_clk_i),
-        .prog_rst_i(i_buf_prog_rst_l0_data_o),
-        .prog_done_i(i_buf_prog_done_l0_data_o),
-        .prog_we_i(i_scanchain_head_prog_we_o),
-        .prog_din_i(skew_s0_mux_prog_dout_o),
-        .prog_dout_o(skew_s1_mux_prog_dout_o)
-    );
-
-    simple_buf i_buf_prog_rst_l0 (
-        .clk_i(prog_clk_i),
-        .data_i(prog_rst_i),
-        .data_o(i_buf_prog_rst_l0_data_o)
-    );
-
-    simple_bufr i_buf_prog_done_l0 (
-        .clk_i(prog_clk_i),
-        .reset_i(i_buf_prog_rst_l0_data_o),
-        .data_i(prog_done_i),
-        .data_o(i_buf_prog_done_l0_data_o)
-    );
-
-    scanchain_delim i_scanchain_head (
-        .prog_we_o(i_scanchain_head_prog_we_o),
-        .prog_clk_i(prog_clk_i),
-        .prog_rst_i(i_buf_prog_rst_l0_data_o),
-        .prog_done_i(i_buf_prog_done_l0_data_o),
-        .prog_we_i(prog_we_i),
-        .prog_din_i(prog_din_i),
-        .prog_dout_o(i_scanchain_head_prog_dout_o)
-    );
-
-    scanchain_delim i_scanchain_tail (
-        .prog_we_o(i_scanchain_tail_prog_we_o),
-        .prog_clk_i(prog_clk_i),
-        .prog_rst_i(i_buf_prog_rst_l0_data_o),
-        .prog_done_i(i_buf_prog_done_l0_data_o),
-        .prog_we_i(i_scanchain_head_prog_we_o),
-        .prog_din_i(skew_s1_mux_prog_dout_o),
-        .prog_dout_o(i_scanchain_tail_prog_dout_o)
-    );
-
-    // Output Port Connections
-    assign data0_to_fabric = skew_s1_mux_data0_o;
-    assign data1_to_fabric = skew_s1_mux_data1_o;
-    assign pred_to_fabric = skew_s1_mux_pred_o;
-    assign prog_active_data0_o = input_io_tile_prog_active_data0_o;
-    assign prog_active_data1_o = input_io_tile_prog_active_data1_o;
-    assign prog_active_pred_o = input_io_tile_prog_active_pred_o;
-    assign prog_dout_o = i_scanchain_tail_prog_dout_o;
-    assign prog_we_o = i_scanchain_tail_prog_we_o;
-endmodule
-// ============================================================================
-// END SOURCE: rta_v4/rtl/rta_v4_input_boundary_cell_2x8b_pred_skew2.sv
-// ============================================================================
-
-// ============================================================================
-// BEGIN SOURCE: rta_v4/rtl/rta_v4_input_boundary_cell_2x8b_pred_skew3.sv
-// ============================================================================
-// SystemVerilog auto-generated by DORA RTL generator
-// Copyright (c) 2025, Pᴺ Computer Engineering Lab.
-
-// Generated on: <canonicalized>
-// Author: <canonicalized>
-
-module rta_v4_input_boundary_cell_2x8b_pred_skew3 (
-    // Ports
-    input  logic clk_i,
-    input  logic reset_i,
-    input  logic en_i,
-    output logic [7:0] data0_to_fabric,
-    output logic [7:0] data1_to_fabric,
-    output logic pred_to_fabric,
-    input  logic [7:0] ipin_x0y0_0,
-    input  logic [7:0] ipin_x0y0_1,
-    input  logic ipin_x0y0_2,
-    output logic prog_active_data0_o,
-    output logic prog_active_data1_o,
-    output logic prog_active_pred_o,
-    input  logic prog_clk_i,
-    input  logic prog_rst_i,
-    input  logic prog_done_i,
-    input  logic prog_we_i,
-    input  logic prog_din_i,
-    output logic prog_dout_o,
-    output logic prog_we_o
-);
-    logic [7:0] input_io_tile_data0_to_fabric;
-    logic [7:0] input_io_tile_data1_to_fabric;
-    logic input_io_tile_pred_to_fabric;
-    logic input_io_tile_prog_active_data0_o;
-    logic input_io_tile_prog_active_data1_o;
-    logic input_io_tile_prog_active_pred_o;
-    logic input_io_tile_prog_dout_o;
-    logic [7:0] skew_s0_data0_reg_data_o;
-    logic [7:0] skew_s0_data1_reg_data_o;
-    logic skew_s0_pred_reg_data_o;
-    logic [7:0] skew_s0_mux_data0_o;
-    logic [7:0] skew_s0_mux_data1_o;
-    logic skew_s0_mux_pred_o;
-    logic skew_s0_mux_prog_dout_o;
-    logic [7:0] skew_s1_data0_reg_data_o;
-    logic [7:0] skew_s1_data1_reg_data_o;
-    logic skew_s1_pred_reg_data_o;
-    logic [7:0] skew_s1_mux_data0_o;
-    logic [7:0] skew_s1_mux_data1_o;
-    logic skew_s1_mux_pred_o;
-    logic skew_s1_mux_prog_dout_o;
-    logic [7:0] skew_s2_data0_reg_data_o;
-    logic [7:0] skew_s2_data1_reg_data_o;
-    logic skew_s2_pred_reg_data_o;
-    logic [7:0] skew_s2_mux_data0_o;
-    logic [7:0] skew_s2_mux_data1_o;
-    logic skew_s2_mux_pred_o;
-    logic skew_s2_mux_prog_dout_o;
-    logic i_buf_prog_rst_l0_data_o;
-    logic i_buf_prog_done_l0_data_o;
-    logic i_scanchain_head_prog_we_o;
-    logic i_scanchain_head_prog_dout_o;
-    logic i_scanchain_tail_prog_we_o;
-    logic i_scanchain_tail_prog_dout_o;
-
-    // Unconnected Wires
-
-    // Instances
-    rta_v4_input_io_tile_2x8b_pred input_io_tile (
-        .clk_i(clk_i),
-        .reset_i(reset_i),
-        .en_i(en_i),
-        .data0_to_fabric(input_io_tile_data0_to_fabric),
-        .data1_to_fabric(input_io_tile_data1_to_fabric),
-        .ipin_x0y0_2(ipin_x0y0_2),
-        .pred_to_fabric(input_io_tile_pred_to_fabric),
-        .ipin_x0y0_0(ipin_x0y0_0),
-        .ipin_x0y0_1(ipin_x0y0_1),
-        .prog_active_data0_o(input_io_tile_prog_active_data0_o),
-        .prog_active_data1_o(input_io_tile_prog_active_data1_o),
-        .prog_active_pred_o(input_io_tile_prog_active_pred_o),
-        .prog_clk_i(prog_clk_i),
-        .prog_rst_i(i_buf_prog_rst_l0_data_o),
-        .prog_done_i(i_buf_prog_done_l0_data_o),
-        .prog_we_i(i_scanchain_head_prog_we_o),
-        .prog_din_i(i_scanchain_head_prog_dout_o),
-        .prog_dout_o(input_io_tile_prog_dout_o)
-    );
-
-    reg_8b skew_s0_data0_reg (
-        .clk_i(clk_i),
-        .reset_i(reset_i),
-        .en_i(en_i),
-        .data_i(input_io_tile_data0_to_fabric),
-        .data_o(skew_s0_data0_reg_data_o)
-    );
-
-    reg_8b skew_s0_data1_reg (
-        .clk_i(clk_i),
-        .reset_i(reset_i),
-        .en_i(en_i),
-        .data_i(input_io_tile_data1_to_fabric),
-        .data_o(skew_s0_data1_reg_data_o)
-    );
-
-    reg_1b skew_s0_pred_reg (
-        .clk_i(clk_i),
-        .reset_i(reset_i),
-        .en_i(en_i),
-        .data_i(input_io_tile_pred_to_fabric),
-        .data_o(skew_s0_pred_reg_data_o)
-    );
-
-    rta_v4_skew_bypass_2x8b_pred skew_s0_mux (
-        .data0_bypass_i(input_io_tile_data0_to_fabric),
-        .data0_delay_i(skew_s0_data0_reg_data_o),
-        .data0_o(skew_s0_mux_data0_o),
-        .data1_bypass_i(input_io_tile_data1_to_fabric),
-        .data1_delay_i(skew_s0_data1_reg_data_o),
-        .data1_o(skew_s0_mux_data1_o),
-        .pred_bypass_i(input_io_tile_pred_to_fabric),
-        .pred_delay_i(skew_s0_pred_reg_data_o),
-        .pred_o(skew_s0_mux_pred_o),
-        .prog_clk_i(prog_clk_i),
-        .prog_rst_i(i_buf_prog_rst_l0_data_o),
-        .prog_done_i(i_buf_prog_done_l0_data_o),
-        .prog_we_i(i_scanchain_head_prog_we_o),
-        .prog_din_i(input_io_tile_prog_dout_o),
-        .prog_dout_o(skew_s0_mux_prog_dout_o)
-    );
-
-    reg_8b skew_s1_data0_reg (
-        .clk_i(clk_i),
-        .reset_i(reset_i),
-        .en_i(en_i),
-        .data_i(skew_s0_mux_data0_o),
-        .data_o(skew_s1_data0_reg_data_o)
-    );
-
-    reg_8b skew_s1_data1_reg (
-        .clk_i(clk_i),
-        .reset_i(reset_i),
-        .en_i(en_i),
-        .data_i(skew_s0_mux_data1_o),
-        .data_o(skew_s1_data1_reg_data_o)
-    );
-
-    reg_1b skew_s1_pred_reg (
-        .clk_i(clk_i),
-        .reset_i(reset_i),
-        .en_i(en_i),
-        .data_i(skew_s0_mux_pred_o),
-        .data_o(skew_s1_pred_reg_data_o)
-    );
-
-    rta_v4_skew_bypass_2x8b_pred skew_s1_mux (
-        .data0_bypass_i(skew_s0_mux_data0_o),
-        .data0_delay_i(skew_s1_data0_reg_data_o),
-        .data0_o(skew_s1_mux_data0_o),
-        .data1_bypass_i(skew_s0_mux_data1_o),
-        .data1_delay_i(skew_s1_data1_reg_data_o),
-        .data1_o(skew_s1_mux_data1_o),
-        .pred_bypass_i(skew_s0_mux_pred_o),
-        .pred_delay_i(skew_s1_pred_reg_data_o),
-        .pred_o(skew_s1_mux_pred_o),
-        .prog_clk_i(prog_clk_i),
-        .prog_rst_i(i_buf_prog_rst_l0_data_o),
-        .prog_done_i(i_buf_prog_done_l0_data_o),
-        .prog_we_i(i_scanchain_head_prog_we_o),
-        .prog_din_i(skew_s0_mux_prog_dout_o),
-        .prog_dout_o(skew_s1_mux_prog_dout_o)
-    );
-
-    reg_8b skew_s2_data0_reg (
-        .clk_i(clk_i),
-        .reset_i(reset_i),
-        .en_i(en_i),
-        .data_i(skew_s1_mux_data0_o),
-        .data_o(skew_s2_data0_reg_data_o)
-    );
-
-    reg_8b skew_s2_data1_reg (
-        .clk_i(clk_i),
-        .reset_i(reset_i),
-        .en_i(en_i),
-        .data_i(skew_s1_mux_data1_o),
-        .data_o(skew_s2_data1_reg_data_o)
-    );
-
-    reg_1b skew_s2_pred_reg (
-        .clk_i(clk_i),
-        .reset_i(reset_i),
-        .en_i(en_i),
-        .data_i(skew_s1_mux_pred_o),
-        .data_o(skew_s2_pred_reg_data_o)
-    );
-
-    rta_v4_skew_bypass_2x8b_pred skew_s2_mux (
-        .data0_bypass_i(skew_s1_mux_data0_o),
-        .data0_delay_i(skew_s2_data0_reg_data_o),
-        .data0_o(skew_s2_mux_data0_o),
-        .data1_bypass_i(skew_s1_mux_data1_o),
-        .data1_delay_i(skew_s2_data1_reg_data_o),
-        .data1_o(skew_s2_mux_data1_o),
-        .pred_bypass_i(skew_s1_mux_pred_o),
-        .pred_delay_i(skew_s2_pred_reg_data_o),
-        .pred_o(skew_s2_mux_pred_o),
-        .prog_clk_i(prog_clk_i),
-        .prog_rst_i(i_buf_prog_rst_l0_data_o),
-        .prog_done_i(i_buf_prog_done_l0_data_o),
-        .prog_we_i(i_scanchain_head_prog_we_o),
-        .prog_din_i(skew_s1_mux_prog_dout_o),
-        .prog_dout_o(skew_s2_mux_prog_dout_o)
-    );
-
-    simple_buf i_buf_prog_rst_l0 (
-        .clk_i(prog_clk_i),
-        .data_i(prog_rst_i),
-        .data_o(i_buf_prog_rst_l0_data_o)
-    );
-
-    simple_bufr i_buf_prog_done_l0 (
-        .clk_i(prog_clk_i),
-        .reset_i(i_buf_prog_rst_l0_data_o),
-        .data_i(prog_done_i),
-        .data_o(i_buf_prog_done_l0_data_o)
-    );
-
-    scanchain_delim i_scanchain_head (
-        .prog_we_o(i_scanchain_head_prog_we_o),
-        .prog_clk_i(prog_clk_i),
-        .prog_rst_i(i_buf_prog_rst_l0_data_o),
-        .prog_done_i(i_buf_prog_done_l0_data_o),
-        .prog_we_i(prog_we_i),
-        .prog_din_i(prog_din_i),
-        .prog_dout_o(i_scanchain_head_prog_dout_o)
-    );
-
-    scanchain_delim i_scanchain_tail (
-        .prog_we_o(i_scanchain_tail_prog_we_o),
-        .prog_clk_i(prog_clk_i),
-        .prog_rst_i(i_buf_prog_rst_l0_data_o),
-        .prog_done_i(i_buf_prog_done_l0_data_o),
-        .prog_we_i(i_scanchain_head_prog_we_o),
-        .prog_din_i(skew_s2_mux_prog_dout_o),
-        .prog_dout_o(i_scanchain_tail_prog_dout_o)
-    );
-
-    // Output Port Connections
-    assign data0_to_fabric = skew_s2_mux_data0_o;
-    assign data1_to_fabric = skew_s2_mux_data1_o;
-    assign pred_to_fabric = skew_s2_mux_pred_o;
-    assign prog_active_data0_o = input_io_tile_prog_active_data0_o;
-    assign prog_active_data1_o = input_io_tile_prog_active_data1_o;
-    assign prog_active_pred_o = input_io_tile_prog_active_pred_o;
-    assign prog_dout_o = i_scanchain_tail_prog_dout_o;
-    assign prog_we_o = i_scanchain_tail_prog_we_o;
-endmodule
-// ============================================================================
-// END SOURCE: rta_v4/rtl/rta_v4_input_boundary_cell_2x8b_pred_skew3.sv
-// ============================================================================
-
-// ============================================================================
-// BEGIN SOURCE: rta_v4/rtl/rta_v4_output_boundary_cell_2x8b_pred.sv
-// ============================================================================
-// SystemVerilog auto-generated by DORA RTL generator
-// Copyright (c) 2025, Pᴺ Computer Engineering Lab.
-
-// Generated on: <canonicalized>
-// Author: <canonicalized>
-
-module rta_v4_output_boundary_cell_2x8b_pred (
-    // Ports
-    input  logic clk_i,
-    input  logic reset_i,
-    input  logic en_i,
-    input  logic [7:0] data0_from_fabric,
-    input  logic [7:0] data1_from_fabric,
-    input  logic pred_from_fabric,
-    output logic [7:0] opin_x0y0_0,
-    output logic [7:0] opin_x0y0_1,
-    output logic opin_x0y0_2,
-    output logic prog_active_data0_o,
-    output logic prog_active_data1_o,
-    output logic prog_active_pred_o,
-    input  logic prog_clk_i,
-    input  logic prog_rst_i,
-    input  logic prog_done_i,
-    input  logic prog_we_i,
-    input  logic prog_din_i,
-    output logic prog_dout_o,
-    output logic prog_we_o
-);
-    logic output_io_tile_opin_x0y0_2;
-    logic [7:0] output_io_tile_opin_x0y0_0;
-    logic [7:0] output_io_tile_opin_x0y0_1;
-    logic output_io_tile_prog_active_data0_o;
-    logic output_io_tile_prog_active_data1_o;
-    logic output_io_tile_prog_active_pred_o;
-    logic output_io_tile_prog_dout_o;
-    logic i_buf_prog_rst_l0_data_o;
-    logic i_buf_prog_done_l0_data_o;
-    logic i_scanchain_head_prog_we_o;
-    logic i_scanchain_head_prog_dout_o;
-    logic i_scanchain_tail_prog_we_o;
-    logic i_scanchain_tail_prog_dout_o;
-
-    // Unconnected Wires
-
-    // Instances
-    rta_v4_output_io_tile_2x8b_pred output_io_tile (
-        .clk_i(clk_i),
-        .reset_i(reset_i),
-        .en_i(en_i),
-        .data0_from_fabric(data0_from_fabric),
-        .data1_from_fabric(data1_from_fabric),
-        .pred_from_fabric(pred_from_fabric),
-        .opin_x0y0_2(output_io_tile_opin_x0y0_2),
-        .opin_x0y0_0(output_io_tile_opin_x0y0_0),
-        .opin_x0y0_1(output_io_tile_opin_x0y0_1),
-        .prog_active_data0_o(output_io_tile_prog_active_data0_o),
-        .prog_active_data1_o(output_io_tile_prog_active_data1_o),
-        .prog_active_pred_o(output_io_tile_prog_active_pred_o),
-        .prog_clk_i(prog_clk_i),
-        .prog_rst_i(i_buf_prog_rst_l0_data_o),
-        .prog_done_i(i_buf_prog_done_l0_data_o),
-        .prog_we_i(i_scanchain_head_prog_we_o),
-        .prog_din_i(i_scanchain_head_prog_dout_o),
-        .prog_dout_o(output_io_tile_prog_dout_o)
-    );
-
-    simple_buf i_buf_prog_rst_l0 (
-        .clk_i(prog_clk_i),
-        .data_i(prog_rst_i),
-        .data_o(i_buf_prog_rst_l0_data_o)
-    );
-
-    simple_bufr i_buf_prog_done_l0 (
-        .clk_i(prog_clk_i),
-        .reset_i(i_buf_prog_rst_l0_data_o),
-        .data_i(prog_done_i),
-        .data_o(i_buf_prog_done_l0_data_o)
-    );
-
-    scanchain_delim i_scanchain_head (
-        .prog_we_o(i_scanchain_head_prog_we_o),
-        .prog_clk_i(prog_clk_i),
-        .prog_rst_i(i_buf_prog_rst_l0_data_o),
-        .prog_done_i(i_buf_prog_done_l0_data_o),
-        .prog_we_i(prog_we_i),
-        .prog_din_i(prog_din_i),
-        .prog_dout_o(i_scanchain_head_prog_dout_o)
-    );
-
-    scanchain_delim i_scanchain_tail (
-        .prog_we_o(i_scanchain_tail_prog_we_o),
-        .prog_clk_i(prog_clk_i),
-        .prog_rst_i(i_buf_prog_rst_l0_data_o),
-        .prog_done_i(i_buf_prog_done_l0_data_o),
-        .prog_we_i(i_scanchain_head_prog_we_o),
-        .prog_din_i(output_io_tile_prog_dout_o),
-        .prog_dout_o(i_scanchain_tail_prog_dout_o)
-    );
-
-    // Output Port Connections
-    assign opin_x0y0_0 = output_io_tile_opin_x0y0_0;
-    assign opin_x0y0_1 = output_io_tile_opin_x0y0_1;
-    assign opin_x0y0_2 = output_io_tile_opin_x0y0_2;
-    assign prog_active_data0_o = output_io_tile_prog_active_data0_o;
-    assign prog_active_data1_o = output_io_tile_prog_active_data1_o;
-    assign prog_active_pred_o = output_io_tile_prog_active_pred_o;
-    assign prog_dout_o = i_scanchain_tail_prog_dout_o;
-    assign prog_we_o = i_scanchain_tail_prog_we_o;
-endmodule
-// ============================================================================
-// END SOURCE: rta_v4/rtl/rta_v4_output_boundary_cell_2x8b_pred.sv
-// ============================================================================
-
-// ============================================================================
-// BEGIN SOURCE: rta_v4/rtl/rta_v4_active_or3.sv
-// ============================================================================
-// rta_v4_active_or3.tmpl.sv
+// rta_v4_rmu_mul_array.sv
 // Shwet & Claude (AI-generated)
 //
-// Trivial 3-input OR primitive used to combine the per-tile data0/data1/pred
-// pad ``prog_active_o`` sidebands into a single per-tile "scheduled" signal
-// at the array level. Any activated pad in a tile implies the tile is
-// scheduled for an op, so OR is the canonical reduction.
+// Shared four-lane unsigned 4x4 multiplier array. The parent RMU chooses
+// whether each lane receives CGRA partial-product operands or systolic dot4
+// operands.
 
-`timescale 1ns/1ps
 
-module rta_v4_active_or3 (
-    input  logic active_0_i
-   ,input  logic active_1_i
-   ,input  logic active_2_i
-
-   ,output logic or_o
+module rta_v4_rmu_mul_array #(
+    parameter int nibble_width_p = 4
+) (
+    input  logic [3:0][nibble_width_p-1:0]          a_i
+   ,input  logic [3:0][nibble_width_p-1:0]          b_i
+   ,output logic [3:0][(2*nibble_width_p)-1:0]      pp_o
 );
 
-  assign or_o = active_0_i | active_1_i | active_2_i;
+  for (genvar i = 0; i < 4; i++) begin : rof_mul
+    bsg_mul_synth #(.width_p(nibble_width_p))
+      mul (.a_i(a_i[i])
+          ,.b_i(b_i[i])
+          ,.o(pp_o[i])
+          );
+  end
 
 endmodule
-// ============================================================================
-// END SOURCE: rta_v4/rtl/rta_v4_active_or3.sv
-// ============================================================================
 
+`BSG_ABSTRACT_MODULE(rta_v4_rmu_mul_array)
+// END SOURCE: rtl/src/generated/rmu/rta_v4_rmu_mul_array.sv
 // ============================================================================
-// BEGIN SOURCE: rta_v4/rtl/rta_v4_active_pack4.sv
+// BEGIN SOURCE: rtl/src/generated/rmu/rta_v4_rmu_cgra_mul_backend.sv
 // ============================================================================
-// rta_v4_active_pack4.tmpl.sv
+// rta_v4_rmu_cgra_mul_backend.sv
 // Shwet & Claude (AI-generated)
 //
-// Trivial concat primitive: packs four 1-bit *_active_o sidebands into one
-// 4-bit bus. Used by rta_v4_array to aggregate per-tile activity sidebands
-// per edge (N/W input, S/E output). Arch ports cannot be bit-indexed in
-// Dora, so this structural primitive is the canonical concat operator.
+// Recombines four unsigned 4x4 partial products into a signed 8x8 product.
+// Partial-product order is:
+//   pp_i[0] = lo*lo, pp_i[1] = lo*hi, pp_i[2] = hi*lo, pp_i[3] = hi*hi.
 
-`timescale 1ns/1ps
 
-module rta_v4_active_pack4 (
-    input  logic       active_0_i
-   ,input  logic       active_1_i
-   ,input  logic       active_2_i
-   ,input  logic       active_3_i
-
-   ,output logic [3:0] active_o
+module rta_v4_rmu_cgra_mul_backend #(
+    parameter int width_p        = 8
+   ,parameter int nibble_width_p = 4
+) (
+    input  logic [width_p-1:0]                       a_i
+   ,input  logic [width_p-1:0]                       b_i
+   ,input  logic [3:0][(2*nibble_width_p)-1:0]       pp_i
+   ,output logic [(2*width_p)-1:0]                   product_o
 );
 
-  assign active_o = {active_3_i, active_2_i, active_1_i, active_0_i};
+  localparam int pp_width_lp    = 2 * nibble_width_p;
+  localparam int prod_width_lp  = 2 * width_p;
+  localparam int cross_width_lp = pp_width_lp + 1;
+
+  logic [prod_width_lp-1:0] diag_li;
+  assign diag_li = {pp_i[3], pp_i[0]};
+
+  logic [cross_width_lp-1:0] cross_sum_lo;
+
+  bsg_adder_cin #(.width_p(cross_width_lp))
+    cross_add (.a_i({1'b0, pp_i[2]})
+              ,.b_i({1'b0, pp_i[1]})
+              ,.cin_i(1'b0)
+              ,.o(cross_sum_lo)
+              );
+
+  logic [prod_width_lp-1:0] cross_aligned_li;
+  assign cross_aligned_li = {{(prod_width_lp-cross_width_lp-nibble_width_p){1'b0}}
+                            ,cross_sum_lo
+                            ,{nibble_width_p{1'b0}}};
+
+  logic [width_p-1:0] corr_a_li;
+  logic [width_p-1:0] corr_b_li;
+  logic [width_p-1:0] corr_sum_lo;
+
+  assign corr_a_li = {width_p{a_i[width_p-1]}} & b_i;
+  assign corr_b_li = {width_p{b_i[width_p-1]}} & a_i;
+
+  bsg_adder_cin #(.width_p(width_p))
+    corr_add (.a_i(corr_a_li)
+             ,.b_i(corr_b_li)
+             ,.cin_i(1'b0)
+             ,.o(corr_sum_lo)
+             );
+
+  logic [prod_width_lp-1:0] corr_aligned_li;
+  assign corr_aligned_li = {corr_sum_lo, {width_p{1'b0}}};
+
+  logic [prod_width_lp-1:0] unsigned_product_lo;
+
+  bsg_adder_cin #(.width_p(prod_width_lp))
+    product_add (.a_i(diag_li)
+                ,.b_i(cross_aligned_li)
+                ,.cin_i(1'b0)
+                ,.o(unsigned_product_lo)
+                );
+
+  bsg_adder_cin #(.width_p(prod_width_lp))
+    final_sub (.a_i(unsigned_product_lo)
+              ,.b_i(~corr_aligned_li)
+              ,.cin_i(1'b1)
+              ,.o(product_o)
+              );
 
 endmodule
-// ============================================================================
-// END SOURCE: rta_v4/rtl/rta_v4_active_pack4.sv
-// ============================================================================
 
+`BSG_ABSTRACT_MODULE(rta_v4_rmu_cgra_mul_backend)
+// END SOURCE: rtl/src/generated/rmu/rta_v4_rmu_cgra_mul_backend.sv
 // ============================================================================
-// BEGIN SOURCE: rta_v4/rtl/rta_v4_pe.sv
+// BEGIN SOURCE: rtl/src/generated/rmu/rta_v4_rmu_systolic_dot4_backend.sv
+// ============================================================================
+// rta_v4_rmu_systolic_dot4_backend.sv
+// Shwet & Claude (AI-generated)
+//
+// Scalar signed-INT4 dot4 systolic backend. Each compute cycle consumes
+// data0/data1 A packets and data0/data1 B packets, reduces four lane-wise
+// products, and accumulates the result into one 16-bit accumulator:
+//   acc += a0*b0 + a1*b1 + a2*b2 + a3*b3
+// where each a_i, b_i is a signed INT4 nibble.
+
+
+module rta_v4_rmu_systolic_dot4_backend #(
+    parameter int nibble_width_p = 4
+   ,parameter int acc_width_p    = 16
+) (
+    input  logic                                     clk_i
+   ,input  logic                                     reset_i
+   ,input  logic                                     compute_i
+   ,input  logic                                     clear_i
+
+   ,input  logic [(2*nibble_width_p)-1:0]            a_data0_pkt_i
+   ,input  logic [(2*nibble_width_p)-1:0]            b_data0_pkt_i
+   ,input  logic [(2*nibble_width_p)-1:0]            a_data1_pkt_i
+   ,input  logic [(2*nibble_width_p)-1:0]            b_data1_pkt_i
+   ,input  logic [3:0][(2*nibble_width_p)-1:0]       pp_i
+
+   ,output logic [acc_width_p-1:0]                   acc_o
+);
+
+  localparam int pp_width_lp  = 2 * nibble_width_p;
+  localparam int sum_width_lp = pp_width_lp + 2;
+
+  logic [3:0][nibble_width_p-1:0] lane_a_li;
+  logic [3:0][nibble_width_p-1:0] lane_b_li;
+
+  assign lane_a_li[0] = a_data0_pkt_i[0 +: nibble_width_p];
+  assign lane_a_li[1] = a_data0_pkt_i[nibble_width_p +: nibble_width_p];
+  assign lane_a_li[2] = a_data1_pkt_i[0 +: nibble_width_p];
+  assign lane_a_li[3] = a_data1_pkt_i[nibble_width_p +: nibble_width_p];
+
+  assign lane_b_li[0] = b_data0_pkt_i[0 +: nibble_width_p];
+  assign lane_b_li[1] = b_data0_pkt_i[nibble_width_p +: nibble_width_p];
+  assign lane_b_li[2] = b_data1_pkt_i[0 +: nibble_width_p];
+  assign lane_b_li[3] = b_data1_pkt_i[nibble_width_p +: nibble_width_p];
+
+  logic [3:0][pp_width_lp-1:0] signed_pp_lo;
+
+  for (genvar i = 0; i < 4; i++) begin : rof_sign_corr
+    logic [nibble_width_p-1:0] corr_a_li;
+    logic [nibble_width_p-1:0] corr_b_li;
+    logic [nibble_width_p-1:0] corr_sum_lo;
+    logic [pp_width_lp-1:0]    corr_shifted_li;
+
+    assign corr_a_li = {nibble_width_p{lane_a_li[i][nibble_width_p-1]}} & lane_b_li[i];
+    assign corr_b_li = {nibble_width_p{lane_b_li[i][nibble_width_p-1]}} & lane_a_li[i];
+
+    bsg_adder_cin #(.width_p(nibble_width_p))
+      corr_add (.a_i(corr_a_li)
+               ,.b_i(corr_b_li)
+               ,.cin_i(1'b0)
+               ,.o(corr_sum_lo)
+               );
+
+    assign corr_shifted_li = {corr_sum_lo, {nibble_width_p{1'b0}}};
+
+    bsg_adder_cin #(.width_p(pp_width_lp))
+      corr_sub (.a_i(pp_i[i])
+               ,.b_i(~corr_shifted_li)
+               ,.cin_i(1'b1)
+               ,.o(signed_pp_lo[i])
+               );
+  end
+
+  logic [3:0][sum_width_lp-1:0] pp_sum_ext_li;
+
+  for (genvar i = 0; i < 4; i++) begin : rof_pp_sum_ext
+    assign pp_sum_ext_li[i] = {{(sum_width_lp-pp_width_lp){signed_pp_lo[i][pp_width_lp-1]}}
+                              ,signed_pp_lo[i]};
+  end
+
+  logic [sum_width_lp-1:0] sum_01_lo;
+  logic [sum_width_lp-1:0] sum_23_lo;
+  logic [sum_width_lp-1:0] dot4_sum_lo;
+
+  bsg_adder_cin #(.width_p(sum_width_lp))
+    sum_01 (.a_i(pp_sum_ext_li[0])
+           ,.b_i(pp_sum_ext_li[1])
+           ,.cin_i(1'b0)
+           ,.o(sum_01_lo)
+           );
+
+  bsg_adder_cin #(.width_p(sum_width_lp))
+    sum_23 (.a_i(pp_sum_ext_li[2])
+           ,.b_i(pp_sum_ext_li[3])
+           ,.cin_i(1'b0)
+           ,.o(sum_23_lo)
+           );
+
+  bsg_adder_cin #(.width_p(sum_width_lp))
+    sum_dot4 (.a_i(sum_01_lo)
+             ,.b_i(sum_23_lo)
+             ,.cin_i(1'b0)
+             ,.o(dot4_sum_lo)
+             );
+
+  logic [acc_width_p-1:0] dot4_sum_ext_li;
+  logic [acc_width_p-1:0] acc_r;
+  logic [acc_width_p-1:0] acc_n_lo;
+
+  assign dot4_sum_ext_li = {{(acc_width_p-sum_width_lp){dot4_sum_lo[sum_width_lp-1]}}
+                            ,dot4_sum_lo};
+
+  bsg_adder_cin #(.width_p(acc_width_p))
+    acc_add (.a_i(acc_r)
+            ,.b_i(dot4_sum_ext_li)
+            ,.cin_i(1'b0)
+            ,.o(acc_n_lo)
+            );
+
+  always_ff @(posedge clk_i)
+    if (reset_i | clear_i)
+      acc_r <= '0;
+    else if (compute_i)
+      acc_r <= acc_n_lo;
+
+  assign acc_o = acc_r;
+
+endmodule
+
+`BSG_ABSTRACT_MODULE(rta_v4_rmu_systolic_dot4_backend)
+// END SOURCE: rtl/src/generated/rmu/rta_v4_rmu_systolic_dot4_backend.sv
+// ============================================================================
+// BEGIN SOURCE: rtl/src/generated/rmu/rta_v4_rmu.sv
+// ============================================================================
+// rta_v4_rmu.sv
+// Shwet & Claude (AI-generated)
+//
+// RTA v4 reconfigurable multiply unit leaf. CGRA mode preserves signed
+// INT8 x INT8 multiplication. Systolic mode performs signed INT4 dot4
+// accumulation with one scalar 16-bit accumulator. CGRA products and systolic
+// drains leave as paired 8-bit result halves on the data0/data1 result ports.
+
+
+module rta_v4_rmu #(
+    parameter int width_p        = rta_v4_pkg::rta_v4_data_width_gp
+   ,parameter int nibble_width_p = rta_v4_pkg::rta_v4_nibble_width_gp
+   ,parameter int wide_width_p   = rta_v4_pkg::rta_v4_wide_width_gp
+   ,parameter int acc_width_p    = rta_v4_pkg::rta_v4_acc_width_gp
+   ,parameter int prog_width_p   = rta_v4_pkg::rta_v4_rmu_prog_width_gp
+) (
+    input  logic                       clk_i
+   ,input  logic                       reset_i
+   ,input  logic                       en_i
+
+   ,input  logic [width_p-1:0]         a_data0_i
+   ,input  logic [width_p-1:0]         b_data0_i
+   ,input  logic [width_p-1:0]         a_data1_i
+   ,input  logic [width_p-1:0]         b_data1_i
+
+   ,input  logic [prog_width_p-1:0]    prog_data_i
+   ,input  logic                       prog_done_i
+
+   ,output logic [width_p-1:0]         result_data0_o
+   ,output logic [width_p-1:0]         result_data1_o
+);
+
+  localparam int pp_width_lp = 2 * nibble_width_p;
+
+  logic [rta_v4_pkg::rta_v4_rmu_op_width_gp-1:0] op_li;
+
+  assign op_li = prog_data_i[0 +: rta_v4_pkg::rta_v4_rmu_op_width_gp];
+
+  logic [nibble_width_p-1:0] a_data0_lo_li, a_data0_hi_li;
+  logic [nibble_width_p-1:0] b_data0_lo_li, b_data0_hi_li;
+  logic [nibble_width_p-1:0] a_data1_lo_li, a_data1_hi_li;
+  logic [nibble_width_p-1:0] b_data1_lo_li, b_data1_hi_li;
+
+  assign a_data0_lo_li = a_data0_i[0 +: nibble_width_p];
+  assign a_data0_hi_li = a_data0_i[nibble_width_p +: nibble_width_p];
+  assign b_data0_lo_li = b_data0_i[0 +: nibble_width_p];
+  assign b_data0_hi_li = b_data0_i[nibble_width_p +: nibble_width_p];
+  assign a_data1_lo_li = a_data1_i[0 +: nibble_width_p];
+  assign a_data1_hi_li = a_data1_i[nibble_width_p +: nibble_width_p];
+  assign b_data1_lo_li = b_data1_i[0 +: nibble_width_p];
+  assign b_data1_hi_li = b_data1_i[nibble_width_p +: nibble_width_p];
+
+  logic state_en_li;
+  logic systolic_clear_li;
+  logic systolic_compute_li;
+
+  assign state_en_li          = en_i & prog_done_i;
+  assign systolic_clear_li    = state_en_li
+                              & (op_li == rta_v4_pkg::e_rmu_systolic_clear);
+  assign systolic_compute_li  = state_en_li
+                              & (op_li == rta_v4_pkg::e_rmu_systolic_dot4_compute);
+
+  logic systolic_mode_li;
+  assign systolic_mode_li = (op_li == rta_v4_pkg::e_rmu_systolic_dot4_compute);
+
+  logic [3:0][nibble_width_p-1:0] mul_a_li;
+  logic [3:0][nibble_width_p-1:0] mul_b_li;
+  logic [3:0][pp_width_lp-1:0]    pp_lo;
+
+  assign mul_a_li[0] = a_data0_lo_li;
+  assign mul_b_li[0] = b_data0_lo_li;
+
+  assign mul_a_li[1] = systolic_mode_li
+                     ? a_data0_hi_li
+                     : a_data0_lo_li;
+  assign mul_b_li[1] = b_data0_hi_li;
+
+  assign mul_a_li[2] = systolic_mode_li
+                     ? a_data1_lo_li
+                     : a_data0_hi_li;
+  assign mul_b_li[2] = systolic_mode_li
+                     ? b_data1_lo_li
+                     : b_data0_lo_li;
+
+  assign mul_a_li[3] = systolic_mode_li
+                     ? a_data1_hi_li
+                     : a_data0_hi_li;
+  assign mul_b_li[3] = systolic_mode_li
+                     ? b_data1_hi_li
+                     : b_data0_hi_li;
+
+  rta_v4_rmu_mul_array #(.nibble_width_p(nibble_width_p))
+    mul_array (.a_i(mul_a_li)
+              ,.b_i(mul_b_li)
+              ,.pp_o(pp_lo)
+              );
+
+  logic [wide_width_p-1:0] cgra_product_lo;
+
+  rta_v4_rmu_cgra_mul_backend #(.width_p(width_p)
+                               ,.nibble_width_p(nibble_width_p)
+                               )
+    cgra_backend (.a_i(a_data0_i)
+                 ,.b_i(b_data0_i)
+                 ,.pp_i(pp_lo)
+                 ,.product_o(cgra_product_lo)
+                 );
+
+  logic [acc_width_p-1:0] systolic_acc_lo;
+  logic [wide_width_p-1:0] systolic_drain_lo;
+
+  rta_v4_rmu_systolic_dot4_backend #(.nibble_width_p(nibble_width_p)
+                                    ,.acc_width_p(acc_width_p)
+                                    )
+    systolic_backend (.clk_i(clk_i)
+                     ,.reset_i(reset_i)
+                     ,.compute_i(systolic_compute_li)
+                     ,.clear_i(systolic_clear_li)
+                     ,.a_data0_pkt_i(a_data0_i)
+                     ,.b_data0_pkt_i(b_data0_i)
+                     ,.a_data1_pkt_i(a_data1_i)
+                     ,.b_data1_pkt_i(b_data1_i)
+                     ,.pp_i(pp_lo)
+                     ,.acc_o(systolic_acc_lo)
+                     );
+
+  assign systolic_drain_lo = systolic_acc_lo[wide_width_p-1:0];
+
+  logic [wide_width_p-1:0] result_r, result_n;
+
+  always_comb begin
+    result_n = '0;
+
+    unique casez (op_li)
+      rta_v4_pkg::e_rmu_idle: begin
+        result_n = '0;
+      end
+      rta_v4_pkg::e_rmu_cgra_mul_s8: begin
+        result_n = cgra_product_lo;
+      end
+      rta_v4_pkg::e_rmu_systolic_clear: begin
+        result_n = '0;
+      end
+      rta_v4_pkg::e_rmu_systolic_dot4_compute: begin
+        result_n = '0;
+      end
+      rta_v4_pkg::e_rmu_systolic_drain: begin
+        result_n = systolic_drain_lo;
+      end
+      default: begin
+        result_n = '0;
+      end
+    endcase
+  end
+
+  always_ff @(posedge clk_i)
+    if (reset_i) begin
+      result_r <= '0;
+    end
+    else if (state_en_li) begin
+      result_r <= result_n;
+    end
+
+  assign result_data0_o  = prog_done_i ? result_r[0 +: width_p]       : '0;
+  assign result_data1_o  = prog_done_i ? result_r[width_p +: width_p] : '0;
+
+endmodule
+
+`BSG_ABSTRACT_MODULE(rta_v4_rmu)
+// END SOURCE: rtl/src/generated/rmu/rta_v4_rmu.sv
+// ============================================================================
+// BEGIN SOURCE: rtl/src/generated/rta_v4_pe.sv
 // ============================================================================
 // SystemVerilog auto-generated by DORA RTL generator
 // Copyright (c) 2025, Pᴺ Computer Engineering Lab.
-
-// Generated on: <canonicalized>
-// Author: <canonicalized>
 
 module rta_v4_pe (
     // Ports
@@ -5790,18 +5617,12 @@ module rta_v4_pe (
     assign prog_dout_o = i_scanchain_tail_prog_dout_o;
     assign prog_we_o = i_scanchain_tail_prog_we_o;
 endmodule
+// END SOURCE: rtl/src/generated/rta_v4_pe.sv
 // ============================================================================
-// END SOURCE: rta_v4/rtl/rta_v4_pe.sv
-// ============================================================================
-
-// ============================================================================
-// BEGIN SOURCE: rta_v4/rtl/rta_v4_array.sv
+// BEGIN SOURCE: rtl/src/generated/rta_v4_array.sv
 // ============================================================================
 // SystemVerilog auto-generated by DORA RTL generator
 // Copyright (c) 2025, Pᴺ Computer Engineering Lab.
-
-// Generated on: <canonicalized>
-// Author: <canonicalized>
 
 module rta_v4_array (
     // Ports
@@ -7994,10 +7815,7 @@ module rta_v4_array (
     assign prog_dout_o = i_scanchain_tail_prog_dout_o;
     assign prog_we_o = i_scanchain_tail_prog_we_o;
 endmodule
-// ============================================================================
-// END SOURCE: rta_v4/rtl/rta_v4_array.sv
-// ============================================================================
-
+// END SOURCE: rtl/src/generated/rta_v4_array.sv
 // ============================================================================
 // BEGIN SOURCE: chipyard/rta_v4_chipyard_adapter.sv
 // ============================================================================
@@ -8119,7 +7937,4 @@ module rta_v4_chipyard_adapter (
   );
 
 endmodule
-// ============================================================================
 // END SOURCE: chipyard/rta_v4_chipyard_adapter.sv
-// ============================================================================
-

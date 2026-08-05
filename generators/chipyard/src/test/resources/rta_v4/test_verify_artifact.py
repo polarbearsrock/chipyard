@@ -42,6 +42,27 @@ def write_lock(resource_dir: Path, lock: dict[str, object]) -> None:
     (resource_dir / "rta_v4_artifact_lock.json").write_bytes(data)
 
 
+def refresh_package_manifest_record(lock: dict[str, object]) -> None:
+    package = lock.get("dora_package")
+    if not isinstance(package, dict):
+        raise RuntimeError("missing DORA package record")
+    manifest = package.get("manifest")
+    if not isinstance(manifest, dict):
+        raise RuntimeError("missing DORA package manifest")
+    data = (
+        json.dumps(
+            manifest,
+            sort_keys=True,
+            separators=(",", ":"),
+            ensure_ascii=False,
+            allow_nan=False,
+        ).encode("utf-8")
+        + b"\n"
+    )
+    package["manifest_bytes"] = len(data)
+    package["manifest_sha256"] = hashlib.sha256(data).hexdigest()
+
+
 def refresh_artifact_record(resource_dir: Path, filename: str) -> None:
     lock = load_lock(resource_dir)
     artifacts = lock["artifacts"]
@@ -56,7 +77,9 @@ def refresh_artifact_record(resource_dir: Path, filename: str) -> None:
     write_lock(resource_dir, lock)
 
 
-def run_verifier(resource_dir: Path, adapter_source: Path) -> subprocess.CompletedProcess[str]:
+def run_verifier(
+    resource_dir: Path, adapter_source: Path
+) -> subprocess.CompletedProcess[str]:
     return subprocess.run(
         [
             sys.executable,
@@ -94,7 +117,9 @@ def require_fail(
         )
 
 
-def copy_case(root: Path, name: str, resource_dir: Path, adapter: Path) -> tuple[Path, Path]:
+def copy_case(
+    root: Path, name: str, resource_dir: Path, adapter: Path
+) -> tuple[Path, Path]:
     case_dir = root / name
     case_resource = case_dir / "resources"
     case_adapter = case_dir / "adapter.sv"
@@ -145,7 +170,7 @@ def main() -> int:
             case_resource,
             case_adapter,
             "embedded adapter drift",
-            "bundled source SHA-256 mismatch: chipyard/rta_v4_chipyard_adapter.sv",
+            "combined bundle is not package bundle followed by the adapter section",
         )
 
         case_resource, case_adapter = copy_case(
@@ -165,7 +190,100 @@ def main() -> int:
             case_resource,
             case_adapter,
             "unrecorded bundle content",
-            "unexpected content before bundled source section",
+            "DORA package bundle SHA-256 mismatch",
+        )
+
+        case_resource, case_adapter = copy_case(
+            root, "package-bundle-corruption", resource_dir, adapter
+        )
+        bundle = case_resource / "RtaV4Bundle.sv"
+        replace_once(bundle, b"module bsg_dff #", b"module bad_dff #")
+        refresh_artifact_record(case_resource, "RtaV4Bundle.sv")
+        require_fail(
+            case_resource,
+            case_adapter,
+            "package bundle corruption",
+            "DORA package bundle SHA-256 mismatch",
+        )
+
+        case_resource, case_adapter = copy_case(
+            root, "manifest-pin-corruption", resource_dir, adapter
+        )
+        lock = load_lock(case_resource)
+        package = lock.get("dora_package")
+        if not isinstance(package, dict):
+            raise RuntimeError("missing DORA package record")
+        manifest = package.get("manifest")
+        if not isinstance(manifest, dict):
+            raise RuntimeError("missing DORA package manifest")
+        provenance = manifest.get("provenance")
+        if not isinstance(provenance, dict):
+            raise RuntimeError("missing manifest provenance")
+        dora = provenance.get("dora")
+        if not isinstance(dora, dict):
+            raise RuntimeError("missing DORA provenance")
+        dora["dirty"] = not dora.get("dirty")
+        refresh_package_manifest_record(lock)
+        write_lock(case_resource, lock)
+        require_fail(
+            case_resource,
+            case_adapter,
+            "manifest identity corruption",
+            "DORA package manifest pin mismatch",
+        )
+
+        case_resource, case_adapter = copy_case(
+            root, "license-content-corruption", resource_dir, adapter
+        )
+        license_path = case_resource / "LICENSE.basejump_stl"
+        license_path.write_bytes(license_path.read_bytes() + b"corruption\n")
+        refresh_artifact_record(case_resource, "LICENSE.basejump_stl")
+        require_fail(
+            case_resource,
+            case_adapter,
+            "staged package license corruption",
+            "staged license differs from DORA package payload",
+        )
+
+        case_resource, case_adapter = copy_case(
+            root, "license-attribution-corruption", resource_dir, adapter
+        )
+        lock = load_lock(case_resource)
+        package = lock.get("dora_package")
+        if not isinstance(package, dict):
+            raise RuntimeError("missing DORA package record")
+        package_bundle = package.get("bundle")
+        if not isinstance(package_bundle, dict):
+            raise RuntimeError("missing package bundle record")
+        licenses = package_bundle.get("licenses")
+        if not isinstance(licenses, list) or not isinstance(licenses[0], dict):
+            raise RuntimeError("missing package license mappings")
+        licenses[0]["staged_path"] = "LICENSE.dora"
+        write_lock(case_resource, lock)
+        require_fail(
+            case_resource,
+            case_adapter,
+            "package license attribution corruption",
+            "DORA package bundle license attribution mismatch",
+        )
+
+        case_resource, case_adapter = copy_case(
+            root, "filelist-contract-corruption", resource_dir, adapter
+        )
+        lock = load_lock(case_resource)
+        package = lock.get("dora_package")
+        if not isinstance(package, dict):
+            raise RuntimeError("missing DORA package record")
+        filelist = package.get("filelist")
+        if not isinstance(filelist, dict):
+            raise RuntimeError("missing package filelist record")
+        filelist["supported_invocation"] = "vcs -F rtl/files.f"
+        write_lock(case_resource, lock)
+        require_fail(
+            case_resource,
+            case_adapter,
+            "package filelist invocation corruption",
+            "DORA package filelist invocation contract mismatch",
         )
 
         case_resource, case_adapter = copy_case(

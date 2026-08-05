@@ -1,9 +1,11 @@
 # RTA V4 Chipyard integration
 
-This directory contains the authored, platform boundary for the frozen DORA
-RTA V4 artifact. The generated HDL snapshot and its provenance lock live in
-`../vsrc/rta_v4/`; Chipyard compiles only `RtaV4Bundle.sv` through a single
-`HasBlackBoxResource` annotation.
+This directory contains the authored platform boundary for the frozen DORA RTA
+V4 artifact. The generated HDL snapshot is imported from a verified format-1
+DORA Design Package; it and its package-based provenance lock live in
+`../vsrc/rta_v4/`. Chipyard compiles only `RtaV4Bundle.sv` through a single
+`HasBlackBoxResource` annotation, so the Scala side and `desiredName` are
+unchanged by the package transition.
 
 The first SoC integration is intentionally a control-plane bring-up vehicle:
 
@@ -111,8 +113,12 @@ configuration failure returns to the reset-safe behavior.
 The bare-metal `rta-v4` test in the repository `tests/` directory performs
 this sequence with the frozen add-chain image. The `rta-v4-systolic` test uses
 the DORA `array_systolic` oracle's clear, compute, and four drain images. It
-performs a 4x4 signed-INT4 dot4 GEMM and uses state-preserving START between
-all six phases so the 16 RMU accumulators survive reconfiguration.
+first checks DORA's fixed 4x4 signed-INT4 dot4 GEMM oracle, then runs eight
+deterministic pseudo-random matrices covering `K=1..8`. The Rocket core builds
+an independent signed-INT4 reference result for every random case and compares
+all 16 hardware outputs. State-preserving START between phases keeps the 16
+RMU accumulators alive; state-preserving clear reloads between cases also prove
+that one matrix cannot leak accumulator state into the next.
 
 ## End-to-end SoC regression
 
@@ -132,19 +138,25 @@ and boots it on the Rocket core. Direct DRAM preload avoids a slow serial
 transfer; it does not bypass CPU execution or the TileLink/MMIO path. A passing
 add-chain run prints `RTA V4 add-chain result 0xb1 is correct` and exits with
 status zero. The systolic run prints
-`RTA V4 systolic 4x4 signed-INT4 dot4 GEMM is correct`. Run both with
-`soc-smoke-all`.
+`RTA V4 systolic fixed oracle and 8 randomized signed-INT4 matrices are
+correct`. Run both with `soc-smoke-all`.
 Simulation output is retained under
 `sims/verilator/output/chipyard.harness.TestHarness.RtaV4RocketConfig/`.
 
 ## DORA/Chipyard ownership boundary
 
-DORA should eventually export the neutral packed adapter plus a
-machine-readable manifest containing the module name, port widths, lane
-mapping, scan length/order, tail requirement, and layout hash. Chipyard should
-continue to own TileLink, the register ABI, interrupts, clock crossings, and
-future DMA/streaming infrastructure. This keeps DORA artifacts portable to
-non-Chipyard SoCs while allowing CHIA exploration to select and validate an
-artifact through its manifest. Stateful multi-image workloads also need the
-manifest to declare which phase transitions preserve compute state; the
-systolic regression is the first executable contract for that requirement.
+DORA owns the generic RTL package: the complete compile closure, bundle,
+licenses, integrity chain, top-module name, and producer provenance. The
+format-1 package intentionally contains no port geometry, scan/configuration
+semantics, compiler workspace, adapter, or workloads. Chipyard owns the packed
+adapter, `compiler_arch.json` interpretation, TileLink and register ABI,
+interrupts, clock crossings, workload images, and future DMA/streaming
+infrastructure.
+
+The importer pins `sha256(dora-package.json)` and records the package bundle
+digest separately. This lets a future CHIA loop select an exact design package
+while comparing RTL digests to decide whether a provenance-only DORA commit
+requires SoC revalidation. A later stable integration descriptor can make port
+and configuration semantics machine-readable without making the generic RTL
+package Chipyard-specific. The state-preserving multi-image systolic regression
+is the current executable contract for those semantics.

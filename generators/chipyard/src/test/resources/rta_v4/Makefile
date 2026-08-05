@@ -21,8 +21,13 @@ TESTBENCH := $(MAKEFILE_DIR)/tb_rta_v4_chipyard_adapter.sv
 MAPPING_TESTBENCH := $(MAKEFILE_DIR)/tb_rta_v4_adapter_mapping.sv
 VERIFY := $(MAKEFILE_DIR)/verify_artifact.py
 VERIFY_TEST := $(MAKEFILE_DIR)/test_verify_artifact.py
+DORA_PACKAGE_IMPORT := $(CHIPYARD_ROOT)/scripts/dora_package_import.py
+DORA_PACKAGE_IMPORT_CLI := $(CHIPYARD_ROOT)/scripts/import-dora-package.py
+DORA_PACKAGE_IMPORT_TEST := $(MAKEFILE_DIR)/test_import_dora_package.py
 ARTIFACT_TAG := $(shell sha256sum $(BUNDLE) $(ADAPTER) $(BITSTREAM) \
-  $(TESTBENCH) $(MAPPING_TESTBENCH) $(VERIFY) $(VERIFY_TEST) $(MAKEFILE_DIR)/Makefile \
+  $(TESTBENCH) $(MAPPING_TESTBENCH) $(VERIFY) $(VERIFY_TEST) \
+  $(DORA_PACKAGE_IMPORT) $(DORA_PACKAGE_IMPORT_CLI) \
+  $(DORA_PACKAGE_IMPORT_TEST) $(MAKEFILE_DIR)/Makefile \
   | sha256sum | cut -c1-16)
 VERILATOR_TAG := $(shell $(VERILATOR) --version | sha256sum | cut -c1-8)
 BUILD_DIR ?= $(TMPDIR)/chipyard_rta_v4_bundle_verilator/$(ARTIFACT_TAG)-$(VERILATOR_TAG)
@@ -40,7 +45,7 @@ SOC_BUILD_JOBS ?= 4
 
 VERILATOR_FLAGS := --timing --assert --timescale 1ns/1ps -o simv -Wno-fatal
 
-.PHONY: all verify verify-negative lint compile run soc-smoke \
+.PHONY: all verify verify-importer verify-negative lint compile run soc-smoke \
 	soc-systolic-smoke soc-smoke-all
 
 all: run
@@ -48,7 +53,10 @@ all: run
 verify:
 	$(PYTHON) $(VERIFY) $(RESOURCE_DIR) --adapter-source $(ADAPTER)
 
-verify-negative: verify
+verify-importer:
+	PYTHONDONTWRITEBYTECODE=1 $(PYTHON) $(DORA_PACKAGE_IMPORT_TEST)
+
+verify-negative: verify verify-importer
 	$(PYTHON) $(VERIFY_TEST) $(RESOURCE_DIR) $(ADAPTER)
 
 lint: verify
@@ -89,7 +97,8 @@ soc-smoke:
 
 # This is the architectural systolic proof: the Rocket core programs six
 # frozen DORA images and warm-reloads between phases without resetting the RMU
-# accumulators, then checks the complete 4x4 signed-INT4 GEMM result matrix.
+# accumulators. It checks DORA's fixed oracle, then eight deterministic random
+# K=1..8 matrices against a reference model computed by Rocket software.
 soc-systolic-smoke:
 	$(CMAKE) -S $(SOC_TEST_SOURCE_DIR) -B $(SOC_TEST_BUILD_DIR) \
 	  -D CMAKE_BUILD_TYPE=Release

@@ -12,8 +12,38 @@ from pathlib import Path
 
 
 EXPECTED_SCHEMA = "chipyard.rta_v4.reference_artifact_lock"
+EXPECTED_SCHEMA_VERSION = 2
 EXPECTED_DESIGN = "rta_v4_array"
 EXPECTED_ADAPTER = "rta_v4_chipyard_adapter"
+EXPECTED_PACKAGE_NAME = "rta-v4-array"
+EXPECTED_PACKAGE_FORMAT = 1
+EXPECTED_PACKAGE_MANIFEST_SHA256 = (
+    "e3a7dda3262df975ea4e89d6a51a129497fab97d9fd1a5c32306ef3da45244ed"
+)
+EXPECTED_PACKAGE_BUNDLE_PATH = "rtl/bundle.sv"
+EXPECTED_PACKAGE_FILELIST_PATH = "rtl/files.f"
+EXPECTED_PACKAGE_CHECKSUMS_PATH = "SHA256SUMS"
+EXPECTED_PACKAGE_INCLUDE_DIRS = ["src/dependencies/basejump_stl/bsg_misc"]
+EXPECTED_PACKAGE_LICENSES = [
+    {
+        "package_path": "licenses/basejump_stl-LICENSE",
+        "staged_path": "LICENSE.basejump_stl",
+    },
+    {
+        "package_path": "licenses/dora-LICENSE",
+        "staged_path": "LICENSE.dora",
+    },
+]
+EXPECTED_SOURCE_MARKER_TRACEABILITY = (
+    "BEGIN SOURCE paths identify each embedded source's package path and "
+    "license ownership."
+)
+EXPECTED_LICENSE_SCOPES = {
+    "LICENSE.basejump_stl": (
+        "BaseJump sections embedded in the composite DORA bundle"
+    ),
+    "LICENSE.dora": "DORA-generated sections embedded in the composite DORA bundle",
+}
 EXPECTED_COMPILER_ARCH_SCHEMA_VERSION = 6
 EXPECTED_FABRIC_CONTEXTS = 1
 EXPECTED_LAYOUT_HASH = (
@@ -143,29 +173,12 @@ EXPECTED_SYSTOLIC_WORKLOAD_PROTOCOL = {
         },
     ],
 }
-EXPECTED_DORA_REVISION = "f57db1855de46f68b976db12fa9400a59d54d55a"
-EXPECTED_BASEJUMP_REVISION = "b8142d3c3b0c673a1d92041b24fba5fdef4c393a"
 EXPECTED_UNBUNDLED_INPUTS = {
     "compiler_arch.json": (
         2_805_559,
         "b324d16f32987cee5bf25995059391147e823bcb9800d78dbf0679dab8d4b1ae",
     ),
-    "workspace.pkl": (
-        1_207_100,
-        "fa507fdefde2650049df61bbcbd3e51f4188373498b2c848a8f6baff05719a4a",
-    ),
-    "rta_v4_rmu_sources.f": (
-        142,
-        "c25d5484268a5a8b16ee8f8ab01379c065e0237709ac81e958a94638e4f12f26",
-    ),
 }
-EXPECTED_RMU_FILELIST = [
-    "common/rta_v4_pkg.sv",
-    "rmu/rta_v4_rmu_mul_array.sv",
-    "rmu/rta_v4_rmu_cgra_mul_backend.sv",
-    "rmu/rta_v4_rmu_systolic_dot4_backend.sv",
-    "rmu/rta_v4_rmu.sv",
-]
 EXPECTED_BUNDLED_ARTIFACT_FILENAMES = frozenset(
     {
         "LICENSE.basejump_stl",
@@ -262,49 +275,377 @@ def normalized_source_bytes(data: bytes, path: Path) -> bytes:
     return (text.rstrip() + "\n").encode("utf-8")
 
 
-def verify_bundle_source_sections(
-    bundle_text: str, source_records: list[dict[str, object]]
-) -> None:
-    require(bundle_text.startswith(BUNDLE_PREFIX), "bundle prefix mismatch")
-    require(
-        bundle_text.count("// BEGIN SOURCE: ") == len(source_records)
-        and bundle_text.count("// END SOURCE: ") == len(source_records),
-        "bundle source-section marker count mismatch",
+def canonical_json_bytes(value: object) -> bytes:
+    return (
+        json.dumps(
+            value,
+            sort_keys=True,
+            separators=(",", ":"),
+            ensure_ascii=False,
+            allow_nan=False,
+        ).encode("utf-8")
+        + b"\n"
     )
-    cursor = len(BUNDLE_PREFIX)
-    for record in source_records:
-        path = record.get("path")
-        require(isinstance(path, str), "source record path is not a string")
-        begin_marker = (
-            f"{SOURCE_DIVIDER}\n"
-            f"// BEGIN SOURCE: {path}\n"
-            f"{SOURCE_DIVIDER}\n"
-        )
-        end_marker = (
-            f"{SOURCE_DIVIDER}\n"
-            f"// END SOURCE: {path}\n"
-            f"{SOURCE_DIVIDER}\n\n"
-        )
-        section_start = bundle_text.find(begin_marker, cursor)
-        require(
-            section_start == cursor,
-            f"unexpected content before bundled source section: {path}",
-        )
-        content_start = section_start + len(begin_marker)
-        content_end = bundle_text.find(end_marker, content_start)
-        require(content_end >= content_start, f"unterminated source section: {path}")
-        content = bundle_text[content_start:content_end].encode("utf-8")
-        require(
-            len(content) == record.get("bytes"),
-            f"bundled source size mismatch: {path}",
-        )
-        require(
-            sha256(content) == record.get("sha256"),
-            f"bundled source SHA-256 mismatch: {path}",
-        )
-        cursor = content_end + len(end_marker)
 
-    require(cursor == len(bundle_text), "bundle contains unrecorded trailing content")
+
+def require_package_path(path: object, description: str) -> str:
+    require(isinstance(path, str) and path != "", f"invalid {description} path")
+    require(
+        not path.startswith("/")
+        and "\\" not in path
+        and not any(character.isspace() for character in path),
+        f"unsafe {description} path: {path}",
+    )
+    components = path.split("/")
+    require(
+        all(component not in ("", ".", "..") for component in components),
+        f"unsafe {description} path: {path}",
+    )
+    return path
+
+
+def verify_dora_package(
+    lock: dict[str, object],
+) -> tuple[dict[str, object], dict[str, dict[str, object]]]:
+    package = lock.get("dora_package")
+    require(isinstance(package, dict), "missing DORA package record")
+    require(
+        set(package)
+        == {
+            "manifest",
+            "manifest_bytes",
+            "manifest_sha256",
+            "checksums_bytes",
+            "checksums_sha256",
+            "payload_file_count",
+            "payload",
+            "filelist",
+            "bundle",
+        },
+        "DORA package record closure mismatch",
+    )
+
+    manifest = package.get("manifest")
+    require(isinstance(manifest, dict), "invalid DORA package manifest")
+    require(
+        set(manifest)
+        == {
+            "bundle",
+            "checksums",
+            "dora_package_format",
+            "filelist",
+            "name",
+            "payload_digest",
+            "provenance",
+            "top",
+        },
+        "DORA package manifest field closure mismatch",
+    )
+    manifest_data = canonical_json_bytes(manifest)
+    manifest_sha256 = sha256(manifest_data)
+    require(
+        package.get("manifest_bytes") == len(manifest_data),
+        "DORA package manifest byte count mismatch",
+    )
+    require(
+        package.get("manifest_sha256") == manifest_sha256,
+        "DORA package manifest record hash mismatch",
+    )
+    require(
+        manifest_sha256 == EXPECTED_PACKAGE_MANIFEST_SHA256,
+        "DORA package manifest pin mismatch",
+    )
+    require(
+        manifest.get("dora_package_format") == EXPECTED_PACKAGE_FORMAT,
+        "unsupported DORA package format",
+    )
+    require(
+        manifest.get("name") == EXPECTED_PACKAGE_NAME,
+        "unexpected DORA package name",
+    )
+    require(
+        manifest.get("top") == EXPECTED_DESIGN,
+        "DORA package top mismatch",
+    )
+    require(
+        manifest.get("bundle") == EXPECTED_PACKAGE_BUNDLE_PATH,
+        "DORA package bundle path mismatch",
+    )
+    require(
+        manifest.get("filelist") == EXPECTED_PACKAGE_FILELIST_PATH,
+        "DORA package filelist path mismatch",
+    )
+    require(
+        manifest.get("checksums") == EXPECTED_PACKAGE_CHECKSUMS_PATH,
+        "DORA package checksums path mismatch",
+    )
+    package_provenance = manifest.get("provenance")
+    require(
+        isinstance(package_provenance, dict) and package_provenance,
+        "invalid DORA package provenance",
+    )
+    for component, record in package_provenance.items():
+        require(
+            isinstance(component, str) and component != "" and isinstance(record, dict),
+            "invalid DORA package provenance component",
+        )
+        require(
+            set(record) == {"revision", "dirty"}
+            and isinstance(record.get("revision"), str)
+            and record.get("revision") != ""
+            and isinstance(record.get("dirty"), bool),
+            f"invalid DORA package provenance record: {component}",
+        )
+
+    payload = package.get("payload")
+    require(isinstance(payload, list), "invalid DORA package payload inventory")
+    require(
+        package.get("payload_file_count") == len(payload),
+        "DORA package payload file count mismatch",
+    )
+    payload_by_path: dict[str, dict[str, object]] = {}
+    checksum_lines: list[str] = []
+    for entry in payload:
+        require(
+            isinstance(entry, dict) and set(entry) == {"path", "bytes", "sha256"},
+            "invalid DORA package payload record",
+        )
+        path = require_package_path(entry.get("path"), "payload")
+        digest = entry.get("sha256")
+        byte_count = entry.get("bytes")
+        require(
+            isinstance(digest, str)
+            and re.fullmatch(r"[0-9a-f]{64}", digest) is not None,
+            f"invalid DORA package payload digest: {path}",
+        )
+        require(
+            isinstance(byte_count, int)
+            and not isinstance(byte_count, bool)
+            and byte_count >= 0,
+            f"invalid DORA package payload byte count: {path}",
+        )
+        require(path not in payload_by_path, f"duplicate DORA package payload: {path}")
+        payload_by_path[path] = entry
+        checksum_lines.append(f"{digest}  {path}\n")
+    require(
+        list(payload_by_path) == sorted(payload_by_path),
+        "DORA package payload inventory is not in SHA256SUMS path order",
+    )
+    require(
+        "dora-package.json" not in payload_by_path
+        and EXPECTED_PACKAGE_CHECKSUMS_PATH not in payload_by_path,
+        "DORA package payload inventory contains a reserved file",
+    )
+
+    checksums_data = "".join(checksum_lines).encode("utf-8")
+    checksums_sha256 = sha256(checksums_data)
+    require(
+        package.get("checksums_bytes") == len(checksums_data),
+        "DORA package SHA256SUMS byte count mismatch",
+    )
+    require(
+        package.get("checksums_sha256") == checksums_sha256,
+        "DORA package SHA256SUMS record hash mismatch",
+    )
+    payload_digest = f"sha256:{checksums_sha256}"
+    require(
+        manifest.get("payload_digest") == payload_digest,
+        "DORA package manifest payload linkage mismatch",
+    )
+
+    for required_path in (
+        EXPECTED_PACKAGE_BUNDLE_PATH,
+        EXPECTED_PACKAGE_FILELIST_PATH,
+        "README.md",
+    ):
+        require(
+            required_path in payload_by_path,
+            f"missing DORA package payload record: {required_path}",
+        )
+
+    filelist_record = package.get("filelist")
+    require(isinstance(filelist_record, dict), "invalid DORA package filelist record")
+    require(
+        set(filelist_record)
+        == {
+            "path",
+            "bytes",
+            "sha256",
+            "source_count",
+            "include_dirs",
+            "compile_working_directory",
+            "supported_invocation",
+            "vcs_capital_f_rebases_incdirs",
+        },
+        "DORA package filelist record closure mismatch",
+    )
+    package_filelist_payload = payload_by_path[EXPECTED_PACKAGE_FILELIST_PATH]
+    require(
+        filelist_record.get("path") == EXPECTED_PACKAGE_FILELIST_PATH
+        and filelist_record.get("bytes") == package_filelist_payload.get("bytes")
+        and filelist_record.get("sha256") == package_filelist_payload.get("sha256"),
+        "DORA package filelist and payload inventory disagree",
+    )
+    source_count = filelist_record.get("source_count")
+    require(
+        isinstance(source_count, int)
+        and not isinstance(source_count, bool)
+        and source_count > 0,
+        "invalid DORA package filelist source count",
+    )
+    require(
+        filelist_record.get("include_dirs") == EXPECTED_PACKAGE_INCLUDE_DIRS,
+        "DORA package filelist include directories mismatch",
+    )
+    require(
+        filelist_record.get("compile_working_directory") == "rtl"
+        and filelist_record.get("supported_invocation") == "<tool> -f files.f"
+        and filelist_record.get("vcs_capital_f_rebases_incdirs") is False,
+        "DORA package filelist invocation contract mismatch",
+    )
+
+    bundle_record = package.get("bundle")
+    require(isinstance(bundle_record, dict), "invalid DORA package bundle record")
+    require(
+        set(bundle_record)
+        == {
+            "path",
+            "bytes",
+            "sha256",
+            "source_count",
+            "composite_license",
+            "licenses",
+            "source_marker_traceability",
+        },
+        "DORA package bundle record closure mismatch",
+    )
+    package_bundle_payload = payload_by_path[EXPECTED_PACKAGE_BUNDLE_PATH]
+    require(
+        bundle_record.get("path") == EXPECTED_PACKAGE_BUNDLE_PATH
+        and bundle_record.get("bytes") == package_bundle_payload.get("bytes")
+        and bundle_record.get("sha256") == package_bundle_payload.get("sha256"),
+        "DORA package bundle and payload inventory disagree",
+    )
+    require(
+        bundle_record.get("source_count") == source_count,
+        "DORA package compile sets disagree on source count",
+    )
+    require(
+        bundle_record.get("composite_license") is True,
+        "DORA package bundle must be marked composite-licensed",
+    )
+    require(
+        bundle_record.get("licenses") == EXPECTED_PACKAGE_LICENSES,
+        "DORA package bundle license attribution mismatch",
+    )
+    require(
+        bundle_record.get("source_marker_traceability")
+        == EXPECTED_SOURCE_MARKER_TRACEABILITY,
+        "DORA package source-marker attribution mismatch",
+    )
+    for license_mapping in EXPECTED_PACKAGE_LICENSES:
+        package_path = license_mapping["package_path"]
+        require(
+            package_path in payload_by_path,
+            f"missing DORA package license payload: {package_path}",
+        )
+
+    provenance = lock.get("provenance")
+    require(isinstance(provenance, dict), "invalid package provenance record")
+    require(
+        set(provenance)
+        == {
+            "package_manifest_sha256",
+            "package_payload_digest",
+            "package_provenance",
+            "identity_semantics",
+            "rtl_revalidation_semantics",
+            "consumer_boundary",
+        },
+        "package provenance record closure mismatch",
+    )
+    require(
+        provenance.get("package_manifest_sha256") == manifest_sha256,
+        "package provenance manifest hash mismatch",
+    )
+    require(
+        provenance.get("package_payload_digest") == payload_digest,
+        "package provenance payload digest mismatch",
+    )
+    require(
+        provenance.get("package_provenance") == package_provenance,
+        "package provenance differs from the manifest",
+    )
+    require(
+        isinstance(provenance.get("identity_semantics"), str)
+        and provenance.get("identity_semantics") != "",
+        "missing package identity semantics",
+    )
+    require(
+        isinstance(provenance.get("rtl_revalidation_semantics"), str)
+        and provenance.get("rtl_revalidation_semantics") != "",
+        "missing RTL revalidation semantics",
+    )
+    require(
+        isinstance(provenance.get("consumer_boundary"), str)
+        and provenance.get("consumer_boundary") != "",
+        "missing package consumer-boundary semantics",
+    )
+    return bundle_record, payload_by_path
+
+
+def adapter_source_section(adapter: bytes) -> bytes:
+    path = "chipyard/rta_v4_chipyard_adapter.sv"
+    return (
+        f"{SOURCE_DIVIDER}\n"
+        f"// BEGIN SOURCE: {path}\n"
+        f"{SOURCE_DIVIDER}\n"
+    ).encode("utf-8") + adapter + f"// END SOURCE: {path}\n".encode("utf-8")
+
+
+def verify_combined_bundle(
+    bundle: bytes,
+    adapter: bytes,
+    package_bundle_record: dict[str, object],
+    package_payload_paths: set[str],
+) -> None:
+    prefix = BUNDLE_PREFIX.encode("utf-8")
+    require(bundle.startswith(prefix), "bundle prefix mismatch")
+    package_bytes = package_bundle_record.get("bytes")
+    require(isinstance(package_bytes, int), "invalid package bundle byte count")
+    package_start = len(prefix)
+    package_end = package_start + package_bytes
+    require(package_end <= len(bundle), "truncated package bundle")
+    package_bundle = bundle[package_start:package_end]
+    require(
+        sha256(package_bundle) == package_bundle_record.get("sha256"),
+        "DORA package bundle SHA-256 mismatch",
+    )
+    require(
+        bundle == prefix + package_bundle + adapter_source_section(adapter),
+        "combined bundle is not package bundle followed by the adapter section",
+    )
+
+    package_text = package_bundle.decode("utf-8")
+    begin_paths = re.findall(r"^// BEGIN SOURCE: (.+)$", package_text, re.MULTILINE)
+    end_paths = re.findall(r"^// END SOURCE: (.+)$", package_text, re.MULTILINE)
+    require(
+        begin_paths == end_paths
+        and len(begin_paths) == package_bundle_record.get("source_count"),
+        "DORA package source-marker sequence mismatch",
+    )
+    require(
+        len(set(begin_paths)) == len(begin_paths),
+        "DORA package source-marker paths are not unique",
+    )
+    require(
+        all(path in package_payload_paths for path in begin_paths),
+        "DORA package source marker lacks a payload record",
+    )
+    require(
+        re.search(r"^\s*`include\b", package_text, re.MULTILINE) is None,
+        "DORA package bundle still contains an external include directive",
+    )
 
 
 def parse_args() -> argparse.Namespace:
@@ -324,9 +665,14 @@ def main() -> int:
     verify_resource_closure(resource_dir)
     lock_path = resource_dir / "rta_v4_artifact_lock.json"
     lock = json.loads(lock_path.read_text(encoding="utf-8"))
+    require(isinstance(lock, dict), "artifact lock must be a JSON object")
 
     require(lock.get("schema") == EXPECTED_SCHEMA, "unexpected lock schema")
-    require(lock.get("schema_version") == 1, "unexpected lock schema version")
+    require(
+        lock.get("schema_version") == EXPECTED_SCHEMA_VERSION,
+        "unexpected lock schema version",
+    )
+    package_bundle_record, package_payload = verify_dora_package(lock)
 
     design = lock.get("design", {})
     require(
@@ -429,48 +775,10 @@ def main() -> int:
         set(artifacts) == EXPECTED_ARTIFACT_RECORD_NAMES,
         "artifact record closure mismatch",
     )
-    provenance = lock.get("provenance", {})
-    require(
-        provenance.get("dora_revision") == EXPECTED_DORA_REVISION,
-        "DORA revision mismatch",
-    )
-    require(
-        provenance.get("basejump_revision") == EXPECTED_BASEJUMP_REVISION,
-        "BaseJump revision mismatch",
-    )
-    require(
-        isinstance(provenance.get("revision_semantics"), str),
-        "missing Git revision semantics",
-    )
-    source_records = provenance.get("sources", [])
-    require(isinstance(source_records, list), "invalid source record list")
-    require(
-        len(source_records) == 51
-        and provenance.get("source_count") == 51,
-        "unexpected source count",
-    )
-    require(
-        all(isinstance(record, dict) for record in source_records),
-        "source records must be objects",
-    )
-    adapter_record = next(
-        (
-            record
-            for record in source_records
-            if record.get("path") == "chipyard/rta_v4_chipyard_adapter.sv"
-        ),
-        None,
-    )
-    require(adapter_record is not None, "adapter provenance record is missing")
     staged_adapter_record = require_record(
         artifacts, "rta_v4_chipyard_adapter.sv.source"
     )
-    require(
-        adapter_record.get("bytes") == staged_adapter_record.get("bytes")
-        and adapter_record.get("sha256") == staged_adapter_record.get("sha256"),
-        "staged adapter and source provenance disagree",
-    )
-    verify_file(
+    staged_adapter = verify_file(
         resource_dir / "rta_v4_chipyard_adapter.sv.source",
         staged_adapter_record,
     )
@@ -492,6 +800,12 @@ def main() -> int:
     bundle_path = resource_dir / "RtaV4Bundle.sv"
     bundle = verify_file(
         bundle_path, require_record(artifacts, "RtaV4Bundle.sv")
+    )
+    verify_combined_bundle(
+        bundle,
+        staged_adapter,
+        package_bundle_record,
+        set(package_payload),
     )
     bitstream_path = resource_dir / "add_chain_compute.bin"
     bitstream = verify_file(
@@ -562,13 +876,25 @@ def main() -> int:
             and phase_fasm_record.get("oracle") == "tests/array_systolic",
             f"systolic {phase} FASM provenance mismatch",
         )
-    verify_file(
-        resource_dir / "LICENSE.dora", require_record(artifacts, "LICENSE.dora")
-    )
-    verify_file(
-        resource_dir / "LICENSE.basejump_stl",
-        require_record(artifacts, "LICENSE.basejump_stl"),
-    )
+    for license_mapping in EXPECTED_PACKAGE_LICENSES:
+        package_path = license_mapping["package_path"]
+        staged_path = license_mapping["staged_path"]
+        staged_license_record = require_record(artifacts, staged_path)
+        require(
+            staged_license_record.get("package_path") == package_path
+            and staged_license_record.get("license_scope")
+            == EXPECTED_LICENSE_SCOPES[staged_path],
+            f"staged license attribution mismatch: {staged_path}",
+        )
+        staged_license = verify_file(
+            resource_dir / staged_path, staged_license_record
+        )
+        package_license_record = package_payload[package_path]
+        require(
+            len(staged_license) == package_license_record.get("bytes")
+            and sha256(staged_license) == package_license_record.get("sha256"),
+            f"staged license differs from DORA package payload: {package_path}",
+        )
 
     bitstream_record = require_record(artifacts, "add_chain_compute.bin")
     require(bitstream_record.get("kernel") == "cgra_add_chain", "kernel mismatch")
@@ -591,12 +917,6 @@ def main() -> int:
         require(record.get("bundled") is False, f"{name} must remain unbundled")
         require(record.get("bytes") == expected_size, f"{name} size mismatch")
         require(record.get("sha256") == expected_digest, f"{name} digest mismatch")
-    require(
-        require_record(artifacts, "rta_v4_rmu_sources.f").get("entries")
-        == EXPECTED_RMU_FILELIST,
-        "RMU filelist entries mismatch",
-    )
-
     require(
         len(bitstream) == EXPECTED_BITSTREAM_BYTES,
         "incorrect bitstream byte count",
@@ -626,21 +946,8 @@ def main() -> int:
         == 1,
         "bundle must define rta_v4_chipyard_adapter exactly once",
     )
-    require(
-        [record.get("bundle_order") for record in source_records]
-        == list(range(51)),
-        "source bundle order is not contiguous",
-    )
-    source_paths = [record.get("path") for record in source_records]
-    require(
-        all(isinstance(path, str) for path in source_paths)
-        and len(set(source_paths)) == 51,
-        "source paths must be unique strings",
-    )
-    verify_bundle_source_sections(bundle_text, source_records)
-
     print(
-        "verified RTA V4 reference artifact: "
+        "verified package-backed RTA V4 reference artifact: "
         f"{len(bundle)} bundle bytes, {len(bitstream)} bitstream bytes"
     )
     return 0

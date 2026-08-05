@@ -1,37 +1,54 @@
 # RTA V4 reference artifact
 
-This directory contains a frozen, experimental RTA V4 artifact used to bring
-the generated SystemVerilog array into Chipyard. It is a reference snapshot,
-not a stable DORA–Chipyard ABI.
+This directory contains a frozen, experimental RTA V4 artifact imported from
+a format-1 DORA Design Package. It is a reference snapshot, not yet a stable
+DORA–Chipyard ABI.
 
 `RtaV4Bundle.sv` is the only production HDL compilation unit. It contains the
-seven pinned BaseJump sources, all 43 generated RTA V4 sources, and the packed
-`rta_v4_chipyard_adapter` in dependency order. The authored adapter lives
-outside the production `vsrc` tree at
+package's exact, self-contained `rtl/bundle.sv` bytes followed by the packed
+`rta_v4_chipyard_adapter`. The package bundle currently contains 50 sources
+(43 generated RTA V4 sources and seven BaseJump sources). The authored adapter
+lives outside the production `vsrc` tree at
 `generators/chipyard/src/main/resources/rta_v4/rta_v4_chipyard_adapter.sv`;
 `rta_v4_chipyard_adapter.sv.source` is a non-compilable provenance copy. Do not
 add another BaseJump provider to a build that compiles the bundle.
 
 The bundle, add-chain image, six `array_systolic` phase images, their FASMs,
-and the provenance copy are generated files. Their source paths, hashes,
-configuration format, provenance, and the exact ordered state-preserving
-systolic workload protocol are recorded in `rta_v4_artifact_lock.json`.
-`LICENSE.dora` and `LICENSE.basejump_stl` accompany the vendored source
-snapshot.
+and the provenance copy are generated files. The lock records the canonical
+DORA manifest hash, its complete payload inventory, the package bundle digest,
+configuration format, and the exact ordered state-preserving systolic workload
+protocol. `LICENSE.dora` and `LICENSE.basejump_stl` are copied byte-for-byte
+from the package. The package bundle is composite-licensed; its `BEGIN SOURCE`
+markers map each embedded section back to its package path and license owner.
 
 ## Restage the snapshot from the supplied DORA artifact
 
-This procedure does not regenerate the DORA architecture from its Git
-revision. It requires the exact external RTA V4 `build/` directory, including
-`compiler_arch.json`, `workspace.pkl`, `rtl/`, and
-`rtl/rta_v4_rmu_sources.f`. The lock records byte hashes for those inputs;
-`workspace.pkl` is trusted, path-specific DORA compiler state and is never
-loaded by the Chipyard staging or verification scripts.
+The RTL consumer requires only the exported `.dora/` package. Before reading
+payload bytes, the importer rejects symlinks and special files, checks exact
+tree closure and every `SHA256SUMS` entry, links `payload_digest` back to the
+exact checksum-file bytes, validates the canonical format-1 manifest, and pins
+`sha256(dora-package.json)`. The current pin is
+`e3a7dda3262df975ea4e89d6a51a129497fab97d9fd1a5c32306ef3da45244ed`.
+The package contains no `workspace.pkl`, and neither staging nor verification
+imports DORA Python.
+
+Package provenance follows the producer's HEAD, so a new DORA commit can
+change the manifest identity even when the RTL is byte-identical. The lock
+therefore records package bundle and payload digests separately: update the
+manifest pin for identity, but compare RTL digests when deciding whether
+hardware behavior must be revalidated.
+
+`compiler_arch.json` and the known-good bitstream/FASM workloads remain
+Chipyard-side integration inputs because the generic design package is RTL
+only. The commands below regenerate those workloads in the producer checkout;
+that producer workflow may use DORA compiler state, but the package importer
+does not load it.
 
 Generate the known add-chain image from that trusted DORA workspace:
 
 ```sh
 : "${DORA_ROOT:?set DORA_ROOT to the DORA checkout}"
+: "${DORA_PACKAGE:=$DORA_ROOT/examples/devices/ee_526/rta-v4/build/package/rta-v4-array.dora}"
 : "${CHIPYARD_ROOT:?set CHIPYARD_ROOT to the Chipyard checkout}"
 : "${TMPDIR:?TMPDIR must be set}"
 cd "$DORA_ROOT"
@@ -49,7 +66,9 @@ Then stage the deterministic Chipyard artifact:
 ```sh
 cd "$CHIPYARD_ROOT"
 python3 scripts/prepare-rta-v4-bundle.py \
-  --dora-root "$DORA_ROOT" \
+  --dora-package "$DORA_PACKAGE" \
+  --compiler-arch \
+    "$DORA_ROOT/examples/devices/ee_526/rta-v4/build/compiler_arch.json" \
   --add-chain-bitstream "$TMPDIR/rta_v4_chipyard_add_chain/compute.bin" \
   --add-chain-fasm "$TMPDIR/rta_v4_chipyard_add_chain/compute.fasm" \
   --systolic-dir "$TMPDIR/rta_v4_chipyard_systolic"
@@ -57,6 +76,17 @@ python3 scripts/prepare-rta-v4-bundle.py \
 
 Use `--check` with the same arguments to verify that the checked-in generated
 files are current without rewriting them.
+
+The reusable `scripts/import-dora-package.py` command implements the generic
+package verification/import boundary. `prepare-rta-v4-bundle.py` uses that
+same implementation, then adds the RTA-specific compiler, ABI, and workload
+checks. Package roots that are symlinks are intentionally rejected; explicitly
+pass the real directory when consuming a deliberately symlinked location.
+
+The package also contains two mutually exclusive producer compile sets. The
+Chipyard resource path consumes `rtl/bundle.sv`. For split compilation, first
+`cd` to the package's `rtl/` directory and invoke `<tool> -f files.f`; VCS
+`-F rtl/files.f` does not rebase its `+incdir+` entries.
 
 ## Standalone verification
 
@@ -74,7 +104,9 @@ add-chain under continuous and stalled enabled-clock execution. It also locks
 and verifies every systolic phase image, then adversarially corrupts
 representative systolic bitstream and FASM images and the multi-image protocol
 metadata. The full state-retention and systolic datapath proof runs through the
-Chipyard controller and TileLink shell with:
+Chipyard controller and TileLink shell. It checks DORA's fixed oracle and eight
+deterministic pseudo-random `K=1..8` matrices against a reference model running
+on the simulated Rocket core:
 
 ```sh
 make -C generators/chipyard/src/test/resources/rta_v4 soc-systolic-smoke

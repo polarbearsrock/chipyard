@@ -28,7 +28,7 @@ payload bytes, the importer rejects symlinks and special files, checks exact
 tree closure and every `SHA256SUMS` entry, links `payload_digest` back to the
 exact checksum-file bytes, validates the canonical format-1 manifest, and pins
 `sha256(dora-package.json)`. The current pin is
-`e3a7dda3262df975ea4e89d6a51a129497fab97d9fd1a5c32306ef3da45244ed`.
+`ac462b1165bc68445abda143582c1d6e5c6bc8b215a08b31d31e3e546a5a5ea1`.
 The package contains no `workspace.pkl`, and neither staging nor verification
 imports DORA Python.
 

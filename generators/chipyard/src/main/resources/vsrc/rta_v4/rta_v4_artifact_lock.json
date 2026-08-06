@@ -13,9 +13,9 @@
       "sha256": "9897c7b122cbbbd07dba4006d6e0115701a7202b9eda8b209ac01f9b20d891bd"
     },
     "RtaV4Bundle.sv": {
-      "bytes": 289114,
+      "bytes": 289127,
       "role": "DORA package bundle followed by the Chipyard adapter",
-      "sha256": "374c1b79a5bae04b24b37870bd617b814cab9763efff9c24a038697bc08505b0"
+      "sha256": "539b288c0d36ec52fbde44aa6a7928e8e6458e614ba6a30c39eb26024d13bdff"
     },
     "add_chain_compute.bin": {
       "bytes": 393,
@@ -153,7 +153,7 @@
   },
   "dora_package": {
     "bundle": {
-      "bytes": 284489,
+      "bytes": 284502,
       "composite_license": true,
       "licenses": [
         {
@@ -166,12 +166,12 @@
         }
       ],
       "path": "rtl/bundle.sv",
-      "sha256": "60168cda95b3162d9f92e7247eeee45bfe576daaecb6e03e34960e6762af8a69",
+      "sha256": "ca1684e39cadad9929774cc52ad93f04e19b6ef6e7004fc1c4d0b3b7a534c811",
       "source_count": 50,
       "source_marker_traceability": "BEGIN SOURCE paths identify each embedded source's package path and license ownership."
     },
     "checksums_bytes": 6017,
-    "checksums_sha256": "873b8729541e8be166acc6b1e593bcd69ba78a1019ba85d414df67c6d4c3c10f",
+    "checksums_sha256": "be26492c15b24a477f508fbaf4ffd47f03b0e2c6478121f3ba064d0ab2b87035",
     "filelist": {
       "bytes": 2146,
       "compile_working_directory": "rtl",
@@ -190,7 +190,7 @@
       "dora_package_format": 1,
       "filelist": "rtl/files.f",
       "name": "rta-v4-array",
-      "payload_digest": "sha256:873b8729541e8be166acc6b1e593bcd69ba78a1019ba85d414df67c6d4c3c10f",
+      "payload_digest": "sha256:be26492c15b24a477f508fbaf4ffd47f03b0e2c6478121f3ba064d0ab2b87035",
       "provenance": {
         "basejump_stl": {
           "dirty": false,
@@ -198,18 +198,18 @@
         },
         "dora": {
           "dirty": true,
-          "revision": "ba1c4546d2d66e50a35dc7d849a1e9d23681ee0a"
+          "revision": "24550c94dc8b87c235888ae86d9916e21cc16da3"
         }
       },
       "top": "rta_v4_array"
     },
     "manifest_bytes": 411,
-    "manifest_sha256": "e3a7dda3262df975ea4e89d6a51a129497fab97d9fd1a5c32306ef3da45244ed",
+    "manifest_sha256": "ac462b1165bc68445abda143582c1d6e5c6bc8b215a08b31d31e3e546a5a5ea1",
     "payload": [
       {
         "bytes": 3901,
         "path": "README.md",
-        "sha256": "10c882037f55422d4573a30255d2f6838d932c717a8fba0f3ddd9adf1b4ed367"
+        "sha256": "14587965fd51efa342d07c8a43189c26da0310e2f264206f224fe7fa625d2fe3"
       },
       {
         "bytes": 745,
@@ -222,9 +222,9 @@
         "sha256": "9897c7b122cbbbd07dba4006d6e0115701a7202b9eda8b209ac01f9b20d891bd"
       },
       {
-        "bytes": 284489,
+        "bytes": 284502,
         "path": "rtl/bundle.sv",
-        "sha256": "60168cda95b3162d9f92e7247eeee45bfe576daaecb6e03e34960e6762af8a69"
+        "sha256": "ca1684e39cadad9929774cc52ad93f04e19b6ef6e7004fc1c4d0b3b7a534c811"
       },
       {
         "bytes": 2146,
@@ -322,44 +322,44 @@
         "sha256": "7c356cc86c06f6e39137d5a80c0bb699f418f5670ced7e7daed86491bc7a9e09"
       },
       {
-        "bytes": 82068,
+        "bytes": 82069,
         "path": "rtl/src/generated/rta_v4_array.sv",
-        "sha256": "e22fa01eae5fb7f01e106b97d09f9186eb54ec84077317ac9128d9f2a6e02058"
+        "sha256": "fd60b0853b172e1c2ae022afc5e764d94021442cb91382efa343c42b6f0dd0e1"
       },
       {
-        "bytes": 14956,
+        "bytes": 14957,
         "path": "rtl/src/generated/rta_v4_data0_crossbar_8b.sv",
-        "sha256": "167fac6a6698cdb1fb7db74e26083a1a1cce333efa953a0ab7ee4eb1c86cf0ce"
+        "sha256": "ebe51729ffa5a904da6bdf3be3ca50b13d360eefd9a679737e2ff7b29e9c6d2c"
       },
       {
-        "bytes": 14956,
+        "bytes": 14957,
         "path": "rtl/src/generated/rta_v4_data1_crossbar_8b.sv",
-        "sha256": "7319ee8608df9b467b596db4e3f96af4787095b4903ade6b766935dfc21014d1"
+        "sha256": "53606ff813422170f058d659e6b4a81bd1397393ae1178d8e8fdc6587b3cfbf6"
       },
       {
-        "bytes": 3794,
+        "bytes": 3795,
         "path": "rtl/src/generated/rta_v4_input_boundary_cell_2x8b_pred.sv",
-        "sha256": "9461563d749a4fd6ef299255a19b44aedfc453647eba310d8e3c32b456ee23d8"
+        "sha256": "0c48db6ed5188f8e6a18eab5e2a99087b818ab0025c4d9b1fa835794a8baabba"
       },
       {
-        "bytes": 5378,
+        "bytes": 5379,
         "path": "rtl/src/generated/rta_v4_input_boundary_cell_2x8b_pred_skew1.sv",
-        "sha256": "405ef3590459d640478f0fb565aa839bd0c8520d71c88fd36c6d2e52ffb77346"
+        "sha256": "a56d363be7fcb226e18666800803a2a6dbab59651abc19cae2ac57aaf88f78ab"
       },
       {
-        "bytes": 6926,
+        "bytes": 6927,
         "path": "rtl/src/generated/rta_v4_input_boundary_cell_2x8b_pred_skew2.sv",
-        "sha256": "160cf5760aa0b2915da0bc9f0a582673e881dc9082281a9ce8f1ade748acb294"
+        "sha256": "851af9db3093fa10a2566d6464c77f1365cd456b00569ff2a48d9c69ae37fdcb"
       },
       {
-        "bytes": 8474,
+        "bytes": 8475,
         "path": "rtl/src/generated/rta_v4_input_boundary_cell_2x8b_pred_skew3.sv",
-        "sha256": "c20c8347a1654cd3bc1bf6ba7ef0d86636cdecba2d38bff8ec3746add3c467d5"
+        "sha256": "dd1f4c369fb97b111a29ea4a8c90e76eb1eec740a638aaf1896774451e6f4fd5"
       },
       {
-        "bytes": 4403,
+        "bytes": 4404,
         "path": "rtl/src/generated/rta_v4_input_io_tile_2x8b_pred.sv",
-        "sha256": "92fcac2fa4cb68f077359f71b4e8b90da40b3e885c1e6c0a6806f347f5f28846"
+        "sha256": "5554583da6b12a7860ee5838553101de61865536b7cca0927024169dbc67dda2"
       },
       {
         "bytes": 653,
@@ -377,14 +377,14 @@
         "sha256": "83640ae80a69de8fad8d92088401d440baa2f758f16c2ce55560b3f39621f1e6"
       },
       {
-        "bytes": 3803,
+        "bytes": 3804,
         "path": "rtl/src/generated/rta_v4_output_boundary_cell_2x8b_pred.sv",
-        "sha256": "6974343a6d909a036eb251090e150e1b7a8b187cfba4cf8255a728bcdc06a011"
+        "sha256": "b52b2f38f4f446d1a340632038a11ea147f0609e12f873a9045fbb1c3e4d5d29"
       },
       {
-        "bytes": 4443,
+        "bytes": 4444,
         "path": "rtl/src/generated/rta_v4_output_io_tile_2x8b_pred.sv",
-        "sha256": "639198b8a85504047f760f3419c6da04e543cbb6bfe0ad74e726edf63166b9ae"
+        "sha256": "0933be342591393ca0f53f635be8a183680a7f781e62f94bb7242f3cc79bdbc5"
       },
       {
         "bytes": 654,
@@ -402,19 +402,19 @@
         "sha256": "3d2d0f2e63bac9418aae4a1ea194250d6a7da9feedb1c3437861bb965f34fc21"
       },
       {
-        "bytes": 58764,
+        "bytes": 58765,
         "path": "rtl/src/generated/rta_v4_pe.sv",
-        "sha256": "83e68025805b5b5ccda310f50b2639c12ff0b81312876bedcbe6d7f36b2d89e7"
+        "sha256": "9abda49fe4f6fed8c77a80046b8606336e87a4671967d5dc8ad0b93117b5ad8b"
       },
       {
-        "bytes": 10235,
+        "bytes": 10236,
         "path": "rtl/src/generated/rta_v4_pred_crossbar.sv",
-        "sha256": "581f504f05bc978cc88ced6a91231da3467063426426174170a7910c47e27255"
+        "sha256": "d429e50983cfc62ff2af7d357917630c70c9d5ada636326628e8142e0e2fe574"
       },
       {
-        "bytes": 3070,
+        "bytes": 3071,
         "path": "rtl/src/generated/rta_v4_skew_bypass_2x8b_pred.sv",
-        "sha256": "d1c79809e767297819a4e1fc07ad52ffdbf2c50a36eeb5f9c91ecacc2de0c3ed"
+        "sha256": "c31a2199bf5ad1686d580176860aebbfb62e2c7853de67bba94351760f0dcf4e"
       },
       {
         "bytes": 1370,
@@ -505,8 +505,8 @@
   "provenance": {
     "consumer_boundary": "The package owns RTL and its licenses; Chipyard owns the adapter, compiler metadata, ABI, and workload images.",
     "identity_semantics": "The canonical DORA manifest hash transitively pins exact SHA256SUMS bytes and every package payload byte.",
-    "package_manifest_sha256": "e3a7dda3262df975ea4e89d6a51a129497fab97d9fd1a5c32306ef3da45244ed",
-    "package_payload_digest": "sha256:873b8729541e8be166acc6b1e593bcd69ba78a1019ba85d414df67c6d4c3c10f",
+    "package_manifest_sha256": "ac462b1165bc68445abda143582c1d6e5c6bc8b215a08b31d31e3e546a5a5ea1",
+    "package_payload_digest": "sha256:be26492c15b24a477f508fbaf4ffd47f03b0e2c6478121f3ba064d0ab2b87035",
     "package_provenance": {
       "basejump_stl": {
         "dirty": false,
@@ -514,7 +514,7 @@
       },
       "dora": {
         "dirty": true,
-        "revision": "ba1c4546d2d66e50a35dc7d849a1e9d23681ee0a"
+        "revision": "24550c94dc8b87c235888ae86d9916e21cc16da3"
       }
     },
     "rtl_revalidation_semantics": "Compare the package bundle/source digests when provenance-only DORA commits change the manifest identity."

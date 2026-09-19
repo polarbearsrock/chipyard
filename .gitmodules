@@ -162,4 +162,4 @@
 	url = https://github.com/riscv-tacit/tacit.git
 [submodule "generators/radiance"]
 	path = generators/radiance
-	url = https://github.com/ucb-bar/radiance.git
+	url = https://github.com/polarbearsrock/radiance-tars.git

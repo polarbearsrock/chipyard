@@ -270,6 +270,9 @@ lazy val chipyard = {
       .dependsOn(dora_chisel_examples)
       .settings(Compile / unmanagedSourceDirectories +=
         (ThisBuild / baseDirectory).value / "generators/dora/dora.chisel/chipyard/src/main/scala")
+      // The glue's unit tests (DoraShellSpec, chiseltest): chipyard / Test / testOnly dora.chisel.soc.*
+      .settings(Test / unmanagedSourceDirectories +=
+        (ThisBuild / baseDirectory).value / "generators/dora/dora.chisel/chipyard/src/test/scala")
   }
 
   cy

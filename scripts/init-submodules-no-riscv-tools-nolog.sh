@@ -186,6 +186,7 @@ cd "$RDIR"
             generators/ara \
 	    generators/caliptra-aes-acc \
 	    generators/compress-acc \
+            generators/dora \
             generators/nvdla \
 	    generators/mempress \
             generators/gemmini \
@@ -297,6 +298,19 @@ cd "$RDIR"
     # Non-recursive clone
     submodule_name="generators/rocket-chip"
     git submodule update --init generators/rocket-chip || exit 1
+
+    # DORA: non-recursive clone. The Chisel elaborator and its Chipyard glue
+    # (dora.chisel/) need none of DORA's nested submodules. DORA is optional:
+    # build.sbt wires it in only when generators/dora is initialized, and the
+    # repository is private, so a clone without access continues without it.
+    # On failure, deinit it again: --init has already registered its URL in
+    # .git/config, and a later plain 'git submodule update' would retry the
+    # clone and fail.
+    submodule_name="generators/dora"
+    if ! GIT_TERMINAL_PROMPT=0 git submodule update --init generators/dora; then
+        git submodule deinit --force generators/dora >/dev/null 2>&1 || :
+        echo "WARNING: could not initialize generators/dora (private repository); continuing without DORA." >&2
+    fi
 
     # Minimal non-recursive clone to initialize sbt dependencies
     submodule_name="sims/firesim"

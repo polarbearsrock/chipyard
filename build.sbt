@@ -261,8 +261,76 @@ lazy val chipyard = {
       }.filter(_.exists)
   )
 
+  // DORA (generators/dora): its Chisel elaborator and leaf library, plus the Chipyard glue in
+  // dora.chisel/chipyard/src/main/scala. optionalModules would look in generators/dora/chipyard,
+  // so DORA is wired explicitly, and only when the submodule is initialized and the build is on
+  // Chisel 6 (DORA has no Chisel 7 cross-build). Nothing else in Chipyard references DORA.
+  if (doraEnabled) {
+    cy = cy
+      .dependsOn(dora_chisel_examples)
+      .settings(Compile / unmanagedSourceDirectories +=
+        (ThisBuild / baseDirectory).value / "generators/dora/dora.chisel/chipyard/src/main/scala")
+  }
+
   cy
 }
+
+// -- DORA (optional generators/dora; Chisel pilot step 5) --
+
+// Wired into chipyard only when generators/dora is initialized and USE_CHISEL7 is unset.
+lazy val doraEnabled = !sys.env.contains("USE_CHISEL7") && file("generators/dora/.git").exists
+
+// dora_chisel_source_digest: the same rule as generators/dora/dora.chisel/build.sbt (and
+// dora.hdl.toolchain.source_digest). SHA-256 over every *.scala file below dora.chisel/ (no path
+// component named "target" or starting with "."), build.sbt and project/build.properties, in
+// sorted relative-path order; each file contributes "<relative POSIX path>", a NUL byte and
+// "<sha256 hex of its bytes>\n". The Chipyard glue under dora.chisel/chipyard counts too.
+// DORA's elaborator refuses an interchange written for other sources (producer check).
+def doraChiselSourceDigest(root: File): String = {
+  import scala.jdk.CollectionConverters._
+  def hex(bytes: Array[Byte]): String = bytes.map(b => f"${b & 0xff}%02x").mkString
+  val base: java.nio.file.Path = root.toPath.toAbsolutePath.normalize
+  val files = java.nio.file.Files.walk(base).iterator.asScala
+    .filter(p => java.nio.file.Files.isRegularFile(p))
+    .map(p => base.relativize(p).iterator.asScala.map(_.toString).toList)
+    .filter { parts =>
+      val rel = parts.mkString("/")
+      rel == "build.sbt" || rel == "project/build.properties" ||
+      (rel.endsWith(".scala") && !parts.exists(c => c == "target" || c.startsWith(".")))
+    }.map(_.mkString("/")).toList.sorted
+  val digest = java.security.MessageDigest.getInstance("SHA-256")
+  files.foreach { rel =>
+    val content = java.security.MessageDigest.getInstance("SHA-256")
+      .digest(java.nio.file.Files.readAllBytes(base.resolve(rel)))
+    digest.update((rel + 0.toChar + hex(content) + "\n").getBytes("UTF-8"))
+  }
+  "sha256:" + hex(digest.digest())
+}
+
+lazy val doraChiselDir = file("generators/dora/dora.chisel")
+
+lazy val dora_chisel_core = withInitCheck(freshProject("dora_chisel_core", doraChiselDir / "core"), "dora")
+  .settings(chiselSettings)
+  .settings(commonSettings)
+  .settings(
+    libraryDependencies += "com.lihaoyi" %% "ujson" % "3.1.0",
+    // The source digest, compiled in as dora/chisel/source_digest.txt (dora.chisel.Version).
+    Compile / resourceGenerators += Def.task {
+      val out = (Compile / resourceManaged).value / "dora" / "chisel" / "source_digest.txt"
+      val text = doraChiselSourceDigest((ThisBuild / baseDirectory).value / "generators/dora/dora.chisel") + "\n"
+      if (!out.exists || IO.read(out) != text) IO.write(out, text)
+      Seq(out)
+    }.taskValue)
+
+lazy val dora_chisel_stdlib = withInitCheck(freshProject("dora_chisel_stdlib", doraChiselDir / "stdlib"), "dora")
+  .dependsOn(dora_chisel_core)
+  .settings(chiselSettings)
+  .settings(commonSettings)
+
+lazy val dora_chisel_examples = withInitCheck(freshProject("dora_chisel_examples", doraChiselDir / "examples"), "dora")
+  .dependsOn(dora_chisel_stdlib)
+  .settings(chiselSettings)
+  .settings(commonSettings)
 
 lazy val compressacc = withInitCheck((project in file("generators/compress-acc")), "compress-acc")
   .dependsOn(rocketchip)

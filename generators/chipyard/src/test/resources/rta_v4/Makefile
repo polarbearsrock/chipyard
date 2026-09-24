@@ -6,6 +6,10 @@ ifndef TMPDIR
 $(error TMPDIR must be set)
 endif
 
+# sbt offline, from DORA_COURSIER_CACHE, with nothing under $HOME: a soc-*
+# target re-assembles chipyard.jar whenever its sources changed.
+include $(MAKEFILE_DIR)/../offline-sbt.mk
+
 PYTHON ?= python3
 VERILATOR ?= verilator
 FLOCK ?= flock
@@ -83,7 +87,7 @@ run: lint verify-negative compile
 
 # Opt-in full-SoC proof. LOADMEM preloads DRAM for speed; the Rocket core still
 # boots the ELF and every RTA access traverses the generated TileLink/MMIO path.
-soc-smoke:
+soc-smoke: offline-sbt-check
 	$(CMAKE) -S $(SOC_TEST_SOURCE_DIR) -B $(SOC_TEST_BUILD_DIR) \
 	  -D CMAKE_BUILD_TYPE=Release
 	$(CMAKE) --build $(SOC_TEST_BUILD_DIR) --target rta-v4 \
@@ -99,7 +103,7 @@ soc-smoke:
 # frozen DORA images and warm-reloads between phases without resetting the RMU
 # accumulators. It checks DORA's fixed oracle, then eight deterministic random
 # K=1..8 matrices against a reference model computed by Rocket software.
-soc-systolic-smoke:
+soc-systolic-smoke: offline-sbt-check
 	$(CMAKE) -S $(SOC_TEST_SOURCE_DIR) -B $(SOC_TEST_BUILD_DIR) \
 	  -D CMAKE_BUILD_TYPE=Release
 	$(CMAKE) --build $(SOC_TEST_BUILD_DIR) --target rta-v4-systolic \

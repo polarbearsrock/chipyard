@@ -167,3 +167,6 @@
 [submodule "software/spec2026"]
 	path = software/spec2026
 	url = git@github.com:ucb-bar/spec2026-workload.git
+[submodule "generators/dora"]
+	path = generators/dora
+	url = https://github.com/pncel/dora.git

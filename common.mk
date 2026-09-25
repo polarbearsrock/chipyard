@@ -115,13 +115,13 @@ lookup_srcs_by_multiple_type = $(foreach type,$(2),$(call lookup_srcs,$(1),$(typ
 SCALA_EXT = scala
 VLOG_EXT = sv v
 FIRESIM_SOURCE_DIRS = $(addprefix sims/firesim/,sim/firesim-lib sim/midas/targetutils) $(addprefix generators/firechip/,chip bridgeinterfaces bridgestubs) tools/firrtl2
-# generators/dora is the whole DORA repository; only dora.chisel/ (the elaborator, leaf library
-# and Chipyard glue) is compiled into the jar. DORA's templates, fixtures and printed-Scala
-# goldens elsewhere must not trigger jar rebuilds.
+# generators/dora is the whole DORA repository; only dora.chisel/ (elaborator) and chipyard/ (SoC
+# bindings) are compiled into the jar. DORA's templates, fixtures and printed-Scala goldens
+# elsewhere must not trigger jar rebuilds.
 DORA_CHISEL_DIR = $(base_dir)/generators/dora/dora.chisel
 CHIPYARD_SOURCE_DIRS = \
 	$(filter-out $(base_dir)/generators/firechip $(base_dir)/generators/dora,$(wildcard $(addprefix $(base_dir)/,generators/* fpga/fpga-shells fpga/src tools/stage))) \
-	$(wildcard $(DORA_CHISEL_DIR)) \
+	$(wildcard $(DORA_CHISEL_DIR) $(base_dir)/generators/dora/chipyard) \
 	$(addprefix $(base_dir)/,$(FIRESIM_SOURCE_DIRS))
 CHIPYARD_SCALA_SOURCES = $(call lookup_srcs_by_multiple_type,$(CHIPYARD_SOURCE_DIRS),$(SCALA_EXT))
 CHIPYARD_VLOG_SOURCES = $(call lookup_srcs_by_multiple_type,$(CHIPYARD_SOURCE_DIRS),$(VLOG_EXT))

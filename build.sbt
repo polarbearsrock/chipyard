@@ -223,7 +223,7 @@ lazy val chipyard = {
     .settings(dspExcludeSettings: _*)
 
   // Optional modules discovered via initialized submodules (no env or manifest)
-  val optionalModules: Seq[(String, ProjectReference)] = Seq(
+  val optionalModules: Seq[(String, ProjectReference)] = Seq[(String, ProjectReference)](
     // Generators with Chipyard-facing glue compiled from their repos
     "cva6" -> cva6,
     "ibex" -> ibex,
@@ -239,6 +239,10 @@ lazy val chipyard = {
     "compress-acc" -> compressacc,
     "mempress" -> mempress,
     "fft-generator" -> fft_generator
+  ) ++ (
+    // DORA: its elaborator (dora_chisel_*, below) and its SoC bindings in generators/dora/chipyard.
+    // DORA has no Chisel 7 build, so it is never discovered under USE_CHISEL7.
+    if (useChisel7) Nil else Seq[(String, ProjectReference)]("dora" -> dora_chisel_examples)
   )
 
   // Discover optional modules if their submodule is initialized
@@ -261,33 +265,30 @@ lazy val chipyard = {
       }.filter(_.exists)
   )
 
-  // DORA (generators/dora): its Chisel elaborator and leaf library, plus the Chipyard glue in
-  // dora.chisel/chipyard/src/main/scala. optionalModules would look in generators/dora/chipyard,
-  // so DORA is wired explicitly, and only when the submodule is initialized and the build is on
-  // Chisel 6 (DORA has no Chisel 7 cross-build). Nothing else in Chipyard references DORA.
-  if (doraEnabled) {
-    cy = cy
-      .dependsOn(dora_chisel_examples)
-      .settings(Compile / unmanagedSourceDirectories +=
-        (ThisBuild / baseDirectory).value / "generators/dora/dora.chisel/chipyard/src/main/scala")
-      // The glue's unit tests (DoraShellSpec, chiseltest): chipyard / Test / testOnly dora.chisel.soc.*
-      .settings(Test / unmanagedSourceDirectories +=
-        (ThisBuild / baseDirectory).value / "generators/dora/dora.chisel/chipyard/src/test/scala")
+  // DORA's SoC bindings keep their specs in generators/dora/chipyard/<binding>/test. optionalModules
+  // added the whole generators/dora/chipyard tree to Compile; move every <binding>/test to Test.
+  if (!useChisel7 && file("generators/dora/.git").exists) {
+    val bindingTests: Seq[File] =
+      Option(file("generators/dora/chipyard").listFiles).toSeq.flatten
+        .filter(_.isDirectory).map(_ / "test").filter(_.isDirectory).map(_.getCanonicalFile)
+    cy = cy.settings(
+      Compile / unmanagedSources := {
+        val files = (Compile / unmanagedSources).value
+        files.filterNot(f => bindingTests.exists(d => f.getCanonicalFile.toPath.startsWith(d.toPath)))
+      },
+      Test / unmanagedSourceDirectories ++= bindingTests)
   }
 
   cy
 }
 
-// -- DORA (optional generators/dora; Chisel pilot step 5) --
-
-// Wired into chipyard only when generators/dora is initialized and USE_CHISEL7 is unset.
-lazy val doraEnabled = !sys.env.contains("USE_CHISEL7") && file("generators/dora/.git").exists
+// -- DORA (optional generators/dora): the Chisel elaborator dora.chisel/ as three projects --
 
 // dora_chisel_source_digest: the same rule as generators/dora/dora.chisel/build.sbt (and
 // dora.hdl.toolchain.source_digest). SHA-256 over every *.scala file below dora.chisel/ (no path
 // component named "target" or starting with "."), build.sbt and project/build.properties, in
 // sorted relative-path order; each file contributes "<relative POSIX path>", a NUL byte and
-// "<sha256 hex of its bytes>\n". The Chipyard glue under dora.chisel/chipyard counts too.
+// "<sha256 hex of its bytes>\n". DORA's SoC bindings (generators/dora/chipyard) are outside it.
 // DORA's elaborator refuses an interchange written for other sources (producer check).
 def doraChiselSourceDigest(root: File): String = {
   import scala.jdk.CollectionConverters._

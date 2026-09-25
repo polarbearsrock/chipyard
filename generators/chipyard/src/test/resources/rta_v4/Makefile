@@ -6,9 +6,9 @@ ifndef TMPDIR
 $(error TMPDIR must be set)
 endif
 
-# sbt offline, from DORA_COURSIER_CACHE, with nothing under $HOME: a soc-*
-# target re-assembles chipyard.jar whenever its sources changed.
-include $(MAKEFILE_DIR)/../offline-sbt.mk
+# sbt offline, from OFFLINE_SBT_COURSIER_CACHE, with nothing under $HOME: a
+# soc-* target re-assembles chipyard.jar whenever its sources changed.
+include $(CHIPYARD_ROOT)/scripts/offline-sbt.mk
 
 PYTHON ?= python3
 VERILATOR ?= verilator

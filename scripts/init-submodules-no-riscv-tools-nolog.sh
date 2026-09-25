@@ -299,8 +299,8 @@ cd "$RDIR"
     submodule_name="generators/rocket-chip"
     git submodule update --init generators/rocket-chip || exit 1
 
-    # DORA: non-recursive clone. The Chisel elaborator and its Chipyard glue
-    # (dora.chisel/) need none of DORA's nested submodules. DORA is optional:
+    # DORA: non-recursive clone. dora.chisel/ (elaborator) and chipyard/ (SoC
+    # bindings) need none of DORA's nested submodules. DORA is optional:
     # build.sbt wires it in only when generators/dora is initialized, and the
     # repository is private, so a clone without access continues without it.
     # On failure, deinit it again: --init has already registered its URL in

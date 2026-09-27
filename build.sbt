@@ -240,9 +240,11 @@ lazy val chipyard = {
     "mempress" -> mempress,
     "fft-generator" -> fft_generator
   ) ++ (
-    // DORA: its elaborator (dora_chisel_*, below) and its SoC bindings in generators/dora/chipyard.
-    // DORA has no Chisel 7 build, so it is never discovered under USE_CHISEL7.
-    if (useChisel7) Nil else Seq[(String, ProjectReference)]("dora" -> dora_chisel_examples)
+    // DORA: its elaborator and stdlib leaves (dora_chisel_*, below) and its SoC bindings in
+    // generators/dora/chipyard. A design's own leaves are not here: they come from the render's
+    // leaf jars at elaboration. DORA has no Chisel 7 build, so it is never discovered under
+    // USE_CHISEL7.
+    if (useChisel7) Nil else Seq[(String, ProjectReference)]("dora" -> dora_chisel_stdlib)
   )
 
   // Discover optional modules if their submodule is initialized
@@ -282,30 +284,53 @@ lazy val chipyard = {
   cy
 }
 
-// -- DORA (optional generators/dora): the Chisel elaborator dora.chisel/ as three projects --
+// -- DORA (optional generators/dora): the Chisel elaborator dora.chisel/ as two projects --
+//
+// dora_chisel_core (the interchange reader, elaborator, leaf class resolver and cut cells) and
+// dora_chisel_stdlib (DORA's shared leaf classes). dora.chisel/testleaves (test-only leaf classes,
+// some deliberately faulty, that core's own specs load from a jar) is never compiled here and never
+// reaches chipyard.jar, though its sources count in the digest. A design's own leaves (static
+// HyCUBE's ALU and LSU, in DORA's examples/architectures/static_hycube/leaves/) are not compiled
+// here either: DORA compiles them into the render's hdl/leaves/*.jar, which
+// dora.chisel.host.FabricLoader loads at elaboration, so a leaf edit never rebuilds chipyard.jar.
 
 // dora_chisel_source_digest: the same rule as generators/dora/dora.chisel/build.sbt (and
 // dora.hdl.toolchain.source_digest). SHA-256 over every *.scala file below dora.chisel/ (no path
 // component named "target" or starting with "."), build.sbt and project/build.properties, in
 // sorted relative-path order; each file contributes "<relative POSIX path>", a NUL byte and
-// "<sha256 hex of its bytes>\n". DORA's SoC bindings (generators/dora/chipyard) are outside it.
-// DORA's elaborator refuses an interchange written for other sources (producer check).
+// "<sha256 hex of its bytes>\n". The walk never enters a directory named "target" or starting with
+// ".": sbt rewrites target/ while it compiles (its transient classes.bak), and a walk into it could
+// trip on a vanishing file; nothing below those directories counts anyway. DORA's SoC bindings
+// (generators/dora/chipyard) are outside it. DORA's elaborator refuses an interchange written for
+// other sources (producer check), and its leaf loader a leaf jar compiled against other sources.
 def doraChiselSourceDigest(root: File): String = {
+  import java.io.IOException
+  import java.nio.file.{FileVisitResult, Files, Path, SimpleFileVisitor}
+  import java.nio.file.attribute.BasicFileAttributes
+  import java.security.MessageDigest
   import scala.jdk.CollectionConverters._
   def hex(bytes: Array[Byte]): String = bytes.map(b => f"${b & 0xff}%02x").mkString
-  val base: java.nio.file.Path = root.toPath.toAbsolutePath.normalize
-  val files = java.nio.file.Files.walk(base).iterator.asScala
-    .filter(p => java.nio.file.Files.isRegularFile(p))
-    .map(p => base.relativize(p).iterator.asScala.map(_.toString).toList)
-    .filter { parts =>
+  val base: Path = root.toPath.toAbsolutePath.normalize
+  val selected = scala.collection.mutable.ArrayBuffer.empty[String]
+  Files.walkFileTree(base, new SimpleFileVisitor[Path] {
+    override def preVisitDirectory(dir: Path, attrs: BasicFileAttributes): FileVisitResult = {
+      val name = if (dir == base) "" else dir.getFileName.toString
+      if (name == "target" || name.startsWith(".")) FileVisitResult.SKIP_SUBTREE else FileVisitResult.CONTINUE
+    }
+    override def visitFile(file: Path, attrs: BasicFileAttributes): FileVisitResult = {
+      val parts = base.relativize(file).iterator.asScala.map(_.toString).toList
       val rel = parts.mkString("/")
-      rel == "build.sbt" || rel == "project/build.properties" ||
-      (rel.endsWith(".scala") && !parts.exists(c => c == "target" || c.startsWith(".")))
-    }.map(_.mkString("/")).toList.sorted
-  val digest = java.security.MessageDigest.getInstance("SHA-256")
+      val wanted = rel == "build.sbt" || rel == "project/build.properties" ||
+        (rel.endsWith(".scala") && !parts.exists(c => c == "target" || c.startsWith(".")))
+      if (wanted && Files.isRegularFile(file)) selected += rel
+      FileVisitResult.CONTINUE
+    }
+    override def visitFileFailed(file: Path, exc: IOException): FileVisitResult = throw exc
+  })
+  val files = selected.toList.sorted
+  val digest = MessageDigest.getInstance("SHA-256")
   files.foreach { rel =>
-    val content = java.security.MessageDigest.getInstance("SHA-256")
-      .digest(java.nio.file.Files.readAllBytes(base.resolve(rel)))
+    val content = MessageDigest.getInstance("SHA-256").digest(Files.readAllBytes(base.resolve(rel)))
     digest.update((rel + 0.toChar + hex(content) + "\n").getBytes("UTF-8"))
   }
   "sha256:" + hex(digest.digest())
@@ -328,11 +353,6 @@ lazy val dora_chisel_core = withInitCheck(freshProject("dora_chisel_core", doraC
 
 lazy val dora_chisel_stdlib = withInitCheck(freshProject("dora_chisel_stdlib", doraChiselDir / "stdlib"), "dora")
   .dependsOn(dora_chisel_core)
-  .settings(chiselSettings)
-  .settings(commonSettings)
-
-lazy val dora_chisel_examples = withInitCheck(freshProject("dora_chisel_examples", doraChiselDir / "examples"), "dora")
-  .dependsOn(dora_chisel_stdlib)
   .settings(chiselSettings)
   .settings(commonSettings)
 
